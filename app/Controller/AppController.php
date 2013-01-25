@@ -21,6 +21,7 @@
  */
 
 App::uses('Controller', 'Controller');
+App::import('Vendor', 'facebook/src/facebook');
 
 /**
  * Application Controller
@@ -32,4 +33,15 @@ App::uses('Controller', 'Controller');
  * @link http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+	
+	function beforeFilter() {
+//		$category = $this->Category_model->get_list("");
+		$this->set("root_category", array());
+		$this->set("title_for_layout", __("旅つく"));
+		$this->facebook = new Facebook( array(
+				'appId' => '127720514063786',
+				'secret' => '0141a1c5dddd9b84706eaae45f67bf29',
+				'cookie' => true
+		));
+	}
 }
