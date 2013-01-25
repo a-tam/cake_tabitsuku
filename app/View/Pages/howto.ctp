@@ -5,7 +5,7 @@ $this->assign("body_class", "sec subpage");
 
 // page_css
 $this->start("page_css");
-$__css[] = $this->html->css("modules/user");
+$__css[] = $this->Html->css("modules/user");
 echo implode("\n", $__css);
 $this->end();
 
@@ -25,7 +25,7 @@ $this->end();
 	<div class="container">
 		<div class="main">
 		
-			<h2><img src="<?php echo $this->html->url("/img/howto/title.gif"); ?>" alt="たびつくの使い方" /></h2>
+			<h2><img src="<?php echo $this->Html->url("/img/howto/title.gif"); ?>" alt="たびつくの使い方" /></h2>
 		
 			<h3>見出しが入ります。</h3>
 			

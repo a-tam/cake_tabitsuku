@@ -9,9 +9,9 @@
 }(document, 'script', 'facebook-jssdk'));</script><!-- facebook -->
 
 <header>
-	<h1><a href="<?php echo $this->html->url("/");?>"><img src="<?php echo $this->html->url("/img/logo.gif"); ?>" alt="たびつく　自分だけの旅行プランを作ろう" /></a></h1>
+	<h1><a href="<?php echo $this->Html->url("/");?>"><img src="<?php echo $this->Html->url("/img/logo.gif"); ?>" alt="たびつく　自分だけの旅行プランを作ろう" /></a></h1>
 	<dl class="search">
-		<dt><img src="<?php echo $this->html->url("/img/common/header/search.gif"); ?>" alt="ツアーやスポットを検索しよう" /></dt>
+		<dt><img src="<?php echo $this->Html->url("/img/common/header/search.gif"); ?>" alt="ツアーやスポットを検索しよう" /></dt>
 		<dd>
 			<form method="post">
 				<p class="categoryselect">
@@ -33,10 +33,10 @@
 	</dl>
 	<!-- //search -->
 	<?php if ($user_info = $this->Session->read("user_info")): ?>
-	<p class="login"><a href="<?php echo $this->html->url("/logout");?>" class="mouse_over"><img src="<?php echo $this->html->url("/img/common/header/logout.gif"); ?>" alt="ログアウト" /></a></p>
+	<p class="login"><a href="<?php echo $this->Html->url("/logout");?>" class="mouse_over"><img src="<?php echo $this->Html->url("/img/common/header/logout.gif"); ?>" alt="ログアウト" /></a></p>
 	<p class="username">ようこそ　<span><em><?php echo $user_info["name"];?></em>さん</span></p>
 	<?php else: ?>
-	<p class="login"><a href="#login" class="loginbtn mouse_over"><img src="<?php echo $this->html->url("/img/common/header/login.gif"); ?>" alt="ログインはこちら" /></a></p>
+	<p class="login"><a href="#login" class="loginbtn mouse_over"><img src="<?php echo $this->Html->url("/img/common/header/login.gif"); ?>" alt="ログインはこちら" /></a></p>
 	<?php endif; ?>
 	
 </header>

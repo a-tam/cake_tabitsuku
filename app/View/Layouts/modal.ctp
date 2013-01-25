@@ -4,35 +4,35 @@
 <?php
 // meta
 $this->start("meta");
-$_metas[] = $this->html->charset("utf-8");
+$_metas[] = $this->Html->charset("utf-8");
 $_metas[] = '<meta http-equiv="Content-Language" content="ja" />';
 $_metas[] = '<meta http-equiv="Content-Style-Type" content="text/css" />';
 $_metas[] = '<meta http-equiv="Content-Script-Type" content="text/javascript" />';
 $_metas[] = '<meta name="description" content="" />';
 $_metas[] = '<meta name="robots" content="ALL" />';
 $_metas[] = '<link rel="start index" href="/" title="'.$title_for_layout.'" />';
-$_metas[] = $this->html->meta('icon', 'img/favicon.ico');
+$_metas[] = $this->Html->meta('icon', 'img/favicon.ico');
 echo implode("\n", $_metas);
 $this->end();
 
 // common css
 $this->start("css");
-$_css[] = $this->html->css("import");
-$_css[] = $this->html->css("ui-lightness/jquery-ui-1.8.20.custom");
+$_css[] = $this->Html->css("import");
+$_css[] = $this->Html->css("ui-lightness/jquery-ui-1.8.20.custom");
 echo implode("\n", $_css);
 $this->end();
 
 // common scripts
 $this->start("script");
-$_scripts[] = $this->html->script('jquery/jquery-1.7.2.min');
-$_scripts[] = $this->html->script('jquery/jquery-ui-1.8.20.custom.min');
-$_scripts[] = $this->html->script('jquery/jquery.powertip.min');
-$_scripts[] = $this->html->script('jquery/jquery.easing.js');
-$_scripts[] = $this->html->script('apps/browser.js');
-$_scripts[] = $this->html->script('apps/common.js');
+$_scripts[] = $this->Html->script('jquery/jquery-1.7.2.min');
+$_scripts[] = $this->Html->script('jquery/jquery-ui-1.8.20.custom.min');
+$_scripts[] = $this->Html->script('jquery/jquery.powertip.min');
+$_scripts[] = $this->Html->script('jquery/jquery.easing.js');
+$_scripts[] = $this->Html->script('apps/browser.js');
+$_scripts[] = $this->Html->script('apps/common.js');
 echo implode("\n", $_scripts);
-$base_url = $this->html->url("/", true);
-$asset_url = $this->html->url("/", true);
+$base_url = $this->Html->url("/", true);
+$asset_url = $this->Html->url("/", true);
 echo <<<"EOM"
 <script type="text/javascript">
 	var gBaseUrl = '${base_url}';

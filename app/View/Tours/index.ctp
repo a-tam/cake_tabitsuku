@@ -5,16 +5,16 @@ $this->assign("body_class", "search sec");
 
 // page_css
 $this->start("page_css");
-$__css[] = $this->html->css("modules/search");
-$__css[] = $this->html->css("/js/jquery/jpagenate/css/style");
+$__css[] = $this->Html->css("modules/search");
+$__css[] = $this->Html->css("/js/jquery/jpagenate/css/style");
 echo implode("\n", $__css);
 $this->end();
 
 // page_script
 $this->start("page_script");
-$__script[] = $this->html->script("search");
-$__script[] = $this->html->script("apps/guest/spot/search");
-$__script[] = $this->html->script("jquery/jpagenate/jquery.paginate");
+$__script[] = $this->Html->script("search");
+$__script[] = $this->Html->script("apps/guest/spot/search");
+$__script[] = $this->Html->script("jquery/jpagenate/jquery.paginate");
 echo implode("\n", $__script);
 $this->end();
 ?>
@@ -53,10 +53,10 @@ $this->end();
 			<div class="list_area">
 			
 				<div class="list_item pg_temp" style="display:none;">
-					<p class="icon"><img src="<?php echo $this->html->url("/img/common/icon/tour.png"); ?>" alt="ツアー" /></p>
+					<p class="icon"><img src="<?php echo $this->Html->url("/img/common/icon/tour.png"); ?>" alt="ツアー" /></p>
 					
 					<p class="photo pg_img"><a href="">
-						<img src="<?php echo $this->html->url("/img/common/noimage.jpg"); ?>" width="137" height="104" alt="" />
+						<img src="<?php echo $this->Html->url("/img/common/noimage.jpg"); ?>" width="137" height="104" alt="" />
 					</a></p>
 					
 					<div class="info_area">
@@ -68,15 +68,15 @@ $this->end();
 						
 						<div class="subinfo">
 							<dl class="name">
-								<dt><img src="<?php echo $this->html->url("/img/common/icon/name.gif"); ?>" alt="作成者" /></dt>
+								<dt><img src="<?php echo $this->Html->url("/img/common/icon/name.gif"); ?>" alt="作成者" /></dt>
 								<dd class="pg_owner">田中一郎</dd>
 							</dl>
 							<dl class="departure">
-								<dt><img src="<?php echo $this->html->url("/img/common/icon/departure.gif"); ?>" alt="出発地" /></dt>
+								<dt><img src="<?php echo $this->Html->url("/img/common/icon/departure.gif"); ?>" alt="出発地" /></dt>
 								<dd class="pg_prefecture">東京駅</dd>
 							</dl>
 							<dl class="time">
-								<dt><img src="<?php echo $this->html->url("/img/common/icon/time.gif"); ?>" alt="時間" /></dt>
+								<dt><img src="<?php echo $this->Html->url("/img/common/icon/time.gif"); ?>" alt="時間" /></dt>
 								<dd class="pg_time">2時間ツアー</dd>
 							</dl>
 						</div>
@@ -87,7 +87,7 @@ $this->end();
 					<div class="sub_box">
 						<div class="pg_like_count fb-like" data-href="http://google.com" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
 						<dl class="category">
-							<dt><img src="<?php echo $this->html->url("/img/common/icon/category.gif"); ?>" alt="CATEGORY" /></dt>
+							<dt><img src="<?php echo $this->Html->url("/img/common/icon/category.gif"); ?>" alt="CATEGORY" /></dt>
 							<dd>
 								<ul class="pg_category">
 									<li><a href="">食べる</a></li>
@@ -96,7 +96,7 @@ $this->end();
 								</ul>
 							</dd>
 						</dl>
-						<p class="linkbtn pg_detail"><a href="http://www.yahoo.co.jp" class="mouse_over"><img src="<?php echo $this->html->url("/img/common/btn/tourlinkbtn.gif"); ?>" alt="ツアー内容を見る"></a></p>
+						<p class="linkbtn pg_detail"><a href="http://www.yahoo.co.jp" class="mouse_over"><img src="<?php echo $this->Html->url("/img/common/btn/tourlinkbtn.gif"); ?>" alt="ツアー内容を見る"></a></p>
 					</div>
 					<!-- //sub_box -->
 		

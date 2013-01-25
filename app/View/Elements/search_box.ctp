@@ -1,13 +1,13 @@
 <?php if (!isset($mode)) { $mode = 0; }?>
 		<div class="search_box<?php if ($mode == "1"): ?> search_box_l<?php endif;?>">
-			<form action="<?php echo $this->html->url("spot/search");?>" method="post">
+			<form action="<?php echo $this->Html->url("spot/search");?>" method="post">
 				<div class="search_setting">
 					<p class="setting-title"><img src="<?php
-					if ($mode == "1"): echo $this->html->url("/img/common/search/title_l.gif");
-					 else: echo $this->html->url("/img/common/search/title.gif");
+					if ($mode == "1"): echo $this->Html->url("/img/common/search/title_l.gif");
+					 else: echo $this->Html->url("/img/common/search/title.gif");
 					 endif;?>" alt="検索設定" /></p>
 					<dl class="keyword">
-						<dt><img src="<?php echo $this->html->url("/img/common/search/keyword.gif");?>" alt="キーワード" /></dt>
+						<dt><img src="<?php echo $this->Html->url("/img/common/search/keyword.gif");?>" alt="キーワード" /></dt>
 						<dd><input type="text" class="text" name="keyword" id="pg_search_keyword" value="<?php echo $this->request["keyword"];?>" />
 							<p>
 							<select name="order" id="pg_search_order">
@@ -26,10 +26,10 @@
 					</dl>
 					<!-- //keyword -->
 					<dl class="category">
-						<dt><img src="<?php echo $this->html->url("/img/common/search/category.gif");?>" alt="カテゴリ" /></dt>
+						<dt><img src="<?php echo $this->Html->url("/img/common/search/category.gif");?>" alt="カテゴリ" /></dt>
 						<dd>
 							<p class="selectbtn"><a href="#categoryselect" class="selectbtn mouse_over">検索カテゴリを選択</a></p>
-							<!--<p class="selectedCategory"><a href="#close" class="close mouse_over"><img src="<?php echo $this->html->url("/img/common/search/close.gif");?>" alt="CLOSE" /></a>見る</p>-->
+							<!--<p class="selectedCategory"><a href="#close" class="close mouse_over"><img src="<?php echo $this->Html->url("/img/common/search/close.gif");?>" alt="CLOSE" /></a>見る</p>-->
 							<div class="categoryselect">
 								<ul>
 <?php
@@ -42,7 +42,7 @@ foreach($category as $row):
 									<li><a data-category-id="<?php echo $row["id"];?>" href=""><?php echo $row["name"];?></a></li>
 <?php endforeach;?>
 								</ul>
-								<p class="close"><a href="#close" class="mouse_over"><img src="<?php echo $this->html->url("/img/common/search/close.png");?>" alt="CLSOE" /></a></p>
+								<p class="close"><a href="#close" class="mouse_over"><img src="<?php echo $this->Html->url("/img/common/search/close.png");?>" alt="CLSOE" /></a></p>
 								<p class="tri">&nbsp;</p>
 							</div>
 							<!-- //categoryselect -->
@@ -62,7 +62,7 @@ if ($selected_category) :
 					<!-- //category -->
 					<?php if ($mode == 1):?>
 					<dl class="type">
-						<dt><img src="<?php echo $this->html->url("/img/common/search/type.gif");?>" alt="タイプ" /></dt>
+						<dt><img src="<?php echo $this->Html->url("/img/common/search/type.gif");?>" alt="タイプ" /></dt>
 						<dd>
 							<ul>
 								<li><input type="radio" name="type" value="tour" checked="checked" /><label for="searchbox-tour">ツアー</label></li>
@@ -76,8 +76,8 @@ if ($selected_category) :
 				<!-- //search_setting -->
 				<dl class="search-btn">
 					<dt><img src="<?php
-					if ($mode == "1"): echo $this->html->url("/img/common/search/search_l.gif");
-					else: echo $this->html->url("/img/common/search/search.gif");
+					if ($mode == "1"): echo $this->Html->url("/img/common/search/search_l.gif");
+					else: echo $this->Html->url("/img/common/search/search.gif");
 					endif;?>" alt="検索" /></dt>
 					<dd>
 						<ul>

@@ -1,5 +1,5 @@
 			<dl class="taglist group">
-				<dt><img src="<?php echo $this->html->url("/img/common/side/taglist.gif"); ?>" alt="タグリスト" /></dt>
+				<dt><img src="<?php echo $this->Html->url("/img/common/side/taglist.gif"); ?>" alt="タグリスト" /></dt>
 				<dd>
 					<ul>
 						<li><a href=""><em>デート</em></a><p><span>7200</span></p></li>
@@ -12,7 +12,7 @@
 			<!-- //taglist -->
 	
 			<dl class="category group">
-				<dt><img src="<?php echo $this->html->url("/img/common/side/category.gif"); ?>" alt="カテゴリ" /></dt>
+				<dt><img src="<?php echo $this->Html->url("/img/common/side/category.gif"); ?>" alt="カテゴリ" /></dt>
 				<dd>
 					<ul>
 						<li><a href=""><em>見る</em></a><p><span>72</span></p></li>
@@ -27,7 +27,7 @@
 			<!-- //category -->
 			
 			<dl class="rank" id="tourranking">
-				<dt><img src="<?php echo $this->html->url("/img/common/side/tourranking.gif"); ?>" alt="ツアーランキング" /></dt>
+				<dt><img src="<?php echo $this->Html->url("/img/common/side/tourranking.gif"); ?>" alt="ツアーランキング" /></dt>
 				<dd>
 					<ul>
 						<li class="rank1"><a href="">東京グルメ食べ歩きツアー</a></li>
@@ -41,7 +41,7 @@
 			<!-- //tourranking -->
 	
 			<dl class="rank" id="spotranking">
-				<dt><img src="<?php echo $this->html->url("/img/common/side/spotranking.gif"); ?>" alt="スポットランキング" /></dt>
+				<dt><img src="<?php echo $this->Html->url("/img/common/side/spotranking.gif"); ?>" alt="スポットランキング" /></dt>
 				<dd>
 					<ul>
 						<li class="rank1"><a href="">スカイツリー</a></li>
