@@ -76,8 +76,6 @@ $this->end();
 <body<?php
 if ($this->fetch("body_id")) echo ' id="'.$this->fetch("body_id").'"';
 if ($this->fetch("body_class")) echo ' class="'.$this->fetch("body_class").'"'; ?>>
-<?php echo $this->fetch("header"); ?>
 <?php echo $this->fetch('content'); ?>
-<?php echo $this->fetch("footer"); ?>
 </body>
 </html>

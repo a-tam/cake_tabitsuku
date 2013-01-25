@@ -1,0 +1,42 @@
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = "//connect.facebook.net/ja_JP/all.js#xfbml=1";
+	fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><!-- facebook -->
+
+<header>
+	<h1><a href="<?php echo $this->html->url("/");?>"><img src="<?php echo $this->html->url("/img/logo.gif"); ?>" alt="たびつく　自分だけの旅行プランを作ろう" /></a></h1>
+	<dl class="search">
+		<dt><img src="<?php echo $this->html->url("/img/common/header/search.gif"); ?>" alt="ツアーやスポットを検索しよう" /></dt>
+		<dd>
+			<form method="post">
+				<p class="categoryselect">
+					<select class="category" name="category">
+						<option value="">全てのカテゴリ</option>
+<?php foreach($root_category as $row):?>
+						<option value="/<?php echo $row["id"];?>/"><?php echo $row["name"];?></option>
+<?php endforeach;?>
+					</select>
+				</p>
+				<ul>
+					<li><input type="radio" name="type" value="tour" id="headersearch_tour" checked="checked"><label for="headersearch_tour">ツアー</label></li>
+					<li><input type="radio" name="type" value="spot" id="headersearch_spot"><label for="headersearch_spot">スポット</label></li>
+				</ul>
+				<p class="keyword"><input type="text" class="text" name="keyword" value="" /></p>
+				<p class="submit mouse_over"><input type="submit" class="submitbtn" value="検索" /></p>
+			</form>
+		</dd>
+	</dl>
+	<!-- //search -->
+	<?php if ($user_info = $this->Session->read("user_info")): ?>
+	<p class="login"><a href="<?php echo $this->html->url("/logout");?>" class="mouse_over"><img src="<?php echo $this->html->url("/img/common/header/logout.gif"); ?>" alt="ログアウト" /></a></p>
+	<p class="username">ようこそ　<span><em><?php echo $user_info["name"];?></em>さん</span></p>
+	<?php else: ?>
+	<p class="login"><a href="#login" class="loginbtn mouse_over"><img src="<?php echo $this->html->url("/img/common/header/login.gif"); ?>" alt="ログインはこちら" /></a></p>
+	<?php endif; ?>
+	
+</header>
