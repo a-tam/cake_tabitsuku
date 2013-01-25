@@ -29,7 +29,14 @@
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
-//	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	Router::connect('/site/about', array('controller' => 'pages', 'action' => 'about'));
+	Router::connect('/site/howto', array('controller' => 'pages', 'action' => 'howto'));
+	Router::connect('/site/contact', array('controller' => 'pages', 'action' => 'contact'));
+	Router::connect('/site/rule', array('controller' => 'pages', 'action' => 'rule'));
+	Router::connect('/login_form', array('controller' => 'pages', 'action' => 'login'));
+	Router::connect('/logout', array('controller' => 'pages', 'action' => 'logout'));
+	Router::connect('/fb_auth', array('controller' => 'pages', 'action' => 'fb_auth'));
+	
 	
 	
 /**
@@ -45,4 +52,6 @@
 	require CAKE . 'Config' . DS . 'routes.php';
 
 	Router::mapResources('api');
-	Router::parseExtensions();
+	Router::parseExtensions("json");
+	
+	
