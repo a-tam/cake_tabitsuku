@@ -36,8 +36,7 @@
 	Router::connect('/login_form', array('controller' => 'pages', 'action' => 'login'));
 	Router::connect('/logout', array('controller' => 'pages', 'action' => 'logout'));
 	Router::connect('/fb_auth', array('controller' => 'pages', 'action' => 'fb_auth'));
-	
-	
+
 	
 /**
  * Load all plugin routes.  See the CakePlugin documentation on

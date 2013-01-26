@@ -18,7 +18,7 @@ class SpotsController extends AppController {
 		
 	}
 	
-	public function view() {
+	public function show() {
 	
 	}
 	
