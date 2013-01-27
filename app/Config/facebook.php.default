@@ -1,0 +1,10 @@
+<?php
+	$config = array(
+		'facebook' => array(
+					'app_id' => '',
+					'secret' => '',
+					'cookie' => true,
+					'locale' => 'ja_JP',
+			)
+	);
+?>

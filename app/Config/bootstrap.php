@@ -181,3 +181,5 @@ CakeLog::config('error', array(
 ));
 
 CakePlugin::load('Migrations');
+
+Configure::load('facebook');
