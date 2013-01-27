@@ -18,8 +18,12 @@ class PagesController extends AppController {
 		parent::beforeFilter();
 	}
 	
-	public function home() {
-		
+	public function error400() {
+		throw new NotFoundException("お探しのページは有りませんでした");
+	}
+	
+	public function error500() {
+		throw new InternalErrorException("お探しのページは有りませんでした");
 	}
 	
 	/**

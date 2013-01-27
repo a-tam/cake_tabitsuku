@@ -1,61 +1,84 @@
-<?php
-/**
- *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       Cake.View.Layouts
- * @since         CakePHP(tm) v 0.10.0.1076
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
- */
-
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html lang="ja">
 <head>
-	<?php echo $this->Html->charset(); ?>
-	<title>
-		<?php echo $cakeDescription ?>:
-		<?php echo $title_for_layout; ?>
-	</title>
-	<?php
-		echo $this->Html->meta('icon');
+<?php
+// meta
+$this->start("meta");
+$_metas[] = $this->Html->charset("utf-8");
+$_metas[] = '<meta http-equiv="Content-Language" content="ja" />';
+$_metas[] = '<meta http-equiv="Content-Style-Type" content="text/css" />';
+$_metas[] = '<meta http-equiv="Content-Script-Type" content="text/javascript" />';
+$_metas[] = '<meta name="description" content="" />';
+$_metas[] = '<meta name="robots" content="ALL" />';
+$_metas[] = '<link rel="start index" href="/" title="'.$title_for_layout.'" />';
+$_metas[] = $this->Html->meta('icon', 'img/favicon.ico');
+echo implode("\n", $_metas);
+$this->end();
 
-		echo $this->Html->css('cake.generic');
+// common css
+$this->start("css");
+$_css[] = $this->Html->css("import");
+$_css[] = $this->Html->css("ui-lightness/jquery-ui-1.8.20.custom");
+echo implode("\n", $_css);
+$this->end();
 
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
-	?>
+// common scripts
+$this->start("script");
+$_scripts[] = $this->Html->script('jquery/jquery-1.7.2.min');
+$_scripts[] = $this->Html->script('jquery/jquery-ui-1.8.20.custom.min');
+$_scripts[] = $this->Html->script('jquery/jquery.powertip.min');
+$_scripts[] = $this->Html->script('jquery/jquery.easing.js');
+$_scripts[] = $this->Html->script('apps/browser.js');
+$_scripts[] = $this->Html->script('apps/common.js');
+echo implode("\n", $_scripts);
+$base_url = $this->Html->url("/", true);
+$asset_url = $this->Html->url("/", true);
+echo <<<"EOM"
+<script type="text/javascript">
+	var gBaseUrl = '${base_url}';
+	var gAssetUrl = '${asset_url}';
+</script>
+<!--[if lte IE 8]>
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+EOM;
+$this->end();
+
+// header
+$this->start("header");
+echo $this->element("header");
+$this->end();
+
+// footer
+$this->start("footer");
+echo $this->element("footer");
+$this->end();
+
+?>
+<title><?php echo $title_for_layout ?></title>
+
+<!-- meta -->
+<?php echo $this->fetch('meta'); ?>
+
+<!-- common css -->
+<?php echo $this->fetch('css'); ?>
+
+<!-- page css -->
+<?php echo $this->fetch('page_css'); ?>
+
+<!-- common script -->
+<?php echo $this->fetch('script'); ?>
+
+<!-- page script -->
+<?php echo $this->fetch('page_script'); ?>
 </head>
-<body>
-	<div id="container">
-		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
-		</div>
-		<div id="content">
-
-			<?php echo $this->Session->flash(); ?>
-
-			<?php echo $this->fetch('content'); ?>
-		</div>
-		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false)
-				);
-			?>
-		</div>
-	</div>
-	<?php echo $this->element('sql_dump'); ?>
+<body<?php
+if ($this->fetch("body_id")) echo ' id="'.$this->fetch("body_id").'"';
+if ($this->fetch("body_class")) echo ' class="'.$this->fetch("body_class").'"'; ?>>
+<?php echo $this->fetch("header"); ?>
+<?php echo $this->element("globalnavi"); ?>
+<?php echo $this->fetch('content'); ?>
+<?php echo $this->fetch("footer"); ?>
 </body>
 </html>
