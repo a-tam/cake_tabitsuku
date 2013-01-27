@@ -36,7 +36,11 @@
 	Router::connect('/login_form', array('controller' => 'pages', 'action' => 'login'));
 	Router::connect('/logout', array('controller' => 'pages', 'action' => 'logout'));
 	Router::connect('/fb_auth', array('controller' => 'pages', 'action' => 'fb_auth'));
-
+	
+	// 今後、JS側を修正するもの
+	Router::connect('/api/spot/*', array('controller' => 'api', 'action' => 'spot_list', 'ext' => 'json'));
+	Router::connect('/api/tour/*', array('controller' => 'api', 'action' => 'tour_list', 'ext' => 'json'));
+	Router::connect('/user/tour/query/*', array('controller' => 'api', 'action' => 'tour_list', 'ext' => 'json'));
 	
 /**
  * Load all plugin routes.  See the CakePlugin documentation on
