@@ -16,7 +16,6 @@ $__script[] = $this->Html->script("apps/user/spot/form");
 $__script[] = $this->Html->script("jquery/timepicker/jquery.timepicker");
 echo implode("\n", $__script);
 $this->end();
-
 ?>
 
 <?php echo $this->element("globalnavi"); ?>
@@ -43,45 +42,47 @@ $this->end();
 	<!-- //maparea -->
 	<div id="input_area">
 		<h2><img src="<?php echo $this->html->url("/img/user/spot/title.gif"); ?>" alt="スポット登録：基本情報入力" /></h2>
-		<?php echo $this->Form->create("Spots", array("type" => "file", "class" => "input_form", "id" => "spot-form"));?>
-		<form class="input_form" action="<?php echo $this->html->url("user/spot/add");?>" enctype="multipart/form-data" method="post" id="spot-form">
+		<?php echo $this->Form->create("", array("type" => "file", "class" => "input_form", "id" => "spot-form"));?>
 			<?php echo $this->Form->hidden("id", array("id" => "spot-id"));?>
-			<input type="hidden" name="zoom" id="spot-zoom" value="<?php echo $this->request["zoom"];?>" />
-			<input type="hidden" name="prefecture" id="spot-prefecture" value="<?php echo $this->request["prefecture"];?>" />
+			<?php echo $this->Form->hidden("zoom", array("id" => "spot-zoom"));?>
+			<?php echo $this->Form->hidden("prefecture", array("id" => "spot-prefecture"));?>
 			<dl class="name">
 				<dt><img src="<?php echo $this->html->url("/img/user/spot/name.gif"); ?>" alt="名称" /></dt>
-				<dd><input type="text" name="name" id="spot-name" class="text" value="<?php echo $this->request["name"];?>" /></dd>
+				<dd><?php echo $this->Form->input("name", array("id" => "spot-name", "class" => "text", "label" => false));?></dd>
 			</dl>
 			<dl class="description">
 				<dt><img src="<?php echo $this->html->url("/img/user/spot/description.gif"); ?>" alt="説明" /></dt>
-				<dd><textarea name="description" id="spot-description" class="textarea"><?php echo $this->request["description"];?></textarea></dd>
+				<dd><?php echo $this->Form->textarea("description", array("id" => "spot-description", "class" => "textarea", "label" => false));?></dd>
 			</dl>
 			<dl class="location">
 				<dt><img src="<?php echo $this->html->url("/img/user/spot/location.gif"); ?>" alt="場所" /></dt>
-				<dd><input type="text" name="address" class="text" id="spot-address" value="<?php echo $this->request["address"];?>" readonly="readonly" /></dd>
+				<dd><?php echo $this->Form->input("address", array("id" => "spot-address", "class" => "text", "label" => false, "readonly" => true));?></dd>
 			</dl>
 			<dl class="latlng">
 				<dt><img src="<?php echo $this->html->url("/img/user/spot/latlng.gif"); ?>" alt="緯度・経度" /></dt>
 				<dd><ul>
-					<li>緯度<input type="text" name="lat" class="text" id="spot-lat" value="<?php echo $this->request["lat"];?>" readonly="readonly" /></li>
-					<li>経度<input type="text" name="lng" class="text" id="spot-lng" value="<?php echo $this->request["lng"];?>" readonly="readonly" /></li>
+					<li>緯度<?php echo $this->Form->input("lat", array("id" => "spot-lat", "class" => "text", "label" => false, "readonly" => true));?></li>
+					<li>経度<?php echo $this->Form->input("lng", array("id" => "spot-lng", "class" => "text", "label" => false, "readonly" => true));?></li>
 				</ul></dd>
 			</dl>
 			<dl class="stay_time">
 				<dt>滞在時間</dt>
 				<dd>
-					<select name="stay_time" class="text">
-<?php for($t=0; $t<24*4; $t++):?>
-						<option value="<?php echo $t*15;?>"<?php if ($t * 15 == $this->request["stay_time"]):?> selected="selected"<?php endif;?>"><?php echo sprintf("%1$02s:%2$02s", floor($t * 15 / 60), floor(($t % 4) * 15));?></option>
-<?php endfor;?>
-					</select>
+<?php for($t=0; $t<24*4; $t++):
+$stay_time_options[$t*15] = sprintf("%1$02s:%2$02s", floor($t * 15 / 60), floor(($t % 4) * 15));
+endfor;?>
+<?php echo $this->Form->input('stay_time', array(
+		'options' => $stay_time_options,
+		'label' => false,
+		'class' => "text"
+));?>
 				</dd>
 			</dl>
 			<dl class="tag">
 				<dt><img src="<?php echo $this->html->url("/img/user/spot/tag.gif"); ?>" alt="タグ" /></dt>
 				<dd><ul id="tags">
 				<?php if ($this->request["tags"]):?>
-<?php foreach($this->request["tags"]["name"] as $tag):?>
+<?php foreach($this->request->data["tags"]["name"] as $tag):?>
 						<li><?php echo $tag;?></li>
 <?php endforeach;?>
 <?php endif;?>
@@ -130,7 +131,7 @@ for($i = 0; $i < 3; $i++):?>
 			</dl>
 			<dl class="pic">
 				<dt><img src="<?php echo $this->html->url("/img/user/spot/pic.gif"); ?>" alt="画像" /></dt>
-				<dd><input type="file" name="image" class="upload" />
+			<?php echo $this->Form->file("image", array("class" => "upload"));?>
 <?php if ($this->request["image"]): ?>
 <br />
 	<?php if (isset($this->request["image"]["tmp"])):?>
@@ -145,7 +146,6 @@ for($i = 0; $i < 3; $i++):?>
 			<p class="submit mouse_over">
 			<input type="image" id="headerSaveArea" src="<?php echo $this->html->url("/img/user/spot/regist.gif"); ?>" alt="スポットを登録する" />
 			</p>
-			
 			
 		<?php $this->Form->end();?>
 	</div>
