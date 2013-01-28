@@ -33,10 +33,12 @@ $_scripts[] = $this->Html->script('apps/common.js');
 echo implode("\n", $_scripts);
 $base_url = $this->Html->url("/", true);
 $asset_url = $this->Html->url("/", true);
+$fb_app_id = Configure::read("facebook.app_id");
 echo <<<"EOM"
 <script type="text/javascript">
 	var gBaseUrl = '${base_url}';
 	var gAssetUrl = '${asset_url}';
+	var gFacebookAppId = '${fb_app_id}';
 </script>
 <!--[if lte IE 8]>
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
