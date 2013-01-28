@@ -40,6 +40,7 @@
 	// 今後、JS側を修正するもの
 	Router::connect('/api/spot/*', array('controller' => 'api', 'action' => 'spot_list', 'ext' => 'json'));
 	Router::connect('/api/tour/*', array('controller' => 'api', 'action' => 'tour_list', 'ext' => 'json'));
+	Router::connect('/user/tag/search', array('controller' => 'api', 'action' => 'tag_list', 'ext' => 'json'));
 	Router::connect('/user/tour/query/*', array('controller' => 'api', 'action' => 'tour_list', 'ext' => 'json'));
 	
 /**
