@@ -206,7 +206,50 @@ spotentryCtl.init=function(){
 		$(".input_form").submit(function() {
 			if (form_validate() == false) {
 				return false;
+			} else {
+//				var data = $("#spot-form").serialize();
+//				$.each($('input[type="file"]')[0].files, function(i, file) {
+//					data.append(i, file);
+//				});
+				var obj = $("#spot-form");
+				var formData = new FormData();
+				$.each($(obj).find("input[type='file']"), function(i, tag) {
+					$.each($(tag)[0].files, function(i, file) {
+						formData.append(tag.name, file);
+					});
+				});
+				var params = $(obj).serializeArray();
+				$.each(params, function (i, val) {
+					formData.append(val.name, val.value);
+				});
+				var data = formData;
+
+				//var data = new FormData($("#spot-form")[0]);
+				console.log(data);
+				$.ajax({
+					url: gBaseUrl + 'api/spot_add',
+					type: "post",
+					processData: false,
+					contentType: false,
+//					contentType: "multipart/form-data",
+					data: data,
+					dataType: "json",
+					success: function(json) {
+						if (json["status"] == true) {
+							if (json["result"]["tour_id"]) {
+//								location.href = gBaseUrl + 'tour/search?owner=mydata'; // &_lat='+map.getCenter().lat()+'&_lng='+map.getCenter().lng();
+							}
+							
+						} else {
+							alert("登録に失敗しました");
+						}
+					},
+					error: function(json) {
+						console.log(json);
+					}
+				});
 			}
+			return false;
 		});
 
 		function form_validate() {
@@ -235,10 +278,12 @@ spotentryCtl.init=function(){
 				input_item.push("#tags");
 			}*/
 			
+			/*
 			if ($(".maincategory").length == 0) {
 				messages.push("カテゴリの指定がありません");
 				input_item.push(".input_form .categories");
 			}
+			*/
 
 			if (messages.length > 0) {
 				alert(messages.join("\n"));
