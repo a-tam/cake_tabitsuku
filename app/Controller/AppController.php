@@ -39,9 +39,9 @@ class AppController extends Controller {
 		$this->set("root_category", array());
 		$this->set("title_for_layout", __("旅つく"));
 		$this->facebook = new Facebook( array(
-				'appId' => '127720514063786',
-				'secret' => '0141a1c5dddd9b84706eaae45f67bf29',
-				'cookie' => true
+				'appId' => Configure::read("facebook.app_id"),
+				'secret' => Configure::read("facebook.secret"),
+				'cookie' => Configure::read("facebook.cookie")
 		));
 	}
 }
