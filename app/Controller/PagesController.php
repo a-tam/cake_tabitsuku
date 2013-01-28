@@ -18,14 +18,6 @@ class PagesController extends AppController {
 		parent::beforeFilter();
 	}
 	
-	public function error400() {
-		throw new NotFoundException("お探しのページは有りませんでした");
-	}
-	
-	public function error500() {
-		throw new InternalErrorException("お探しのページは有りませんでした");
-	}
-	
 	/**
 	 * トップページ
 	 *
@@ -39,9 +31,10 @@ class PagesController extends AppController {
 	 *
 	 */
 	public function login() {
+		$redirect = $this->request->query["redirect"];
 		$params = array(
 				"scope" => "create_event",
-				"redirect_uri" => Router::url("/fb_auth", true)
+				"redirect_uri" => Router::url("/pages/fb_auth/".$redirect, true)
 			);
 		$url = $this->facebook->getLoginUrl($params);
 		$this->set("fb_login", $url);
@@ -58,7 +51,7 @@ class PagesController extends AppController {
 	
 	public function fb_auth($redirect = "") {
 		$user = $this->facebook->getUser();
-			if ($user) {
+		if ($user) {
 			try {
 				$user_profile = $this->facebook->api('/me');
 //				log_message('error',print_r($user_profile, true));
@@ -71,19 +64,19 @@ class PagesController extends AppController {
 							"name"			=> "清水",
 							"email"			=> "hiroyuki.kiyomizu@gmail.com"
 					);
-						
+					
 					$this->Session->write("user_info", $user_info);
 					switch ($redirect) {
 						case "tour":
-							$this->redirect("/tour/form");
+							$this->redirect("/tours/form");
 							break;
 							
 						case "spot":
-							$this->redirect("/spot/form");
+							$this->redirect("/spots/form");
 							break;
 							
 						case "mypage":
-							$this->redirect("/user");
+							$this->redirect("/users/");
 							break;
 							
 						default:
@@ -95,7 +88,7 @@ class PagesController extends AppController {
 			}
 		} else {
 			// ログイン画面
-			$this->login();
+			//$this->redirect("login_form");
 		}
 	}
 	
