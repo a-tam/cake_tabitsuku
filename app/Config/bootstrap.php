@@ -180,6 +180,6 @@ CakeLog::config('error', array(
 	'file' => 'error',
 ));
 
-CakePlugin::load('Migrations');
+CakePlugin::load(array('Migrations', 'Search'));
 
 Configure::load('facebook');
