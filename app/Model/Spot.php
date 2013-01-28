@@ -14,6 +14,13 @@ class Spot extends AppModel {
  * @var string
  */
 	public $displayField = 'name';
+	
+	/*
+	public $actsAs = array('Search.Searchable');
+	public $filterArgs = array(
+			'name' => array('type' => 'like'),
+	);
+	*/
 
 /**
  * Validation rules
@@ -23,7 +30,7 @@ class Spot extends AppModel {
 	public $validate = array(
 		'name' => array(
 			'maxlength' => array(
-				'rule' => array('maxlength'),
+				'rule' => array('maxlength', 200),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -72,7 +79,8 @@ class Spot extends AppModel {
 			),
 		),
 	);
-
+	
+	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
