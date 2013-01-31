@@ -32,18 +32,14 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 45,
-						'collate' => 'utf8_general_ci',
 						'comment' => '親ID',
-						'charset' => 'utf8'
 					),
 					'path'            => array(
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 221,
-						'collate' => 'utf8_general_ci',
 						'comment' => 'パス（最大カテゴリ数10億、10階層）',
-						'charset' => 'utf8'
 					),
 					'sort'            => array(
 						'type'    => 'integer',
@@ -56,9 +52,7 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
 						'comment' => 'カテゴリ名',
-						'charset' => 'utf8'
 					),
 					'created'         => array(
 						'type'    => 'datetime',
@@ -77,9 +71,7 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 45,
-						'collate' => 'utf8_general_ci',
 						'comment' => '０：無効、１：有効',
-						'charset' => 'utf8'
 					),
 					'indexes'         => array(
 						'PRIMARY' => array(
@@ -130,8 +122,6 @@ class Init extends CakeMigration {
 						'type'    => 'text',
 						'null'    => true,
 						'default' => NULL,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'created'         => array(
 						'type'    => 'datetime',
@@ -176,24 +166,18 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
 						'comment' => 'イベント名',
-						'charset' => 'utf8'
 					),
 					'image'           => array(
 						'type'    => 'text',
 						'null'    => true,
 						'default' => NULL,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'description'     => array(
 						'type'    => 'text',
 						'null'    => true,
 						'default' => NULL,
-						'collate' => 'utf8_general_ci',
 						'comment' => '説明',
-						'charset' => 'utf8'
 					),
 					'stay_time'       => array(
 						'type'    => 'integer',
@@ -218,8 +202,6 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'zoom'            => array(
 						'type'    => 'integer',
@@ -238,33 +220,25 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
 						'comment' => 'カテゴリIDをカンマ区切りで登録(mongodbの配列カラムなどを最終的に使う)',
-						'charset' => 'utf8'
 					),
 					'tags'            => array(
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
 						'comment' => 'タグIDをカンマ区切りで保持（検索用のインデックス）',
-						'charset' => 'utf8'
 					),
 					'keyword'         => array(
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'addition'        => array(
 						'type'    => 'text',
 						'null'    => true,
 						'default' => NULL,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'created'         => array(
 						'type'    => 'datetime',
@@ -283,9 +257,7 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 45,
-						'collate' => 'utf8_general_ci',
 						'comment' => '０：無効、１：有効',
-						'charset' => 'utf8'
 					),
 					'indexes'         => array(
 						'PRIMARY' => array(
@@ -312,18 +284,14 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
 						'comment' => 'タグ名',
-						'charset' => 'utf8'
 					),
 					'created'         => array(
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 45,
-						'collate' => 'utf8_general_ci',
 						'comment' => '作成日時',
-						'charset' => 'utf8'
 					),
 					'modified'        => array(
 						'type'    => 'datetime',
@@ -336,9 +304,7 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 45,
-						'collate' => 'utf8_general_ci',
 						'comment' => '０：無効、１：有効',
-						'charset' => 'utf8'
 					),
 					'indexes'         => array(
 						'PRIMARY' => array(
@@ -370,17 +336,13 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
 						'comment' => 'スケジュール名（例：オススメ東京観光旅行）',
-						'charset' => 'utf8'
 					),
 					'description'     => array(
 						'type'    => 'text',
 						'null'    => true,
 						'default' => NULL,
-						'collate' => 'utf8_general_ci',
 						'comment' => '説明',
-						'charset' => 'utf8'
 					),
 					'start_time'      => array(
 						'type'    => 'time',
@@ -398,41 +360,31 @@ class Init extends CakeMigration {
 						'type'    => 'text',
 						'null'    => true,
 						'default' => NULL,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'like_count'      => array(
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 45,
-						'collate' => 'utf8_general_ci',
 						'comment' => 'いいね！件数',
-						'charset' => 'utf8'
 					),
 					'category'        => array(
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'tags'            => array(
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'topic'           => array(
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'lat_min'         => array(
 						'type'    => 'float',
@@ -471,9 +423,7 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 45,
-						'collate' => 'utf8_general_ci',
 						'comment' => '０：無効、１：有効',
-						'charset' => 'utf8'
 					),
 					'indexes'         => array(
 						'PRIMARY' => array(
@@ -482,8 +432,6 @@ class Init extends CakeMigration {
 						),
 					),
 					'tableParameters' => array(
-						'charset' => 'utf8',
-						'collate' => 'utf8_general_ci',
 						'engine'  => 'InnoDB'
 					),
 				),
@@ -498,23 +446,17 @@ class Init extends CakeMigration {
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'password'        => array(
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 64,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'email'           => array(
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'social_facebook' => array(
 						'type'    => 'string',
@@ -522,26 +464,20 @@ class Init extends CakeMigration {
 						'default' => NULL,
 						'length'  => 50,
 						'key'     => 'unique',
-						'collate' => 'utf8_general_ci',
 						'comment' => 'Facebook ID',
-						'charset' => 'utf8'
 					),
 					'name'            => array(
 						'type'    => 'string',
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 200,
-						'collate' => 'utf8_general_ci',
 						'comment' => '名前',
-						'charset' => 'utf8'
 					),
 					'privacy'         => array(
 						'type'    => 'string',
 						'null'    => false,
 						'default' => NULL,
 						'length'  => 1,
-						'collate' => 'utf8_general_ci',
-						'charset' => 'utf8'
 					),
 					'created'         => array(
 						'type'    => 'datetime',
@@ -560,9 +496,7 @@ class Init extends CakeMigration {
 						'null'    => true,
 						'default' => NULL,
 						'length'  => 45,
-						'collate' => 'utf8_general_ci',
 						'comment' => '０：無効、１：有効',
-						'charset' => 'utf8'
 					),
 					'indexes'         => array(
 						'PRIMARY'            => array(
