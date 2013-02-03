@@ -10,3 +10,8 @@ app/[Cc]onfig/facebook.php
 .project
 .buildpath
 .settings
+app/webroot/uploads/*
+app/webroot/uploads/spot/*
+app/webroot/uploads/spot/origin/*
+app/webroot/uploads/spot/middle/*
+app/webroot/uploads/spot/thumb/*
