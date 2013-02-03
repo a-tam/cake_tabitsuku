@@ -34,8 +34,8 @@
 	Router::connect('/site/contact', array('controller' => 'pages', 'action' => 'contact'));
 	Router::connect('/site/rule', array('controller' => 'pages', 'action' => 'rule'));
 	Router::connect('/login_form', array('controller' => 'pages', 'action' => 'login'));
-	Router::connect('/logout', array('controller' => 'pages', 'action' => 'logout'));
-	Router::connect('/fb_auth', array('controller' => 'pages', 'action' => 'fb_auth'));
+	Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'));
+	Router::connect('/fb_auth', array('controller' => 'users', 'action' => 'fb_auth'));
 	
 	// 今後、JS側を修正するもの
 	Router::connect('/api/spot/*', array('controller' => 'api', 'action' => 'spot_list', 'ext' => 'json'));
