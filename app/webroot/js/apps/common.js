@@ -434,7 +434,7 @@ tourCtl.render = function(info, class_name) {
 		.clone(true)
 		.show()
 		.removeClass("pg_temp")
-		.attr("data-tour-id", info.id);
+		.attr("data-tour-id", info.Tour.id);
 	elm.css("display", "block");
 
 	// icon
@@ -444,23 +444,23 @@ tourCtl.render = function(info, class_name) {
 
 	// name
 	elm.find(".pg_name")
-		.text(info.name);
+		.text(info.Tour.name);
 
 	// description
 	elm.find(".pg_description")
-		.text(info.description);
+		.text(info.Tour.description);
 	
 	// facebook like button
 	elm.find(".pg_like_count")
 		.addClass("fb-like")
-		.attr("data-href", gBaseUrl + 'user/tour/show/' + info.id);
+		.attr("data-href", gBaseUrl + 'user/tour/show/' + info.Tour.id);
 	
 	// image
-	if (info.image) {
-		$(info.routes).each(function(i, route) {
-			if (route.id == info.image) {
+	if (info.Tour.image) {
+		$(info.Route).each(function(i, route) {
+			if (route.spot_id == info.image) {
 				elm.find(".pg_img .pg_detail img")
-					.attr("src", gBaseUrl + "uploads/spot/thumb/" + route.image.file_name)
+					//.attr("src", gBaseUrl + "uploads/spot/thumb/" + route.image.file_name)
 					.attr("alt", route.name);
 				return;
 			}
@@ -499,20 +499,20 @@ tourCtl.render = function(info, class_name) {
 
 	// tags
 	elm.find(".pg_tags").empty();
-	$(info.tags.match(/\d+/g)).each(function(i, tag_id) {
-		elm.find(".pg_tags").append("<li>" + relation["tags"][tag_id] + "</li>");
+	$(info.Tag).each(function(i, tag) {
+		elm.find(".pg_tags").append("<li>" + tag.name + "</li>");
 	});
 	
 	// owner
-	if (info.owner_name) {
+	if (info.User) {
 		elm.find(".pg_owner")
-			.text(info.owner_name);
+			.text(info.User.name);
 	}
 	
 	// prefecture
-	if (info.routes[0].prefecture) {
+	if (info.Route[0].prefecture) {
 		elm.find(".pg_prefecture")
-			.text(info.routes[0].prefecture);
+			.text(info.Route[0].prefecture);
 	}
 	
 	// stay_time
@@ -529,16 +529,16 @@ tourCtl.render = function(info, class_name) {
 
 	// link
 	elm.find(".pg_detail")
-		.attr("href", gBaseUrl + "tours/show/" + info.id);
+		.attr("href", gBaseUrl + "tours/show/" + info.Tour.id);
 
 	elm.find(".pg_copy")
-		.attr("href", gBaseUrl + 'tours/copy/' + info.id);
+		.attr("href", gBaseUrl + 'tours/copy/' + info.Tour.id);
 
-	if (info.mydata) {
+	if (info.Tour.mydata) {
 		elm.find(".pg_edit")
-			.attr("href", gBaseUrl + "tours/form/" + info.id);
+			.attr("href", gBaseUrl + "tours/form/" + info.Tour.id);
 		elm.find(".pg_delete")
-			.attr("href", gBaseUrl + "tours/delete/" + info.id);
+			.attr("href", gBaseUrl + "tours/delete/" + info.Tour.id);
 	} else {
 		elm.find(".pg_edit").remove();
 		elm.find(".pg_delete").remove();

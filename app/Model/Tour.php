@@ -22,7 +22,7 @@ class Tour extends AppModel {
 	public $validate = array(
 		'name' => array(
 			'maxlength' => array(
-				'rule' => array('maxlength'),
+				'rule' => array('maxlength', 200),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -105,19 +105,7 @@ class Tour extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'Route' => array(
-			'className' => 'Route',
-			'foreignKey' => 'tour_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
+		'Route'
 	);
 	
 	/**
@@ -142,12 +130,48 @@ class Tour extends AppModel {
 			'name' => array('type' => 'like'),
 			'keyword' => array('type' => 'like'),
 	);
-	protected $absolute_condition = array('Tour.status' => 1);
+	public $base_condition = array('Tour.status' => 1);
 	// 検索対象のフィールド設定
 	public $presetVars = array(
 			array('field' => 'id', 'type' => 'value'),
 			array('field' => 'name', 'type' => 'like'),
 	);
 	
-
+	/**
+	 * 存在すれば更新、無ければ追加
+	 * @param unknown $data
+	 * @param string $validate
+	 * @param unknown $fieldList
+	 * @return Ambigous <mixed, boolean, multitype:>
+	 */
+	public function save($data, $validate = true, $fieldList = array()) {
+		if (!$data[$this->name]["id"]) {
+			// 追加
+			$this->create();
+			$data[$this->name]["status"] = "1";
+		} else {
+			// 更新
+			$this->id = $data[$this->name]["id"];
+		}
+		return parent::save($data, $validate = true, $fieldList = array());
+	}
+	
+	public function afterSave() {
+		$tour_id = $this->log($this->getId());
+		foreach($this->data["Route"] as $key => $data) {
+			$this->data["Route"][$key]["tour_id"] = $tour_id;
+		}
+		$ret = $this->Route->saveAll($this->data["Route"]);
+	}
+	
+	/**
+	 * 保存前処理
+	 * @see Model::beforeSave()
+	 */
+	public function beforeSave() {
+		// タグ情報
+		if (isset($this->data["Tag"]["Tag"])) {
+			$this->data["Tag"] = array_keys($this->Tag->set_list($this->data["Tag"]["Tag"]));
+		}
+	}
 }

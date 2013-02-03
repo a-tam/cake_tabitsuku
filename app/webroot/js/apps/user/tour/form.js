@@ -220,26 +220,32 @@ tourentryCtl.init=function(){
 			if (form_validate() == false) {
 				return false;
 			}
-			var routes = [];
-			$("#tour_make .list_area .tour_point").each(function(i, elm) {
-				var id = $(elm).attr("data-spot-id");
-				routes.push({
-					id: 		id,
-					stay_time:	$(elm).find(".pg_stay_time").val(),
-					info:		$(elm).find(".pg_memo").val(),
-					lat:		$(elm).attr("data-spot-lat"),
-					lng:		$(elm).attr("data-spot-lng")
-				});
-			});
 			var categories = [];
 			$(".maincategory").each(function(i, elm) {
 				categories.push($(elm).val());
 			});
-			var data = $("#tour-form").serialize();
-			console.log(data);
+			// フォーム情報
+			var formData = new FormData();
+			var params = $("#tour-form").serializeArray();
+			$.each(params, function (i, val) {
+				formData.append(val.name, val.value);
+			});
+			formData.append("Tour[image]", $('input[name=select_image]:checked').val() ? $('input[name=select_image]:checked').val() : ""); 
+			// ルート情報
+			var j = 0;
+			$("#tour_make .list_area .tour_point").each(function(i, elm) {
+				formData.append("Route["+j+"][spot_id]", $(elm).attr("data-spot-id") ? $(elm).attr("data-spot-id") : "");
+				formData.append("Route["+j+"][stay_time]", $(elm).find(".pg_stay_time").val() ? $(elm).find(".pg_stay_time").val() : "");
+				formData.append("Route["+j+"][info]", $(elm).find(".pg_memo").val() ? $(elm).find(".pg_memo").val() : "");
+				formData.append("Route["+j+"][sort]", j+1);
+				j++;
+			});
+			var data = formData;
 			$.ajax({
 				url: gBaseUrl + 'api/tour_save',
 				type: "post",
+				processData: false,
+				contentType: false,
 				data: data,
 //				{
 //					id:				$("#tour-id").val(),

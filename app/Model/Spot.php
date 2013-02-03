@@ -108,6 +108,7 @@ class Spot extends AppModel {
 	 * @var array
 	*/
 	public $hasMany = array(
+		'Route'
 		/*
 		 * 時間が在るときにでも研究してみる。
 		 * https://github.com/josegonzalez/upload
@@ -121,7 +122,12 @@ class Spot extends AppModel {
 		*/
 	);
 	
-	//*
+	/**
+	 *
+	 * Enter description here ...
+	 *
+	 * @var unknown
+	 */
 	public $hasAndBelongsToMany = array(
 		'Tag' => array(
 			'className'             => 'Tag',
@@ -132,8 +138,9 @@ class Spot extends AppModel {
 			'fields'                => array('Tag.id', 'Tag.name'),
 		)
 	);
-	//*/
 	
+	// 検索対象のフィルタ
+	public $actsAs = array('Search.Searchable');
 	public $filterArgs = array(
 		'name'     => array('type' => 'like'),
 		'keyword'  => array('type' => 'query', 'method' => 'findByKeyword'),
@@ -141,11 +148,7 @@ class Spot extends AppModel {
 		'category' => array('type' => 'like'),
 		'tags'     => array('type' => 'like'),
 	);
-	
-	public $actsAs = array('Search.Searchable');
-	
 	public $base_condition = array('Spot.status' => '1');
-	
 	// 検索対象のフィールド設定
 	public $presetVars = array(
 			array('field' => 'id', 'type' => 'value'),
@@ -194,31 +197,30 @@ class Spot extends AppModel {
 	}
 	
 	/**
-	 * 追加
+	 * 存在すれば更新、無ければ追加
 	 * @param unknown $data
 	 * @param string $validate
 	 * @param unknown $fieldList
 	 * @return Ambigous <mixed, boolean, multitype:>
 	 */
 	public function save($data, $validate = true, $fieldList = array()) {
-		if (!$data["Spot"]["id"]) {
+		if (!$data[$this->name]["id"]) {
 			// 追加
 			$this->create();
-			$data["Spot"]["status"] = "1";
+			$data[$this->name]["status"] = "1";
 		} else {
 			// 更新
-			$this->id = $data["Spot"]["id"];
-		}
-		// タグ
-		if (isset($data["Tag"]["Tag"])) {
-			$data["Tag"] = array_keys($this->Tag->set_list($data["Tag"]["Tag"]));
+			$this->id = $data[$this->name]["id"];
 		}
 		return parent::save($data, $validate = true, $fieldList = array());
 	}
 	
+	/**
+	 * 保存前処理
+	 * @see Model::beforeSave()
+	 */
 	public function beforeSave() {
-		$this->log(__FILE__.":".__FUNCTION__.":".__LINE__.$this->name);
-		$this->log($this->data);
+		// 画像のサムネイル作成
 		if ($this->data[$this->name]["image"]) {
 			$file = $this->data[$this->name]["image"];
 			if ($file["error"] == 0 && $file["size"] > 0) {
@@ -258,14 +260,20 @@ class Spot extends AppModel {
 				$this->log($image_info);
 				$this->data[$this->name]["image"] = serialize($image_info);
 			}
-				
+		}
+		if (isset($this->data["Tag"]["Tag"])) {
+			$this->data["Tag"] = array_keys($this->Tag->set_list($this->data["Tag"]["Tag"]));
 		}
 	}
 	
+	/**
+	 * シリアライズした情報を展開
+	 * @see Model::afterFind()
+	 */
 	public function afterFind($results) {
 		foreach ($results as $key => $val) {
 			if (isset ($results[$key][$this->name]["image"]) && is_array ($results[$key][$this->name])) {
-				$results[$key][$this->name]["image"] = unserialize ($results[$key][$this->name]["image"]);
+				$results[$key][$this->name]["image"] = unserialize($results[$key][$this->name]["image"]);
 			}
 		}
 		return $results;

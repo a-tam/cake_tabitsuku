@@ -66,10 +66,8 @@ $(document).ready(function () {
 			data: request,
 			dataType: "json",
 			success: function(json) {
-				console.log(json);
 				if (json["count"] > 0) {
 					$.each(json["list"], function(id, info) {
-						console.log(id, info);
 						spotCtl.render(info, class_name);
 					});
 					commonCtl.iconTips();

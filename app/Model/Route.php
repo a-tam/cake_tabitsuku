@@ -26,7 +26,7 @@ class Route extends AppModel {
 		),
 		'info' => array(
 			'maxlength' => array(
-				'rule' => array('maxlength'),
+				'rule' => array('maxlength', 2000),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,

@@ -40,13 +40,11 @@ class Tag extends AppModel {
 				".name" => $tags
 			)
 		));
-		$this->log($exists_tags);
 		foreach ($tags as $tag_name) {
 			if (!array_search($tag_name, $exists_tags)) {
 				$this->create();
 				if ($this->save(array("name" => $tag_name))) {
 					$exists_tags[$this->getInsertID()] = $tag_name;
-					$this->log($exists_tags);
 				}
 			}
 		}
