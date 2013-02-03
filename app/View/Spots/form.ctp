@@ -42,7 +42,7 @@ $this->end();
 	<!-- //maparea -->
 	<div id="input_area">
 		<h2><img src="<?php echo $this->html->url("/img/user/spot/title.gif"); ?>" alt="スポット登録：基本情報入力" /></h2>
-		<?php echo $this->Form->create("", array("type" => "file", "class" => "input_form", "id" => "spot-form"));?>
+		<?php echo $this->Form->create("Spot", array("type" => "file", "class" => "input_form", "id" => "spot-form"));?>
 			<?php echo $this->Form->hidden("id", array("id" => "spot-id"));?>
 			<?php echo $this->Form->hidden("zoom", array("id" => "spot-zoom"));?>
 			<?php echo $this->Form->hidden("prefecture", array("id" => "spot-prefecture"));?>
@@ -131,7 +131,7 @@ for($i = 0; $i < 3; $i++):?>
 			</dl>
 			<dl class="pic">
 				<dt><img src="<?php echo $this->html->url("/img/user/spot/pic.gif"); ?>" alt="画像" /></dt>
-			<?php echo $this->Form->file("image", array("class" => "upload"));?>
+			<?php echo $this->Form->file("Spot.image", array("class" => "upload"));?>
 <?php if ($this->request["image"]): ?>
 <br />
 	<?php if (isset($this->request["image"]["tmp"])):?>

@@ -26,7 +26,7 @@ $this->end();
 
 	<ul id="breadcrumbs">
 		<li><a href="../">トップページ</a></li>
-		<li><?php echo $this->request["name"];?></li>
+		<li><?php echo $spot["Spot"]["name"];?></li>
 	</ul>
 
 
@@ -35,41 +35,41 @@ $this->end();
 	</div>
 	<!-- //maparea -->
 	
-	<div id="detail_area" data-id="<?php echo $this->request["id"];?>" data-lat="<?php echo $this->request["lat"];?>" data-lng="<?php echo $this->request["lng"];?>" data-zoom="<?php echo $this->request["zoom"];?>" >
+	<div id="detail_area" data-id="<?php echo $spot["Spot"]["id"];?>" data-lat="<?php echo $spot["Spot"]["lat"];?>" data-lng="<?php echo $spot["Spot"]["lng"];?>" data-zoom="<?php echo $spot["Spot"]["zoom"];?>" >
 		<p class="photo">
-			<?php if ($this->request["image"]) :?>
-				<img src="<?php echo $this->html->url("uploads/spot/middle/"); ?>".$this->request["image"]["file_name"]);?>" alt="<?php echo $this->request["name"];?>" width="265" height="199" />
+			<?php if ($spot["Spot"]["image"]) :?>
+				<img src="<?php echo $this->html->url("uploads/spot/middle/".$spot["Spot"]["image"]["file_name"]);?>" alt="<?php echo $spot["Spot"]["name"];?>" width="265" height="199" />
 			<?php else :?>
-				<img src="<?php echo $this->html->url("/img/common/noimage.jpg"); ?>" alt="<?php echo $this->request["name"];?>" width="265" height="199" />
+				<img src="<?php echo $this->html->url("/img/common/noimage.jpg"); ?>" alt="<?php echo $spot["Spot"]["name"];?>" width="265" height="199" />
 			<?php endif;?>
 		</p>
 		<div class="info">
-			<h2><?php echo $this->request["name"];?></h2>
+			<h2><?php echo $spot["Spot"]["name"];?></h2>
 			
 			<div class="subinfo">
 				<dl>
 					<dt><img src="<?php echo $this->html->url("/img/common/icon/name.gif"); ?>" alt="作成者" /></dt>
-					<dd class="pg_owner"><?php echo $this->request["owner"];?></dd>
+					<dd class="pg_owner"><?php echo $spot["User"]["name"];?></dd>
 				</dl>
 				<dl>
 					<dt><img src="<?php echo $this->html->url("/img/common/icon/location.gif"); ?>" alt="場所" /></dt>
-					<dd class="pg_prefecture"><?php echo $this->request["prefecture"];?></dd>
+					<dd class="pg_prefecture"><?php echo $spot["Spot"]["prefecture"];?></dd>
 				</dl>
 				<dl>
 					<dt><img src="<?php echo $this->html->url("/img/common/icon/time.gif"); ?>" alt="時間" /></dt>
-					<dd class="pg_stay_time"><?php echo $this->request["stay_time"];?>分</dd>
+					<dd class="pg_stay_time"><?php echo $spot["Spot"]["stay_time"];?>分</dd>
 				</dl>
 				<dl class="category">
 					<dt><img src="<?php echo $this->html->url("/img/common/icon/category_l.gif"); ?>" alt="CATEGORY" /></dt>
 					<dd>
 						<ul>
 <?php
-if ($this->request["category"]):
-	foreach($this->request["category"] as $tree):
+if ($spot["Spot"]["category"]):
+	foreach($spot["Spot"]["category"] as $tree):
 		preg_match_all("/\d+/", $tree, $category);
 		$tree = array();
 		foreach($category[0] as $category_id) {
-			$tree[] = $this->request["category_names"][$category_id];
+			$tree[] = $spot["Spot"]["category_names"][$category_id];
 		}
 	?>
 					<li><a href=""><?php echo implode(" > ", $tree);?></a></li>
@@ -83,9 +83,9 @@ endif;?>
 					<dd>
 						<ul>
 <?php
-if ($this->request["tags"]):
-foreach($this->request["tags"] as $tag):?>
-							<li><a href=""><?php echo $this->request["tag_names"][$tag];?></a></li>
+if ($spot["Tag"]):
+foreach($spot["Tag"] as $tag):?>
+							<li><a href=""><?php echo $tag["name"];?></a></li>
 <?php
 endforeach;
 endif;
@@ -101,18 +101,18 @@ endif;
 		
 		<dl class="comment">
 			<dt><img src="<?php echo $this->html->url("/img/common/icon/memo.gif"); ?>" alt="一言メモ" /></dt>
-			<dd><?php echo $this->request["description"];?></dd>
+			<dd><?php echo $spot["Spot"]["description"];?></dd>
 		</dl>
 
-		<div class="fb-like" data-href="<?php echo $this->html->url("spot/show/".$this->request["id"]);?>" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+		<div class="fb-like" data-href="<?php echo $this->html->url("spot/show/".$spot["Spot"]["id"]);?>" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
 		
 		<p class="edit">
-		<?php if ($this->Session->read("id") && ($this->Session->read("id") == $this->request["owner"])):?>
-			<a href="<?php echo $this->html->url("user/spot/form/".$this->request["id"]);?>" class="selectbtn mouse_over pg_edit">編集する</a>
-			<a href="<?php echo $this->html->url("user/spot/delete/".$this->request["id"]);?>" class="selectbtn mouse_over pg_delete">削除する</a>
+		<?php $user_info = $this->Session->read("user_info"); ?>
+		<?php if ($user_info && ($user_info["User"]["id"] == $spot["User"]["id"])):?>
+			<a href="<?php echo $this->html->url("/spots/form/".$spot["Spot"]["id"]);?>" class="selectbtn mouse_over pg_edit">編集する</a>
+			<a href="<?php echo $this->html->url("/spots/delete/".$spot["Spot"]["id"]);?>" class="selectbtn mouse_over pg_delete">削除する</a>
 		<?php endif;?>
 		</p>
-		
 		
 	</div>
 	<!-- //detail_area -->

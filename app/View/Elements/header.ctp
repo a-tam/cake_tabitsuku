@@ -34,9 +34,9 @@
 	<!-- //search -->
 	<?php if ($user_info = $this->Session->read("user_info")): ?>
 	<p class="login"><a href="<?php echo $this->Html->url("/logout");?>" class="mouse_over"><img src="<?php echo $this->Html->url("/img/common/header/logout.gif"); ?>" alt="ログアウト" /></a></p>
-	<p class="username">ようこそ　<span><em><?php echo $user_info["name"];?></em>さん</span></p>
+	<p class="username">ようこそ　<span><em><?php echo $user_info["User"]["name"];?></em>さん</span></p>
 	<?php else: ?>
-	<p class="login"><a href="#login" class="loginbtn mouse_over"><img src="<?php echo $this->Html->url("/img/common/header/login.gif"); ?>" alt="ログインはこちら" /></a></p>
+	<p class="login"><a href="#login" class="loginbtn mouse_over" data-redirect=""><img src="<?php echo $this->Html->url("/img/common/header/login.gif"); ?>" alt="ログインはこちら" /></a></p>
 	<?php endif; ?>
 	
 </header>

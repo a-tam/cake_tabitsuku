@@ -10,12 +10,9 @@ echo implode("\n", $__css);
 $this->end();
 
 // page_script
-$this->start("page_script");
-$__script[] = $this->Html->script("search");
-$__script[] = $this->Html->script("apps/guest/spot/search");
-$__script[] = $this->Html->script("jquery/jpagenate/jquery.paginate");
-echo implode("\n", $__script);
-$this->end();
+// $this->start("page_script");
+// echo implode("\n", $__script);
+// $this->end();
 ?>
 	<div class="box" id="login_box">
 		<p class="title"><img src="<?php echo $this->Html->url("/img/login/login.gif"); ?>" alt="ログイン" /></p>

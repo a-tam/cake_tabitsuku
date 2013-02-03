@@ -14,7 +14,6 @@ class Tour extends AppModel {
  * @var string
  */
 	public $displayField = 'name';
-
 /**
  * Validation rules
  *
@@ -120,5 +119,35 @@ class Tour extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+	/**
+	 *
+	 * Enter description here ...
+	 *
+	 * @var unknown
+	 */
+	public $hasAndBelongsToMany = array(
+			'Tag' => array(
+					'className'             => 'Tag',
+					'joinTable'             => 'tours_tags',
+					'foreignKey'            => 'tour_id',
+					'associationForeignKey' => 'tag_id',
+					'unique'                => true,
+					'fields'                => array('Tag.id', 'Tag.name'),
+			)
+	);
+	// 検索対象のフィルタ
+	public $actsAs = array('Search.Searchable');
+	public $filterArgs = array(
+			'name' => array('type' => 'like'),
+			'keyword' => array('type' => 'like'),
+	);
+	protected $absolute_condition = array('Tour.status' => 1);
+	// 検索対象のフィールド設定
+	public $presetVars = array(
+			array('field' => 'id', 'type' => 'value'),
+			array('field' => 'name', 'type' => 'like'),
+	);
+	
 
 }

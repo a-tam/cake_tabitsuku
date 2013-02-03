@@ -71,7 +71,8 @@ $this->end();
 				</dl>
 
 				<p class="userspot"><input type="checkbox" name="userspot" id="userspot" /><label for="userspot">登録したスポットから探す</label></p>
-				<p class="search-btn mouse_over"><input type="subimt" class="submitbtn" value="検索" /></p>
+				<p class="search-btn mouse_over"><input type="submit" class="submitbtn" value="検索" /></p>
+				
 			</div>
 			<!-- //search_input -->
 			
@@ -102,11 +103,11 @@ $this->end();
 		<!-- //search_info -->
 		
 		<div class="list_area">
-			<?php $this->element("spot_item");?>
+			<?php echo $this->element("spot_item", array("route" => null));?>
 		
 		</div>
 		<!-- //list_area -->
-		<?php $this->element("memo_item");?>
+		<?php echo $this->element("memo_item", array("route" => null));?>
 		
 	</div>
 	<!-- //spot_search -->
@@ -149,15 +150,21 @@ $this->end();
 		<p class="cover"></p>
 		<div id="input_box">
 			<h2><img src="<?php echo $this->html->url("/img/user/tour/input_title.gif"); ?>" alt="4：ツアー基本情報を入力する" /></h2>
-			<form class="input_form">
-				<input type="hidden" name="id" id="tour-id" value="<?php echo $this->request["id"];?>" readonly="readonly" />
+			<?php echo $this->Form->create("Tour", array("type" => "file", "class" => "input_form", "id" => "tour-form"));?>
+				<?php echo $this->Form->hidden("id", array("id" => "tour-id"));?>
 				<dl class="name">
 					<dt><img src="<?php echo $this->html->url("/img/user/spot/name.gif"); ?>" alt="名称" /></dt>
-					<dd><input type="text" name="name" class="text" id="tour-name" value="<?php echo $this->request["name"];?>" /></dd>
+					<dd><?php echo $this->Form->input("name", array(
+						"id" => "tour-name",
+						"class" => "text",
+						"label" => false)); ?></dd>
 				</dl>
 				<dl class="description">
 					<dt><img src="<?php echo $this->html->url("/img/user/spot/description.gif"); ?>" alt="説明" /></dt>
-					<dd><textarea name="description" class="text" id="tour-description"><?php echo $this->request["description"];?></textarea></dd>
+					<dd><?php echo $this->Form->textarea("description", array(
+						"id" => "tour-description",
+						"class" => "text",
+						"label" => false)); ?></dd>
 				</dl>
 				<dl class="tag">
 					<dt><img src="<?php echo $this->html->url("/img/user/spot/tag.gif"); ?>" alt="タグ" /></dt>
@@ -215,7 +222,7 @@ for($i = 0; $i < 3; $i++):?>
 				<p class="submit mouse_over"><input type="submit" id="save_button" value="ツアーを保存する" /></p>
 				<p class="close"><a href="#close"><img src="<?php echo $this->html->url("/img/common/btn/close.png"); ?>" alt="close" /></a></p>
 			
-			</form>
+			<?php echo $this->Form->end(); ?>
 		</div>
 		<!-- //input_box -->
 

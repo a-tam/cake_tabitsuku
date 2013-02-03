@@ -31,25 +31,6 @@ $this->end();
 	<div class="movie-area">
 		<iframe width="300" height="200" src="http://www.youtube.com/embed/Jy9kT2AWH04" frameborder="0" allowfullscreen></iframe>
 	</div>
-	<!--
-	<div class="login-area">
-		<h3><img src="<?php echo $this->Html->url("/img/top/login.gif") ?>" alt="ログインはこちらから" /></h3>
-		<p class="facebook"><a href="<?php echo $data["fb_login"]; ?>" class="mouse_over"><img src="<?php echo $this->Html->url("/img/common/facebook.gif") ?>" alt="Facebookアカウントでログイン"></a></p>
-		
-		<form action="<?php echo $this->Html->url("user/top/login"); ?>" method="post">
-		<dl>
-			<dt><img src="<?php echo $this->Html->url("/img/top/userid.gif") ?>" alt="ユーザーID" /></dt>
-			<dd><input type="text" class="text" name="login_id" /></dd>
-		</dl>
-		<dl>
-			<dt><img src="<?php echo $this->Html->url("/img/top/password.gif") ?>" alt="パスワード" /></dt>
-			<dd><input type="password" class="text" name="password" /></dd>
-		</dl>
-		<p class="login mouse_over"><input type="image" src="<?php echo $this->Html->url("/img/top/loginbtn.gif") ?>" alt="ログイン"/></p>
-		<p class="regist"><a href="" class="mouse_over"><img src="<?php echo $this->Html->url("/img/top/registbtn.gif") ?>" alt="新規登録" /></a></p>
-		</form>
-	</div>
-	<!-- //login-area -->
 	
 </div>
 <!-- //mainvisual -->

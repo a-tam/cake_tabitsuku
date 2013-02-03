@@ -20,14 +20,36 @@ class Tag extends AppModel {
  */
 	public $validate = array(
 		'name' => array(
-			'maxlength' => array(
-				'rule' => array('maxlength'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
+			'notEmpty',
 		),
 	);
+	
+	/**
+	 * 存在しないタグを追加し、ID一覧を取得する
+	 * @param unknown $tags
+	 */
+	public function set_list($tags = array()) {
+		if (!is_array($tags)) {
+			// 空にする場合はこの値を返すらしい
+			return array(false);
+		}
+		$exists_tags = $this->find('list',
+			array(
+				"conditions" => array(
+				$this->alias .
+				".name" => $tags
+			)
+		));
+		$this->log($exists_tags);
+		foreach ($tags as $tag_name) {
+			if (!array_search($tag_name, $exists_tags)) {
+				$this->create();
+				if ($this->save(array("name" => $tag_name))) {
+					$exists_tags[$this->getInsertID()] = $tag_name;
+					$this->log($exists_tags);
+				}
+			}
+		}
+		return $exists_tags;
+	}
 }
