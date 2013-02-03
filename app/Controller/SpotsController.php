@@ -18,12 +18,21 @@ class SpotsController extends AppController {
 		
 	}
 	
-	public function show() {
-	
+	public function show($id) {
+		$this->Spot->id = $id;
+		if (!$spot = $this->Spot->read()) {
+			throw new NotFoundException();
+		}
+		$this->set("spot", $spot);
 	}
 	
-	public function form() {
-	
+	public function form($id = "") {
+		if ($id) {
+			$this->Spot->id = $id;
+			if (!$this->request->data = $this->Spot->read()) {
+				throw new NotFoundException();
+			}
+		}
 	}
 	
 	public function add() {
