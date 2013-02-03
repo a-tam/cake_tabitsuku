@@ -48,7 +48,7 @@ $(document).ready(function () {
 			success: function(json) {
 				if (json["count"] > 0) {
 					$.each(json["list"], function(id, info) {
-						tourCtl.render(info, json["relation"], class_name);
+						tourCtl.render(info, class_name);
 					});
 					commonCtl.iconTips();
 				}
@@ -66,9 +66,11 @@ $(document).ready(function () {
 			data: request,
 			dataType: "json",
 			success: function(json) {
+				console.log(json);
 				if (json["count"] > 0) {
 					$.each(json["list"], function(id, info) {
-						spotCtl.render(info, json["relation"], class_name);
+						console.log(id, info);
+						spotCtl.render(info, class_name);
 					});
 					commonCtl.iconTips();
 				}

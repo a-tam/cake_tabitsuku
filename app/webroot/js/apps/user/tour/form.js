@@ -197,7 +197,8 @@ tourentryCtl.init=function(){
 		});
 		// タグ入力補完
 		$("#tags").tagit({
-			itemName: "tags",
+			itemName: "Tag",
+			fieldName: "Tag",
 			tagSource: function(search, showChoices) {
 				$.ajax({
 					url : gBaseUrl + 'user/tag/search',
@@ -234,24 +235,27 @@ tourentryCtl.init=function(){
 			$(".maincategory").each(function(i, elm) {
 				categories.push($(elm).val());
 			});
+			var data = $("#tour-form").serialize();
+			console.log(data);
 			$.ajax({
-				url: gBaseUrl + 'user/tour/add',
+				url: gBaseUrl + 'api/tour_save',
 				type: "post",
-				data: {
-					id:				$("#tour-id").val(),
-					name:			$("#tour-name").val(),
-					description:	$("#tour-description").val(),
-					category:		categories,
-					start_time:		$("#start_time").val(),
-					tags:			$("#tags").tagit("assignedTags"),
-					image:			$(".list_area input:[name='select_image']:checked").val(),
-					route: 			routes
-				},
+				data: data,
+//				{
+//					id:				$("#tour-id").val(),
+//					name:			$("#tour-name").val(),
+//					description:	$("#tour-description").val(),
+//					category:		categories,
+//					start_time:		$("#start_time").val(),
+//					tags:			$("#tags").tagit("assignedTags"),
+//					image:			$(".list_area input:[name='select_image']:checked").val(),
+//					route: 			routes
+//				},
 				dataType: "json",
 				success: function(json) {
 					if (json["status"] == true) {
 						if (json["result"]["tour_id"]) {
-							location.href = gBaseUrl + 'tour/search?owner=mydata'; // &_lat='+map.getCenter().lat()+'&_lng='+map.getCenter().lng();
+							//location.href = gBaseUrl + 'tour/search?owner=mydata'; // &_lat='+map.getCenter().lat()+'&_lng='+map.getCenter().lng();
 						}
 						
 					} else {
@@ -287,10 +291,12 @@ tourentryCtl.init=function(){
 		}
 		*/
 		
+		/*
 		if ($(".maincategory").length == 0) {
 			messages.push("カテゴリの指定がありません");
 			input_item.push(".input_form .categories");
 		}
+		*/
 
 		if (messages.length > 0) {
 			alert(messages.join("\n"));
@@ -427,7 +433,7 @@ tourentryCtl.init=function(){
 			marker_list = new Array();
 		}
 		$.ajax({
-			url: gBaseUrl + "user/tour/query",
+			url: gBaseUrl + "api/spot",
 			async: false,
 			data: {
 				category:	$(".search_box .category dd input").val(),
@@ -449,40 +455,41 @@ tourentryCtl.init=function(){
 					}
 				});
 				$("#spot_select .list_area .tour_point:not(.pg_spot_temp)").remove();
-				$.each(json.list, function(spot_id, spot_info) {
+				$.each(json.list, function(id, spot_info) {
+					console.log(spot_info);
 					// テンプレートのクローン作成
 					var spot_elm = $("#spot_select .pg_spot_temp")
 						.clone(true)
 						.removeClass("pg_spot_temp")
 						.css("display", "block")
 						.attr({
-							"data-spot-id": spot_info.id,
-							"data-spot-lat": spot_info.lat,
-							"data-spot-lng": spot_info.lng,
+							"data-spot-id": spot_info.Spot.id,
+							"data-spot-lat": spot_info.Spot.lat,
+							"data-spot-lng": spot_info.Spot.lng,
 							});
 					
-					if (spot_info.image) {
+					if (spot_info.Spot.image) {
 						spot_elm.find(".pg_image")
-							.attr("src", gBaseUrl + 'uploads/spot/thumb/' + spot_info.image.file_name);
+							.attr("src", gBaseUrl + 'uploads/spot/thumb/' + spot_info.Spot.image.file_name);
 						spot_elm.find("input:[name='select_image']")
-							.val(spot_info.id);
+							.val(spot_info.Spot.id);
 					} else {
 						spot_elm.find(".pg_select_image").remove();
 					}
 					spot_elm.find(".pg_name")
-						.text(spot_info.name);
+						.text(spot_info.Spot.name);
 					spot_elm.find(".pg_description")
-						.text(spot_info.description);
+						.text(spot_info.Spot.description);
 					spot_elm.find(".pg_standard_time")
-						.text(spot_info.stay_time);
-					spot_elm.find(".linkbtn a").attr("href", gBaseUrl + 'spot/show/' + spot_info.id);
+						.text(spot_info.Spot.stay_time);
+					spot_elm.find(".linkbtn a").attr("href", gBaseUrl + 'spot/show/' + spot_info.Spot.id);
 					spot_elm.appendTo("#spot_select .list_area");
 					
 					var img_src = "";
-					if (spot_info.image) {
-						img_src = spot_info.image.file_name;
+					if (spot_info.Spot.image) {
+						img_src = spot_info.Spot.image.file_name;
 					}
-					add_marker(spot_info.id, spot_info.lat, spot_info.lng, spot_info.name, spot_info.description, img_src, "");
+					add_marker(spot_info.Spot.id, spot_info.Spot.lat, spot_info.Spot.lng, spot_info.Spot.name, spot_info.Spot.description, img_src, "");
 				});
 				
 //				FB.XFBML.parse();

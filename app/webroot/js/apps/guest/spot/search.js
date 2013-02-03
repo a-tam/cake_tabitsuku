@@ -30,6 +30,9 @@ $(document).ready(function () {
 	function show_list(json) {
 		$(".list_item:not(.pg_temp)").remove();
 		$.each(json["list"], function(id, item) {
+			console.log(item);
+			spotCtl.render(item, ".list_area");
+			/*
 			var elm = $(".pg_temp").clone(true).attr("id", "");
 			elm.attr("data-id", item.id);
 			elm.removeClass("pg_temp");
@@ -70,6 +73,7 @@ $(document).ready(function () {
 				elm.find(".pg_tags").append("<li>" + json["relation"]["tags"][tag_id] + "</li>");
 			});
 			elm.appendTo(".list_area");
+			*/
 		});
 	}
 	

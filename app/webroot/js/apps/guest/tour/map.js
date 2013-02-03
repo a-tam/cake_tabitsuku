@@ -132,7 +132,7 @@
 							}
 						});
 						$.each(json["list"], function(tour_id, tour_info) {
-							tourCtl.render(tour_info, json["relation"], "#pg_tours");
+							tourCtl.render(tour_info, "#pg_tours");
 							// 
 							path = [];
 							var _marker_list = {};

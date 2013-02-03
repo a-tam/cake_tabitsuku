@@ -107,16 +107,15 @@ spotentryCtl.init=function(){
 				data: request,
 				dataType: "json",
 				success: function(json) {
-					$.each(json.list, function(id, spot) {
-//							console.log(spot);
-						if (spot.id != $('#spot-id').val()) {
-							var latlng = new google.maps.LatLng(spot.lat, spot.lng);
+					$.each(json.list, function(id, data) {
+						if (data.Spot.id != $('#spot-id').val()) {
+							var latlng = new google.maps.LatLng(data.Spot.lat, data.Spot.lng);
 							var marker = new google.maps.Marker({
 								map: map,
 								position: latlng,
 //									icon : gAssetUrl + "img/map/icons/myMarker.png",
 //									shadow: gAssetUrl + "img/map/icons/myShadow.png",
-								title: spot.name,
+								title: data.Spot.name,
 								draggable: false
 							});
 							google.maps.event.addListener(marker, "click", function() {
@@ -124,10 +123,10 @@ spotentryCtl.init=function(){
 									current_window.close();
 								}
 								var content = "";
-								if (spot.image) {
-									content += '<img style="float:left;" src="' + gBaseUrl + 'uploads/spot/thumb/' + spot.image.file_name+'" width="60" height="60" alt="" />';
+								if (data.Spot.image) {
+									content += '<img style="float:left;" src="' + gBaseUrl + 'uploads/spot/thumb/' + data.Spot.image.file_name+'" width="60" height="60" alt="" />';
 								}
-								content += "<b>"+spot.name + "</b><br />" + spot.description;
+								content += "<b>"+data.Spot.name + "</b><br />" + data.Spot.description;
 								var infowindow = new google.maps.InfoWindow({
 									content: content
 								});
@@ -227,7 +226,7 @@ spotentryCtl.init=function(){
 				//var data = new FormData($("#spot-form")[0]);
 				console.log(data);
 				$.ajax({
-					url: gBaseUrl + 'api/spot_add',
+					url: gBaseUrl + 'api/spot_save',
 					type: "post",
 					processData: false,
 					contentType: false,
@@ -344,8 +343,9 @@ spotentryCtl.init=function(){
 		});
 		
 		$("#tags").tagit({
-			itemName: "tags",
-			fieldName: "name",
+			itemName: "Tag",
+			fieldName: "Tag",
+			tagLimit: 6,
 			tagSource: function(search, showChoices) {
 				$.ajax({
 					url : gBaseUrl + 'user/tag/search',

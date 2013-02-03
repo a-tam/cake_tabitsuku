@@ -325,42 +325,42 @@ spotCtl.close=function(){
 	});
 };
 
-spotCtl.render = function(info, relation, class_name) {
+spotCtl.render = function(info, class_name) {
 	var elm = $(class_name+" .pg_temp")
 		.clone(true)
 		.show()
 		.removeClass("pg_temp")
-		.attr("data-spot-id", info.id)
-		.attr("data-zoom", info.zoom);
+		.attr("data-spot-id", info.Spot.id)
+		.attr("data-zoom", info.Spot.zoom);
 	elm.css("display", "block");
-
+	
 	// icon
 	elm.find(".icon img")
 	.attr("src", gAssetUrl + "/img/common/icon/spot.png")
 	.attr("alt", "スポット");
 	
-	if (info.image) {
+	if (info.Spot.image) {
 		elm.find(".pg_img .pg_detail img")
-			.attr("src", gBaseUrl + "uploads/spot/thumb/" + info.image.file_name);
+			.attr("src", gBaseUrl + "uploads/spot/thumb/" + info.Spot.image.file_name);
 	}
 	
 	// name
 	elm.find(".pg_name")
-		.text(info.name);
+		.text(info.Spot.name);
 	
 	// descripction
 	elm.find(".pg_description")
-		.text(info.description);
+		.text(info.Spot.description ? info.Spot.description : "");
 	
 	// Facebook like button
 	elm.find(".pg_like_count")
 		.addClass("fb-like")
-		.attr("data-href", gBaseUrl + 'user/spot/show/' + info.id);
+		.attr("data-href", gBaseUrl + 'user/spot/show/' + info.Spot.id);
 
 	// Owner
-	if (info.owner_name) {
+	if (info.Spot.name) {
 		elm.find(".pg_owner")
-			.text(info.owner_name);
+			.text(info.Spot.name);
 	}
 	
 	// Prefecture
@@ -371,7 +371,7 @@ spotCtl.render = function(info, relation, class_name) {
 	
 	// Stay time
 	elm.find(".pg_stay_time")
-		.text(info.stay_time + "分");
+		.text((info.Spot.stay_time) ? info.Spot.stay_time + "分" : "--");
 	
 	// Category
 	elm.find(".pg_category dd .category_icon").empty();
@@ -407,19 +407,19 @@ spotCtl.render = function(info, relation, class_name) {
 
 	// Tag
 	elm.find(".pg_tags").empty();
-	$(info.tags.match(/\d+/g)).each(function(i, tag_id) {
-		elm.find(".pg_tags").append("<li>" + relation["tags"][tag_id] + "</li>");
+	$(info.Tag).each(function(i, tag) {
+		elm.find(".pg_tags").append("<li>" + tag.name + "</li>");
 	});
 	
 	// Detail
 	elm.find(".pg_detail")
-		.attr("href", gBaseUrl + "spot/show/" + info.id);
+		.attr("href", gBaseUrl + "spots/show/" + info.Spot.id);
 	// user data
 	if (info.mydata) {
 		elm.find(".pg_edit")
-			.attr("href", gBaseUrl + "user/spot/form/" + info.id);
+			.attr("href", gBaseUrl + "spots/form/" + info.Spot.id);
 		elm.find(".pg_delete")
-			.attr("href", gBaseUrl + "user/spot/delete/" + info.id);
+			.attr("href", gBaseUrl + "spots/delete/" + info.Spot.id);
 	} else {
 		elm.find(".pg_edit").remove();
 		elm.find(".pg_delete").remove();
@@ -429,7 +429,7 @@ spotCtl.render = function(info, relation, class_name) {
 	
 };
 
-tourCtl.render = function(info, relation, class_name) {
+tourCtl.render = function(info, class_name) {
 	var elm = $(class_name+" .pg_temp")
 		.clone(true)
 		.show()
@@ -529,16 +529,16 @@ tourCtl.render = function(info, relation, class_name) {
 
 	// link
 	elm.find(".pg_detail")
-		.attr("href", gBaseUrl + "tour/show/" + info.id);
+		.attr("href", gBaseUrl + "tours/show/" + info.id);
 
 	elm.find(".pg_copy")
-		.attr("href", gBaseUrl + 'user/tour/copy/' + info.id);
+		.attr("href", gBaseUrl + 'tours/copy/' + info.id);
 
 	if (info.mydata) {
 		elm.find(".pg_edit")
-			.attr("href", gBaseUrl + "user/tour/form/" + info.id);
+			.attr("href", gBaseUrl + "tours/form/" + info.id);
 		elm.find(".pg_delete")
-			.attr("href", gBaseUrl + "user/tour/delete/" + info.id);
+			.attr("href", gBaseUrl + "tours/delete/" + info.id);
 	} else {
 		elm.find(".pg_edit").remove();
 		elm.find(".pg_delete").remove();

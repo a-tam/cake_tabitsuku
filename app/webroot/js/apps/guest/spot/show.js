@@ -33,7 +33,7 @@ $(function() {
 		success: function(json) {
 			if (json["count"] > 0) {
 				$.each(json["list"], function(id, info) {
-					tourCtl.render(info, json["relation"], ".list_area");
+					tourCtl.render(info, ".list_area");
 				});
 				commonCtl.iconTips();
 				$(".list_area .pg_description").trunk8({

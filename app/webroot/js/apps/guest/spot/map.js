@@ -131,7 +131,7 @@
 						// show list
 						$.each(json["list"], function(spot_id, spot_info) {
 							// render spot
-							spotCtl.render(spot_info, json["relation"], "#pg_spots");
+							spotCtl.render(spot_info, "#pg_spots");
 							spot_list[spot_id] = spot_info;
 							// 地図にマーカー表示
 							var latlng = new google.maps.LatLng(spot_info.lat, spot_info.lng);
