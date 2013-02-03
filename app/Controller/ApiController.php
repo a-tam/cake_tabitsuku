@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::import("Model", "Tag");
 
 /**
  *
@@ -12,17 +13,10 @@ class ApiController extends AppController {
 	
 	public $name = 'Api';
 	
-	public $uses = array();
+	public $uses = array('Spot', 'Tour', 'Tag');
 	
-// 	public $components = array('RequestHandler', 'Search.Prg');
-	public $components = array('RequestHandler');
-	public $presetVars = true;
-	
-	public function beforeFilter() {
-		
-		$this->loadModel("Tour");
-		$this->loadModel("Spot");
-	}
+	public $components = array('RequestHandler', 'Search.Prg', 'ImageResizer.ImageResizer');
+	public $presetVars = array();
 	
 	public function index() {
 		
@@ -34,21 +28,38 @@ class ApiController extends AppController {
 	}
 	
 	public function spot_list() {
-		
-		/*
-		$this->Spot->recursive = 0;
+
+		// 初期化
+		$list = array();
+		$count = 0;
+		$this->presetVars = $this->Spot->presetVars;
 		$this->Prg->commonProcess();
-		$this->paginate = array(
-				'conditions' => $this->Spot->parseCriteria($this->passedArgs),
+		$cond = $this->Spot->parseCriteria($this->request->query);
+		$cond = Set::merge($cond, $this->Spot->base_condition);
+		$this->log($cond, 'error');
+		$defaults = array(
+			"limit"     => 10,
+			"page"      => 1,
+			"sort_key"  => "Spot.name",
+			"sort_type" => "asc"
+		);
+		foreach($defaults as $_key => $_val) {
+			$$_key = $this->request->$_key ?: $_val;
+		}
+		if ($count = $this->Spot->find('count', array('conditions' => $cond))) {
+			$list = $this->Spot->find('all',
+				array(
+					"conditions" => $cond,
+					"order"      => array(
+						$sort_key => $sort_type
+					),
+					"limit"      => $limit,
+					"page"       => $page,
+				)
 			);
-		$list = $this->paginate();
-			*/
-		$relation = array();
-		$list = $this->Spot->find('all');
-		$count = $this->Spot->find('count');
+		}
 		$output_var = array(
 			"count",
-			"relation",
 			"list"
 		);
 		$this->set(compact($output_var));
@@ -66,25 +77,29 @@ class ApiController extends AppController {
 		);
 		$this->set(compact($output_var));
 		$this->set('_serialize', $output_var);
-		
 	}
 	
-	public function spot_add() {
-		
+	/**
+	 * スポット追加
+	 *
+	 */
+	public function spot_save() {
+
+		// 初期化
 		$status = false;
 		$result = array();
+
+		// ログインユーザ情報
+		$user_info = $this->Session->read("user_info");
+		$this->request->data["Spot"]["user_id"] = $user_info["User"]["id"];
+		$this->log($this->request->data);
 		if ($this->request->is("ajax")) {
-			$this->Spot->create();
-			$data = array(
-				"name"       => $this->request->data["name"],
-				"lat"        => $this->request->data["lat"],
-				"lng"        => $this->request->data["lng"],
-				"zoom"       => $this->request->data["zoom"]
-			);
-			if ($result = $this->Spot->save($data)) {
+			if ($result = $this->Spot->save($this->request->data)) {
 				$status = true;
 			}
 		}
+
+		// 結果出力
 		$output_var = array(
 			"status",
 			"result"
@@ -93,19 +108,6 @@ class ApiController extends AppController {
 		$this->set('_serialize', $output_var);
 	}
 	
-	public function spot_edit() {
-		
-		$relation = array();
-		$list = array();
-		$output_var = array(
-			"count",
-			"relation",
-			"list"
-		);
-		$this->set(compact($output_var));
-		$this->set('_serialize', $output_var);
-		
-	}
 	
 	public function spot_delete() {
 		
@@ -122,16 +124,21 @@ class ApiController extends AppController {
 	
 	public function tour_list() {
 		
-		$relation = array();
-		$list = $this->Tour->find('all');
-		$count = $this->Tour->find('count');
+		$list = array();
+		$this->presetVars = $this->Tour->presetVars;
+		$this->Prg->commonProcess();
+		$cond = $this->Tour->parseCriteria($this->request->query);
+		$cond = Set::merge($cond, $this->Tour->absolute_condition);
+		if ($count = $this->Tour->find('count', array('conditions' => $cond))) {
+			$list = $this->paginate('Tour', $cond);
+		}
 		$output_var = array(
 			"count",
-			"relation",
 			"list"
 		);
 		$this->set(compact($output_var));
 		$this->set('_serialize', $output_var);
+		
 	}
 	
 	public function tour_get() {
@@ -148,14 +155,27 @@ class ApiController extends AppController {
 		
 	}
 	
-	public function tour_add() {
+	public function tour_save() {
 		
-		$relation = array();
-		$list = array();
+		// 初期化
+		$status = false;
+		$result = array();
+		
+		// ログインユーザ情報
+		$user_info = $this->Session->read("user_info");
+		$this->request->data["Tour"]["user_id"] = $user_info["User"]["id"];
+		$this->log($this->request->data);
+		// 登録
+		if ($this->request->is("ajax")) {
+			if ($result = $this->Tour->save($this->request->data)) {
+				$status = true;
+			}
+		}
+		
+		// 結果出力
 		$output_var = array(
-			"count",
-			"relation",
-			"list"
+			"status",
+			"result"
 		);
 		$this->set(compact($output_var));
 		$this->set('_serialize', $output_var);
@@ -238,7 +258,6 @@ class ApiController extends AppController {
 		$this->set('_serialize', $output_var);
 		
 	}
-	
 	
 	function article_list () {
 		$count = 3;
