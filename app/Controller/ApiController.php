@@ -18,15 +18,6 @@ class ApiController extends AppController {
 	public $components = array('RequestHandler', 'Search.Prg', 'ImageResizer.ImageResizer');
 	public $presetVars = array();
 	
-	public function index() {
-		
-		$relation = array();
-		$list = array();
-		$output_var = array("count", "relation", "list");
-		$this->set(compact($output_var));
-		$this->set('_serialize', $output_var);
-	}
-	
 	public function spot_list() {
 
 		// 初期化
@@ -128,8 +119,11 @@ class ApiController extends AppController {
 		$this->presetVars = $this->Tour->presetVars;
 		$this->Prg->commonProcess();
 		$cond = $this->Tour->parseCriteria($this->request->query);
-		$cond = Set::merge($cond, $this->Tour->absolute_condition);
+		
+		$cond = Set::merge($cond, $this->Tour->base_condition);
 		if ($count = $this->Tour->find('count', array('conditions' => $cond))) {
+			$this->Tour->Route->unbindModel(array("belongsTo" => array("Tour")));
+			$this->Tour->recursive = 2;
 			$list = $this->paginate('Tour', $cond);
 		}
 		$output_var = array(

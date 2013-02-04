@@ -131,15 +131,16 @@
 								tour_current_window.close();
 							}
 						});
-						$.each(json["list"], function(tour_id, tour_info) {
+						$.each(json["list"], function(id, tour_info) {
+							var tour_id = tour_info.Tour.id;
 							tourCtl.render(tour_info, "#pg_tours");
 							// 
 							path = [];
 							var _marker_list = {};
-							$(tour_info.routes).each(function(i, route) {
-								if (route.id) {
-									var lat = route.lat;
-									var lng = route.lng;
+							$(tour_info.Route).each(function(i, route) {
+								if (route.Spot.id) {
+									var lat = route.Spot.lat;
+									var lng = route.Spot.lng;
 									if (lat_min == null) {
 										lat_min = lat;
 										lat_max = lat;
@@ -151,8 +152,8 @@
 									if (lng <= lng_min) { lng_min = lng; }
 									if (lng >  lng_max) { lng_max = lng; }
 	
-									var name = route.name;
-									var latlng = new google.maps.LatLng(route.lat, route.lng);
+									var name = route.Spot.name;
+									var latlng = new google.maps.LatLng(route.Spot.lat, route.Spot.lng);
 									var marker = new google.maps.Marker({
 										icon : gAssetUrl + "img/map/marker.png",
 										shadow: gAssetUrl + "img/map/shadow.png",
@@ -176,13 +177,13 @@
 											tour_current_window.close();
 										}
 										var infowindow = new google.maps.InfoWindow({
-											content		: route.name,
+											content		: route.Spot.name,
 											position	: e.latLng,
 										});
 										infowindow.open(map);
 										tour_current_window = infowindow;
 									});
-									_marker_list[route.id] = marker;
+									_marker_list[route.Spot.id] = marker;
 									path.push(marker.getPosition());
 									tour_marker_list[tour_id] = _marker_list;
 								}

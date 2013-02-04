@@ -5,16 +5,15 @@ $this->assign("body_class", "search sec");
 
 // page_css
 $this->start("page_css");
-$__css[] = $this->Html->css("modules/search");
-$__css[] = $this->Html->css("/js/jquery/jpagenate/css/style");
+$__css[] = $this->Html->css("modules/user");
 echo implode("\n", $__css);
 $this->end();
 
 // page_script
 $this->start("page_script");
-$__script[] = $this->Html->script("search");
-$__script[] = $this->Html->script("apps/guest/spot/search");
-$__script[] = $this->Html->script("jquery/jpagenate/jquery.paginate");
+$__script[] = $this->Html->script("https://maps.googleapis.com/maps/api/js?sensor=true&libraries=places");
+$__script[] = $this->Html->script("apps/guest/tour/map");
+$__script[] = $this->Html->script("jquery/layout/trunk8");
 echo implode("\n", $__script);
 $this->end();
 ?>
@@ -26,125 +25,110 @@ $this->end();
 
 	<ul id="breadcrumbs">
 		<li><a href="../">トップページ</a></li>
-		<li>検索結果</li>
+		<li>マイページ</li>
 	</ul>
-
+	
 	<div class="container">
 		<div class="main">
 		
 			<?php echo $this->element("search_box"); ?>
 				
 			<div class="search_info">
-				<p class="total">検索結果：<em class="search_count">67</em></p>
-
-				<div class="pager">
-					<p class="order">
-						<select name="order">
-							<option value="new">新着順</option>
-						</select>
-					</p>
-				</div>
+				<p class="total">検索結果：<em class="search_count">0</em></p>
+				<div class="pager"></div>
 				<!-- //pager -->
+				<!--
 				<div class="pagenation" style="clear:both;"></div>
-				
+				-->
 			</div>
 			<!-- //search_info -->
-		
-			<div class="list_area">
-			
-				<div class="list_item pg_temp" style="display:none;">
-					<p class="icon"><img src="<?php echo $this->Html->url("/img/common/icon/tour.png"); ?>" alt="ツアー" /></p>
-					
-					<p class="photo pg_img"><a href="">
-						<img src="<?php echo $this->Html->url("/img/common/noimage.jpg"); ?>" width="137" height="104" alt="" />
-					</a></p>
-					
-					<div class="info_area">
-						<dl class="maininfo">
-							<dt class="pg_name">スポット名</dt>
-							<dd class="pg_description">当店のメニューは、素材の持ち味を最大限引き出すことを重んじたランチ、ディナーとも「おまかせの１コース」のみ。旬の素材により、メニュー当店のメニューは、素材の持ち味を最大限引き出すことを重んじたランチ、ディナーとも「おまかせの１コース」のみ。旬の素材により、メニュー当店のメニューは、素材の持ち味を最大限引き出すことを重んじたランチ、ディナーとも「おまかせの１コース」のみ。旬の素材により、メニュー・・・</dd>
-						</dl>
-						<!-- //maininfo -->
-						
-						<div class="subinfo">
-							<dl class="name">
-								<dt><img src="<?php echo $this->Html->url("/img/common/icon/name.gif"); ?>" alt="作成者" /></dt>
-								<dd class="pg_owner">田中一郎</dd>
-							</dl>
-							<dl class="departure">
-								<dt><img src="<?php echo $this->Html->url("/img/common/icon/departure.gif"); ?>" alt="出発地" /></dt>
-								<dd class="pg_prefecture">東京駅</dd>
-							</dl>
-							<dl class="time">
-								<dt><img src="<?php echo $this->Html->url("/img/common/icon/time.gif"); ?>" alt="時間" /></dt>
-								<dd class="pg_time">2時間ツアー</dd>
+
+			<div class="entries">
+
+				<div id="map_area">
+					<div id="mapsearch" class="mouse_over">
+						<p class="search"><input type="text" class="text" id="search-address" /><input type="image" class="btn" src="<?php echo $this->Html->url("/img/common/header/searchbtn.gif"); ?>" alt="検索" /></p>
+					</div>
+					<div id="map"></div>
+				</div>
+				<!-- //maparea -->
+				
+				<div class="list_area" id="pg_tours">
+					<div class="list_item pg_temp pg_tour_list" style="display:none;">
+						<p class="icon"><img src="<?php echo $this->Html->url("/img/common/icon/tour.png"); ?>" alt="ツアー" /></p>
+						<div class="photo_area pg_img">
+							<p><a href="../tour/" class="pg_detail"><img src="<?php echo $this->Html->url("/img/common/noimage_s.jpg"); ?>" alt="" /></a></p>
+							<div class="pg_like_count" data-href="http://www.google.co.jp/" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+							<dl class="category pg_category">
+								<dt><img src="<?php echo $this->Html->url("/img/common/icon/category.gif"); ?>" alt="CATEGORY" /></dt>
+								<dd>
+									<ul class="category_icon">
+										<li><a href="" title="見る"><img src="<?php echo $this->Html->url("/img/common/icon/site.gif"); ?>" alt="見る" /></a></li>
+										<li><a href="" title="遊ぶ"><img src="<?php echo $this->Html->url("/img/common/icon/enjoy.gif"); ?>" alt="遊ぶ" /></a></li>
+										<li><a href="" title="食べる"><img src="<?php echo $this->Html->url("/img/common/icon/food.gif"); ?>" alt="食べる" /></a></li>
+										<li><a href="" title="宿泊・温泉"><img src="<?php echo $this->Html->url("/img/common/icon/stay.gif"); ?>" alt="宿泊・温泉" /></a></li>
+										<li><a href="" title="乗り物/乗り場"><img src="<?php echo $this->Html->url("/img/common/icon/transport.gif"); ?>" alt="乗り物/乗り場" /></a></li>
+										<li><a href="" title="買う"><img src="<?php echo $this->Html->url("/img/common/icon/shopping.gif"); ?>" alt="買う" /></a></li>
+									</ul>
+								</dd>
 							</dl>
 						</div>
-						<!-- //subinfo -->
-					</div>
-					<!-- //info_area -->
-		
-					<div class="sub_box">
-						<div class="pg_like_count fb-like" data-href="http://google.com" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
-						<dl class="category">
-							<dt><img src="<?php echo $this->Html->url("/img/common/icon/category.gif"); ?>" alt="CATEGORY" /></dt>
-							<dd>
-								<ul class="pg_category">
-									<li><a href="">食べる</a></li>
-									<li><a href="">乗り物/乗り場</a></li>
-									<li><a href="">宿泊・温泉</a></li>
-								</ul>
-							</dd>
-						</dl>
-						<p class="linkbtn pg_detail"><a href="http://www.yahoo.co.jp" class="mouse_over"><img src="<?php echo $this->Html->url("/img/common/btn/tourlinkbtn.gif"); ?>" alt="ツアー内容を見る"></a></p>
-					</div>
-					<!-- //sub_box -->
-		
-				</div>
-				<!-- //list_item -->
+						<!-- //photo_area -->
 			
-				
-			</div>
-			<!-- //list_area -->
-	
-			<div class="search_info">
-				<p class="total">検索結果：<em>67</em></p>
-				
-				<div class="pager">
-					<p class="order">
-						<select name="order">
-							<option value="new">新着順</option>
-						</select>
-					</p>
-				
-					<p class="prev"><a href="">前へ</a></p>
-					<ul>
-						<li class="select">1</li>
-						<li><a href="">2</a></li>
-						<li><a href="">3</a></li>
-						<li><a href="">4</a></li>
-						<li><a href="">5</a></li>
-						<li>...<a href="">46</a></li>
-					</ul>
-					<p class="next"><a href="">次へ</a></p>
+						<div class="info_area">
+							<dl class="maininfo">
+								<dt class="pg_name">ツアー名ツアー名ツアー名</dt>
+								<dd class="pg_description">当店のメニューは、素材の持ち味を最大限引き出すことを重んじたランチ、ディナーとも「おまかせの１コース」のみ。旬の素材により、メニュー・・・</dd>
+							</dl>
+							<!-- //maininfo -->
+							
+							<p class="linkbtn">
+								<a href="../tour/" class="mouse_over pg_detail">ツアー内容を見る</a>
+								<!--
+								<a href="../tour/" class="mouse_over pg_edit">ツアーを編集する</a>
+								<a href="../tour/" class="mouse_over pg_delete">ツアーを削除する</a>
+								-->
+							</p>
+			
+						</div>
+						<!-- //info_area -->
+						
+					</div>
+					<!-- //list_item -->
+		
 				</div>
-				<!-- // -->
-				
+				<!-- //list_area -->
+
+			</div>
+			<!-- //entries -->
+
+
+			<div class="search_info">
+				<p class="total">検索結果：<em class="search_count">0</em></p>
+				<div class="pager"></div>
+				<!-- //pager -->
+				<!--
+				<div class="pagenation" style="clear:both;"></div>
+				-->
 			</div>
 			<!-- //search_info -->
-		
+
+
 		</div>
 		<!-- //main -->
 		
+	
+	
 		<div class="side">
 		
-			<?php echo $this->element("guest_side"); ?>
-			
+			<?php $this->element("guest_side");?>
+							
 		</div>
 		<!-- //side -->
 
 	</div>
 	<!-- //container -->
+
 
 </div>
 <!-- //contents -->

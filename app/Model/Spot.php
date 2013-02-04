@@ -88,15 +88,7 @@ class Spot extends AppModel {
 			'conditions' => '',
 			'fields'     => array(
 				'id',
-				'login',
-				'email',
-				'social_facebook',
 				'name',
-				'privacy',
-				'approval',
-				'created',
-				'modified',
-				'status'
 			),
 			'order'      => '',
 		)

@@ -37,8 +37,9 @@ $this->end();
 				<p class="total">検索結果：<em class="search_count">0</em></p>
 				<div class="pager"></div>
 				<!-- //pager -->
-				<!-- <div class="pagenation" style="clear:both;"></div> -->
-				
+				<!--
+				<div class="pagenation" style="clear:both;"></div>
+				-->
 			</div>
 			<!-- //search_info -->
 
@@ -51,7 +52,6 @@ $this->end();
 				</div>
 				<!-- //maparea -->
 				
-		
 				<div class="list_area" id="pg_spots">
 					<div class="list_item pg_temp pg_spot_list" style="display:none;">
 						<p class="icon"><img src="<?php echo $this->Html->url("/img/common/icon/spot.png");?>" alt="スポット" /></p>

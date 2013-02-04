@@ -56,6 +56,6 @@
 	require CAKE . 'Config' . DS . 'routes.php';
 
 	Router::mapResources('api');
-	Router::parseExtensions("json");
+	Router::parseExtensions("json", "xml");
 	
 	

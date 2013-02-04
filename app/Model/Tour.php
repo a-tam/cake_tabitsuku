@@ -94,16 +94,16 @@ class Tour extends AppModel {
 			'className' => 'User',
 			'foreignKey' => 'user_id',
 			'conditions' => '',
-			'fields' => '',
+			'fields' => array('id','name'),
 			'order' => ''
 		)
 	);
 
-/**
- * hasMany associations
- *
- * @var array
- */
+	/**
+	* hasMany associations
+	*
+	* @var array
+	*/
 	public $hasMany = array(
 		'Route'
 	);
