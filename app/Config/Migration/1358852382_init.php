@@ -186,13 +186,13 @@ class Init extends CakeMigration {
 						'comment' => '滞在時間（分）'
 					),
 					'lat'             => array(
-						'type'    => 'float',
+						'type'    => 'double',
 						'null'    => true,
 						'default' => NULL,
 						'comment' => '緯度'
 					),
 					'lng'             => array(
-						'type'    => 'float',
+						'type'    => 'double',
 						'null'    => true,
 						'default' => NULL,
 						'comment' => '経度'
@@ -387,22 +387,22 @@ class Init extends CakeMigration {
 						'length'  => 200,
 					),
 					'lat_min'         => array(
-						'type'    => 'float',
+						'type'    => 'double',
 						'null'    => true,
 						'default' => NULL
 					),
 					'lat_max'         => array(
-						'type'    => 'float',
+						'type'    => 'double',
 						'null'    => true,
 						'default' => NULL
 					),
 					'lng_min'         => array(
-						'type'    => 'float',
+						'type'    => 'double',
 						'null'    => true,
 						'default' => NULL
 					),
 					'lng_max'         => array(
-						'type'    => 'float',
+						'type'    => 'double',
 						'null'    => true,
 						'default' => NULL
 					),

@@ -352,7 +352,9 @@ spotentryCtl.init=function(){
 					data: { term: search.term },
 					dataType : 'json',
 					success: function(data) {
-						showChoices(data);
+						var list = [];
+						for(i in data.list) list.push(data.list[i]);
+						showChoices(list);
 					}
 				});
 			}

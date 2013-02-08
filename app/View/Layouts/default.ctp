@@ -11,7 +11,7 @@ $_metas[] = '<meta http-equiv="Content-Script-Type" content="text/javascript" />
 $_metas[] = '<meta name="description" content="" />';
 $_metas[] = '<meta name="robots" content="ALL" />';
 $_metas[] = '<link rel="start index" href="/" title="'.$title_for_layout.'" />';
-$_metas[] = $this->Html->meta('icon', 'img/favicon.ico');
+$_metas[] = $this->Html->meta('icon', '/img/favicon.ico');
 echo implode("\n", $_metas);
 $this->end();
 

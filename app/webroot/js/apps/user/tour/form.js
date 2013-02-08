@@ -205,7 +205,9 @@ tourentryCtl.init=function(){
 					data: { term: search.term },
 					dataType : 'json',
 					success: function(data) {
-						showChoices(data);
+						var list = [];
+						for(i in data.list) list.push(data.list[i]);
+						showChoices(list);
 					}
 				});
 			}
@@ -230,23 +232,25 @@ tourentryCtl.init=function(){
 			$.each(params, function (i, val) {
 				formData.append(val.name, val.value);
 			});
-			formData.append("Tour[image]", $('input[name=select_image]:checked').val() ? $('input[name=select_image]:checked').val() : ""); 
+			formData.append("Tour[start_time]", $("#start_time").val());
+			formData.append("Tour[image]", $('input[name=select_image]:checked').val() ? $('input[name=select_image]:checked').val() : "");
 			// ルート情報
 			var j = 0;
 			$("#tour_make .list_area .tour_point").each(function(i, elm) {
 				formData.append("Route["+j+"][spot_id]", $(elm).attr("data-spot-id") ? $(elm).attr("data-spot-id") : "");
 				formData.append("Route["+j+"][stay_time]", $(elm).find(".pg_stay_time").val() ? $(elm).find(".pg_stay_time").val() : "");
 				formData.append("Route["+j+"][info]", $(elm).find(".pg_memo").val() ? $(elm).find(".pg_memo").val() : "");
+				formData.append("Route["+j+"][lat]", $(elm).attr("data-spot-lat"));
+				formData.append("Route["+j+"][lng]", $(elm).attr("data-spot-lng"));
 				formData.append("Route["+j+"][sort]", j+1);
 				j++;
 			});
-			var data = formData;
 			$.ajax({
 				url: gBaseUrl + 'api/tour_save',
 				type: "post",
 				processData: false,
 				contentType: false,
-				data: data,
+				data: formData,
 //				{
 //					id:				$("#tour-id").val(),
 //					name:			$("#tour-name").val(),
@@ -271,7 +275,6 @@ tourentryCtl.init=function(){
 			});
 			return false;
 		});
-		
 		$("#pg_tour_center").click(tour_center);
 		
 	}
@@ -488,7 +491,7 @@ tourentryCtl.init=function(){
 						.text(spot_info.Spot.description);
 					spot_elm.find(".pg_standard_time")
 						.text(spot_info.Spot.stay_time);
-					spot_elm.find(".linkbtn a").attr("href", gBaseUrl + 'spot/show/' + spot_info.Spot.id);
+					spot_elm.find(".linkbtn a").attr("href", gBaseUrl + 'spots/show/' + spot_info.Spot.id);
 					spot_elm.appendTo("#spot_select .list_area");
 					
 					var img_src = "";

@@ -355,7 +355,7 @@ spotCtl.render = function(info, class_name) {
 	// Facebook like button
 	elm.find(".pg_like_count")
 		.addClass("fb-like")
-		.attr("data-href", gBaseUrl + 'user/spot/show/' + info.Spot.id);
+		.attr("data-href", gBaseUrl + 'spots/show/' + info.Spot.id);
 
 	// Owner
 	if (info.Spot.name) {
@@ -510,22 +510,14 @@ tourCtl.render = function(info, class_name) {
 	}
 	
 	// prefecture
-	if (info.Route[0].prefecture) {
+	if (info.Tour.prefecture) {
 		elm.find(".pg_prefecture")
-			.text(info.Route[0].prefecture);
+			.text(info.Tour.prefecture);
 	}
 	
 	// stay_time
-	stay_time = 0;
-	$(this.routes).each(function(i, route) {
-		stay_time += parseInt(route.stay_time);
-	});
-	
-	// 
 	elm.find(".pg_stay_time")
-		.text(stay_time + "分");
-	
-//		elm.find(".pg_routes").empty();
+		.text(info.Tour.stay_time + "分");
 
 	// link
 	elm.find(".pg_detail")

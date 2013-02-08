@@ -33,6 +33,7 @@ class SpotsController extends AppController {
 				throw new NotFoundException();
 			}
 		}
+		$this->log($this->request->data);
 	}
 	
 	public function add() {

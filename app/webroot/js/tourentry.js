@@ -477,7 +477,7 @@ tourentryCtl.init=function(){
 					spot_elm.find(".pg_standard_time")
 						.text(spot_info.stay_time);
 					spot_elm.find(".detaillink a").bind("click", function() {
-						spotCtl.popup(gBaseUrl + 'spot/show/' + spot_info.id);
+						spotCtl.popup(gBaseUrl + 'spots/show/' + spot_info.id);
 					});
 					spot_elm.appendTo("#spot_select .list_area");
 					

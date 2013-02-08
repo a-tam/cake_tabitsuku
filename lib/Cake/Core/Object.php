@@ -153,7 +153,11 @@ class Object {
 	public function log($msg, $type = LOG_ERR) {
 		App::uses('CakeLog', 'Log');
 		if (!is_string($msg)) {
+			$bt = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
 			$msg = print_r($msg, true);
+			$msg = "-----------------------------------------"."\n".
+				$bt[0]["file"]." - ".$bt[1]["function"]." : ".$bt[0]["line"]."\n".
+				$msg."\n";
 		}
 		return CakeLog::write($type, $msg);
 	}

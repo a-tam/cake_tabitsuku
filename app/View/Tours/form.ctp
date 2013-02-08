@@ -45,13 +45,15 @@ $this->end();
 		<!-- //maparea -->
 
 		<div id="spot_search">
-		
+
 			<div class="search_box">
 				<input type="hidden" id="limit" value="20" />
+
 				<dl class="keyword">
 					<dt><img src="<?php echo $this->html->url("/img/user/tour/keyword.gif"); ?>" alt="キーワード" /></dt>
 					<dd><input type="text" class="text" name="keyword" id="keyword" /></dd>
 				</dl>
+
 				<dl class="category">
 					<dt><img src="<?php echo $this->html->url("/img/user/tour/category.gif"); ?>" alt="カテゴリ" /></dt>
 					<dd>
@@ -72,13 +74,13 @@ $this->end();
 
 				<p class="userspot"><input type="checkbox" name="userspot" id="userspot" /><label for="userspot">登録したスポットから探す</label></p>
 				<p class="search-btn mouse_over"><input type="submit" class="submitbtn" value="検索" /></p>
-				
+
 			</div>
 			<!-- //search_input -->
 			
 		</div>
 		<!-- //spot_search -->
-			
+		
 	</div>
 	<!-- //basic_area -->
 	
@@ -112,6 +114,7 @@ $this->end();
 	</div>
 	<!-- //spot_search -->
 
+	<?php echo $this->Form->create("Tour", array("type" => "file", "class" => "input_form", "id" => "tour-form"));?>
 	<div id="tour_make">
 		<h2><img src="<?php echo $this->html->url("/img/user/tour/tourmaking.gif"); ?>" alt="3：ツアーを作る" /></h2>
 		
@@ -119,17 +122,22 @@ $this->end();
 		
 		<p class="starttime">
 			<label>開始時間</label>
-			<input type="text" size="12" name="starttime" id="start_time" class="text" value="<?php echo $this->request["start_time"];?>"/>
+			<?php echo $this->Form->input("start_time", array(
+				"type"  => "text",
+				"id"    => "start_time",
+				"class" => "text",
+				"label" => false,
+				"size"  => 12)); ?>
 		</p>
 		
 		
 		<div class="list_area">
-<?php if ($this->request["routes"]) :?>
-	<?php foreach ($this->request["routes"] as $ruote) :?>
-		<?php if ($ruote["id"] == 0): ?>
-			<?php $this->load->view("user/tour/memo_item", array("route" => $ruote));?>
+<?php if (isset($this->request->data["Route"])) :?>
+	<?php foreach ($this->request->data["Route"] as $ruote) :?>
+		<?php if ($ruote["spot_id"] == 0): ?>
+			<?php echo $this->element("memo_item", array("route" => $ruote));?>
 		<?php else:?>
-			<?php $this->load->view("user/tour/spot_item", array("route" => $ruote));?>
+			<?php echo $this->element("spot_item", array("route" => $ruote));?>
 		<?php endif;?>
 	<?php endforeach;?>
 <?php endif;?>
@@ -150,7 +158,6 @@ $this->end();
 		<p class="cover"></p>
 		<div id="input_box">
 			<h2><img src="<?php echo $this->html->url("/img/user/tour/input_title.gif"); ?>" alt="4：ツアー基本情報を入力する" /></h2>
-			<?php echo $this->Form->create("Tour", array("type" => "file", "class" => "input_form", "id" => "tour-form"));?>
 				<?php echo $this->Form->hidden("id", array("id" => "tour-id"));?>
 				<dl class="name">
 					<dt><img src="<?php echo $this->html->url("/img/user/spot/name.gif"); ?>" alt="名称" /></dt>
@@ -170,9 +177,9 @@ $this->end();
 					<dt><img src="<?php echo $this->html->url("/img/user/spot/tag.gif"); ?>" alt="タグ" /></dt>
 					<dd>
 					<ul id="tags" class="inputRounnd">
-<?php if ($this->request["tags"]):?>
-<?php foreach($this->request["tags"] as $tag):?>
-						<li><?php echo $tag;?></li>
+<?php if ($this->request->data["Tag"]):?>
+<?php foreach($this->request->data["Tag"] as $tag):?>
+						<li><?php echo $tag["name"];?></li>
 <?php endforeach;?>
 <?php endif;?>
 					</ul>
@@ -222,8 +229,8 @@ for($i = 0; $i < 3; $i++):?>
 				<p class="submit mouse_over"><input type="submit" id="save_button" value="ツアーを保存する" /></p>
 				<p class="close"><a href="#close"><img src="<?php echo $this->html->url("/img/common/btn/close.png"); ?>" alt="close" /></a></p>
 			
-			<?php echo $this->Form->end(); ?>
 		</div>
+		<?php echo $this->Form->end(); ?>
 		<!-- //input_box -->
 
 	</div>

@@ -1,6 +1,6 @@
 <?php
 $this->assign("body_id", "spot");
-if ($this->request["mode"] && $this->request["mode"] == "direct") {
+if (isset($this->request->query["mode"]) && ($this->request->query["mode"] == "direct")) {
 	$this->assign("body_class", "sec spotdirect");
 } else {
 	$this->assign("body_class", "sec");
@@ -38,7 +38,7 @@ $this->end();
 	<div id="detail_area" data-id="<?php echo $spot["Spot"]["id"];?>" data-lat="<?php echo $spot["Spot"]["lat"];?>" data-lng="<?php echo $spot["Spot"]["lng"];?>" data-zoom="<?php echo $spot["Spot"]["zoom"];?>" >
 		<p class="photo">
 			<?php if ($spot["Spot"]["image"]) :?>
-				<img src="<?php echo $this->html->url("uploads/spot/middle/".$spot["Spot"]["image"]["file_name"]);?>" alt="<?php echo $spot["Spot"]["name"];?>" width="265" height="199" />
+				<img src="<?php echo $this->html->url("/uploads/spot/middle/".$spot["Spot"]["image"]["file_name"]);?>" alt="<?php echo $spot["Spot"]["name"];?>" width="265" height="199" />
 			<?php else :?>
 				<img src="<?php echo $this->html->url("/img/common/noimage.jpg"); ?>" alt="<?php echo $spot["Spot"]["name"];?>" width="265" height="199" />
 			<?php endif;?>
@@ -104,7 +104,7 @@ endif;
 			<dd><?php echo $spot["Spot"]["description"];?></dd>
 		</dl>
 
-		<div class="fb-like" data-href="<?php echo $this->html->url("spot/show/".$spot["Spot"]["id"]);?>" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+		<div class="fb-like" data-href="<?php echo $this->html->url("/spots/show/".$spot["Spot"]["id"], true);?>" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
 		
 		<p class="edit">
 		<?php $user_info = $this->Session->read("user_info"); ?>

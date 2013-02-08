@@ -81,9 +81,9 @@ endfor;?>
 			<dl class="tag">
 				<dt><img src="<?php echo $this->html->url("/img/user/spot/tag.gif"); ?>" alt="タグ" /></dt>
 				<dd><ul id="tags">
-				<?php if ($this->request["tags"]):?>
-<?php foreach($this->request->data["tags"]["name"] as $tag):?>
-						<li><?php echo $tag;?></li>
+				<?php if (isset($this->request->data["Tag"])):?>
+<?php foreach($this->request->data["Tag"] as $tag):?>
+						<li><?php echo $tag["name"];?></li>
 <?php endforeach;?>
 <?php endif;?>
 				</ul></dd>

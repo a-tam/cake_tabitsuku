@@ -122,8 +122,16 @@ class ApiController extends AppController {
 		
 		$cond = Set::merge($cond, $this->Tour->base_condition);
 		if ($count = $this->Tour->find('count', array('conditions' => $cond))) {
-			$this->Tour->Route->unbindModel(array("belongsTo" => array("Tour")));
-			$this->Tour->recursive = 2;
+			$this->Tour
+				->unbindModel(array(
+					"hasMany"   => array(
+						"Route"
+					),
+					"belongsTo" => array(
+						"Spot"
+					)
+				));
+//			$this->Tour->recursive = 2;
 			$list = $this->paginate('Tour', $cond);
 		}
 		$output_var = array(
@@ -158,9 +166,16 @@ class ApiController extends AppController {
 		// ログインユーザ情報
 		$user_info = $this->Session->read("user_info");
 		$this->request->data["Tour"]["user_id"] = $user_info["User"]["id"];
-		$this->log($this->request->data);
 		// 登録
 		if ($this->request->is("ajax")) {
+			if (!$this->request->data["Tour"]["id"]) {
+				// 追加
+				$this->Tour->create();
+				$this->request->data["Tour"]["status"] = "1";
+			} else {
+				// 更新
+				$this->Tour->id = $data["Tour"]["id"];
+			}
 			if ($result = $this->Tour->save($this->request->data)) {
 				$status = true;
 			}
@@ -219,13 +234,10 @@ class ApiController extends AppController {
 	}
 	
 	public function tag_list() {
-		
-		$relation = array();
-		$list = array();
+
+		$list = $this->Tag->find('list', array("conditions" => array("Tag.name LIKE" => $this->request->query["term"]."%")));
 		$output_var = array(
-			"count",
-			"relation",
-			"list"
+			"list",
 		);
 		$this->set(compact($output_var));
 		$this->set('_serialize', $output_var);
