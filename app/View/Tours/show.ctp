@@ -31,7 +31,7 @@ $this->end();
 		<div id="route_distance"></div>
 		<div>
 		<?php if ($this->Session->read("user_info")): ?>
-			<?php if ($this->request["fb_event_permission"] == true): ?>
+			<?php if (!isset($fb_permission_url)): ?>
 			<form id="pg_fb_event_add">
 				<input type="hidden" name="tour_id" value="<?php echo $tour["Tour"]["id"];?>">
 				<ul>
@@ -62,7 +62,7 @@ $this->end();
 			</form>
 			<div id="pg_fb_event_result"></div>
 			<?php else:?>
-				<a href="<?php echo $tour["Tour"]["fb_permission_url"];?>">Facebookのイベント投稿を許可</a>
+				<a href="<?php echo $fb_permission_url;?>">Facebookのイベント投稿を許可</a>
 			<?php endif;?>
 		<?php endif;?>
 		</div>
@@ -74,7 +74,7 @@ $this->end();
 			<?php if ($tour["Tour"]["image"]) : ?>
 			<img src="<?php echo $this->html->url("/uploads/spot/middle/".$tour["Tour"]["image"]["file_name"]);?>" alt="" width="265" height="199" />
 			<?php else: ?>
-			<img src="<?php echo $this->html->url("/img/common/noimage.jpg"); ?>" alt="<?php echo $tour["Spot"]["image"]["file_name"];?>" width="265" height="199" />
+			<img src="<?php echo $this->html->url("/img/common/noimage.jpg"); ?>" alt="<?php echo $tour["Tour"]["image"]["file_name"];?>" width="265" height="199" />
 			<?php endif;?>
 		</p>
 		<div class="info">

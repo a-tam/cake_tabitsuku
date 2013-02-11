@@ -44,4 +44,43 @@ class AppController extends Controller {
 				'cookie' => Configure::read("facebook.cookie")
 		));
 	}
+	
+	/**
+	 * Enter description here ...
+	 * @param unknown $scope
+	 * @return boolean
+	 */
+	function isScope($scope){
+		if (!$uid = $this->facebook->getUser()) {
+			return false;
+		}
+		$_ispermit = true;
+		$access_token = $this->facebook->getAccessToken();
+		try {
+			$fql = 'SELECT '.$scope .' FROM permissions WHERE uid ="'.$uid .'"';
+			$scopes = $this->facebook->api(array(
+				'method' => 'fql.query',
+				'access_token' => $access_token,
+				'query' => $fql
+			));
+			if ($scopes[0]) {
+				foreach($scopes[0] as $k=>$v) {
+					if($v === '0') {
+						$_ispermit = false;
+					}
+				}
+			} else {
+				$_ispermit = false;
+			}
+		} catch (FacebookApiException $e) {
+			// エラー処理
+			error_log("error", $e->getMessage());
+			print $e->getMessage();
+			$this->isError;
+			exit;
+		}
+		return $_ispermit;
+	}
+	
+	
 }

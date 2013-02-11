@@ -26,6 +26,10 @@ class ToursController extends AppController {
 			throw new NotFoundException();
 		}
 		$this->log($tour);
+		if (!$data["fb_event_permission"] = $this->isScope("create_event")) {
+			$fb_permission_url = $this->facebook->getLoginUrl(array('scope' => 'create_event'));
+			$this->set("fb_permission_url", $fb_permission_url);
+		}
 		$this->set("tour", $tour);
 	}
 	
