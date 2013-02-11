@@ -98,16 +98,10 @@ $this->end();
 					<dd>
 						<ul>
 <?php
-if ($this->request["category"]) :
-	foreach($this->request["category"] as $category_path) :
-		$category_names = array();
-		preg_match_all("/\d+/", $category_path, $cateogry);
-		$tree = array();
-		foreach ($cateogry[0] as $key) :
-			$tree[] = $this->request["category_names"][$key];
-		endforeach;
+if ($tour["Tour"]["category"]) :
+	foreach($tour["Tour"]["category"] as $tree) :
 ?>
-							<li><a href=""><?php echo implode(" > ", $tree);?></a></li>
+							<li><a href=""><?php echo implode(" > ", $tree["info"]);?></a></li>
 <?php endforeach;
 endif;
 ?>

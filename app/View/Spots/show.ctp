@@ -66,13 +66,8 @@ $this->end();
 <?php
 if ($spot["Spot"]["category"]):
 	foreach($spot["Spot"]["category"] as $tree):
-		preg_match_all("/\d+/", $tree, $category);
-		$tree = array();
-		foreach($category[0] as $category_id) {
-			$tree[] = $spot["Spot"]["category_names"][$category_id];
-		}
 	?>
-					<li><a href=""><?php echo implode(" > ", $tree);?></a></li>
+					<li><a href=""><?php echo implode(" > ", $tree["info"]);?></a></li>
 	<?php endforeach;
 endif;?>
 						</ul>
