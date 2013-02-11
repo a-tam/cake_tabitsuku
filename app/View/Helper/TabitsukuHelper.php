@@ -8,27 +8,6 @@ class TabitsukuHelper extends AppHelper {
 	
 	public $uses = array("Category");
 	
-	public function search_category($val = "", $options = array()) {
-		$Category = new Category;
-		$defaults = array(
-			"name"  => "category",
-			"class" => "category",
-			"id"    => "",
-			"value" => "",
-			"empty" => "全てのカテゴリ"
-		);
-		$options = array_merge($defaults, $options);
-		$category_list = $Category->find("list",
-				array(
-					"conditions" => array(
-						"parent_id" => "",
-						"status"    => 1
-					)
-				));
-		return $this->Form->select('category', $category_list, $options);
-	}
-	
-	
 	public function input_category($category = array(), $options = array()) {
 		$Category = new Category;
 		$category_list = $Category->find("list",

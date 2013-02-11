@@ -121,7 +121,7 @@ $this->end();
 	
 		<div class="side">
 		
-			<?php $this->element("guest_side");?>
+			<?php echo $this->element("guest_side");?>
 							
 		</div>
 		<!-- //side -->

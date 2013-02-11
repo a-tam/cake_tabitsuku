@@ -34,12 +34,9 @@
 								<ul>
 <?php
 $root_categories = array();
-$category = $root_category;
 $selected_category = $this->request["category"];
-foreach($category as $row):
-	$root_categories[$row["id"]] = $row["name"];
-?>
-									<li><a data-category-id="<?php echo $row["id"];?>" href=""><?php echo $row["name"];?></a></li>
+foreach($root_category as $category_id => $category_name):?>
+									<li><a data-category-id="<?php echo $category_id;?>" href=""><?php echo $category_name;?></a></li>
 <?php endforeach;?>
 								</ul>
 								<p class="close"><a href="#close" class="mouse_over"><img src="<?php echo $this->Html->url("/img/common/search/close.png");?>" alt="CLSOE" /></a></p>

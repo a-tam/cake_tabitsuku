@@ -22,6 +22,7 @@
 
 App::uses('Controller', 'Controller');
 App::import('Vendor', 'facebook/src/facebook');
+App::import("Model", "Category");;
 
 /**
  * Application Controller
@@ -36,13 +37,22 @@ class AppController extends Controller {
 	
 	function beforeFilter() {
 //		$category = $this->Category_model->get_list("");
-		$this->set("root_category", array());
 		$this->set("title_for_layout", __("旅つく"));
 		$this->facebook = new Facebook( array(
 				'appId' => Configure::read("facebook.app_id"),
 				'secret' => Configure::read("facebook.secret"),
 				'cookie' => Configure::read("facebook.cookie")
 		));
+		$Category = new Category();
+		$category_list = $Category->find("list",
+				array(
+					"conditions" => array(
+						"parent_id" => "",
+						"status"    => 1
+					)
+				));
+		$this->log($category_list);
+		$this->set("root_category", $category_list);
 	}
 	
 	/**

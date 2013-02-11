@@ -15,7 +15,16 @@
 		<dd>
 			<form method="post">
 				<p class="categoryselect">
-				<?php echo $this->Tabitsuku->search_category();?>
+				<?php
+				echo $this->Form->select('category', $root_category,
+					array(
+						"name"  => "category",
+						"class" => "category",
+						"id"    => "",
+						"value" => "",
+						"empty" => "全てのカテゴリ"
+				));
+				?>
 				</p>
 				<ul>
 					<li><input type="radio" name="type" value="tour" id="headersearch_tour" checked="checked"><label for="headersearch_tour">ツアー</label></li>

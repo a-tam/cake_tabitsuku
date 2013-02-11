@@ -60,9 +60,8 @@ $this->end();
 					<p class="selectbtn"><a href="#categoryselect" class="mouse_over">検索カテゴリを選択</a></p>
 						<div class="categoryselect">
 							<ul>
-							<?php $category = $root_category;?>
-							<?php foreach($category as $row):?>
-								<li><a href="" data-category-id="<?php echo $row["id"];?>"><?php echo $row["name"];?></a></li>
+							<?php foreach($root_category as $category_id => $category_name):?>
+								<li><a href="" data-category-id="<?php echo $category_id; ?>"><?php echo $category_name;?></a></li>
 							<?php endforeach;?>
 							</ul>
 							<p class="close"><a href="#close" class="mouse_over"><img src="<?php echo $this->html->url("/img/common/search/close.png"); ?>" alt="CLSOE" /></a></p>

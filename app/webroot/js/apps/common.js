@@ -68,9 +68,9 @@ commonCtl.menuAct=function(){
 commonCtl.simpleSearch = function() {
 	$("header form").on("submit", function() {
 		if ($("header form [name='type']:checked").val() == "spot") {
-			$("header form").attr("action", gBaseUrl + "spot/search");
+			$("header form").attr("action", gBaseUrl + "spots/index");
 		} else {
-			$("header form").attr("action", gBaseUrl + "tour/search");
+			$("header form").attr("action", gBaseUrl + "tours/index");
 		}
 	});
 };
