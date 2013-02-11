@@ -51,7 +51,7 @@ class AppController extends Controller {
 						"status"    => 1
 					)
 				));
-		$this->log($category_list);
+//		$this->log($category_list);
 		$this->set("root_category", $category_list);
 	}
 	

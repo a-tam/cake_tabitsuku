@@ -121,16 +121,18 @@ class ApiController extends AppController {
 		
 		$cond = Set::merge($cond, $this->Tour->base_condition);
 		if ($count = $this->Tour->find('count', array('conditions' => $cond))) {
-			$this->Tour
-				->unbindModel(array(
-					"hasMany"   => array(
-						"Route"
-					),
-					"belongsTo" => array(
-						"Spot"
-					)
+			$unbind = array(
+				"hasMany"   => array("Route"),
+				"belongsTo" => array("Spot")
+				);
+			if (isset($this->request->query["route"]) && $this->request->query["route"] == 1) {
+				$this->Tour->recursive = 2;
+				unset($unbind["hasMany"]);
+				$this->Tour->Route->unbindModel(array(
+					"belongsTo" => array("Tour")
 				));
-//			$this->Tour->recursive = 2;
+			}
+			$this->Tour->unbindModel($unbind);
 			$list = $this->paginate('Tour', $cond);
 		}
 		$output_var = array(

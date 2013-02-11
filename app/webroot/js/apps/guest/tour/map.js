@@ -97,7 +97,8 @@
 					keyword		: $("#pg_search_keyword").val(),
 					limit		: limit,
 					sort		: $("#pg_search_order").val(),
-					page		: page
+					page		: page,
+					route		: 1
 			};
 			
 			if ($("#pg_search_map_select:checked").val() == "1") {

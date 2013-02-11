@@ -232,11 +232,10 @@ class Tour extends AppModel {
 	}
 	
 	public function afterSave() {
-		$tour_id = $this->log($this->getId());
 		foreach($this->data["Route"] as $key => $data) {
-			$this->data["Route"][$key]["tour_id"] = $tour_id;
+			$this->data["Route"][$key]["tour_id"] = $this->data["Tour"]["id"];
 		}
-		$this->Route->deleteAll(array("tour_id" => $tour_id));
+		$this->Route->deleteAll(array("tour_id" => $this->data["Tour"]["id"]));
 		$ret = $this->Route->saveAll($this->data["Route"]);
 	}
 	
