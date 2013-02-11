@@ -132,26 +132,26 @@
 						$.each(json["list"], function(spot_id, spot_info) {
 							// render spot
 							spotCtl.render(spot_info, "#pg_spots");
-							spot_list[spot_id] = spot_info;
+							spot_list[spot_info.Spot.id] = spot_info;
 							// 地図にマーカー表示
-							var latlng = new google.maps.LatLng(spot_info.lat, spot_info.lng);
+							var latlng = new google.maps.LatLng(spot_info.Spot.lat, spot_info.Spot.lng);
 							var marker = new google.maps.Marker({
 								icon : gAssetUrl + "img/map/marker.png",
 								shadow: gAssetUrl + "img/map/shadow.png",
 								map			: map,
 								position	: latlng,
-								title		: spot_info.name,
+								title		: spot_info.Spot.name,
 								draggable	: false
 							});
 							// 情報ウィンドウ表示
 							google.maps.event.addListener(marker, "click", function() {
-								open_info_window(spot_info.id);
-								var spot = $('.list_area [data-spot-id="' + spot_info.id + '"]');
+								open_info_window(spot_info.Spot.id);
+								var spot = $('.list_area [data-spot-id="' + spot_info.Spot.id + '"]');
 								$(".list_area")
 									.animate({scrollTop: $(".list_area").scrollTop() + $(spot).position().top}, "first");
 								spot.addClass("active");
 							});
-							spot_marker_list[spot_info.id] = marker;
+							spot_marker_list[spot_info.Spot.id] = marker;
 						});
 					}
 					$("#pg_spots .pg_description").trunk8({
@@ -196,13 +196,13 @@
 			var spot_info = spot_list[id];
 			close_info_window(id);
 			var content = "";
-			if (spot_info.image) {
-				content += '<img style="float:left;" src="' + gBaseUrl + 'uploads/spot/thumb/' + spot_info.image.file_name+'" width="60" height="60" alt="" />';
+			if (spot_info.Spot.image) {
+				content += '<img style="float:left;" src="' + gBaseUrl + 'uploads/spot/thumb/' + spot_info.Spot.image.file_name+'" width="60" height="60" alt="" />';
 			}
-			content += "<b>"+spot_info.name + "</b><br />" + spot_info.description;
+			content += "<b>"+spot_info.Spot.name + "</b><br />" + spot_info.Spot.description;
 			var infowindow = new google.maps.InfoWindow({
 				content		: content,
-				position	: new google.maps.LatLng(spot_info.lat, spot_info.lng)
+				position	: new google.maps.LatLng(spot_info.Spot.lat, spot_info.Spot.lng)
 			});
 			infowindow.open(map);
 			spot_current_window = infowindow;
