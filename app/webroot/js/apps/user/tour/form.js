@@ -245,6 +245,10 @@ tourentryCtl.init=function(){
 				formData.append("Route["+j+"][sort]", j+1);
 				j++;
 			});
+			// カテゴリ
+			$("#tour-form input[name='category[]']").each(function() {
+				formData.append("Tour[category][]", $(this).val());
+			});
 			$.ajax({
 				url: gBaseUrl + 'api/tour_save',
 				type: "post",

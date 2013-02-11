@@ -13,7 +13,7 @@ class ApiController extends AppController {
 	
 	public $name = 'Api';
 	
-	public $uses = array('Spot', 'Tour', 'Tag');
+	public $uses = array('Spot', 'Tour', 'Tag', 'Category');
 	
 	public $components = array('RequestHandler', 'Search.Prg', 'ImageResizer.ImageResizer');
 	public $presetVars = array();
@@ -27,7 +27,6 @@ class ApiController extends AppController {
 		$this->Prg->commonProcess();
 		$cond = $this->Spot->parseCriteria($this->request->query);
 		$cond = Set::merge($cond, $this->Spot->base_condition);
-		$this->log($cond, 'error');
 		$defaults = array(
 			"limit"     => 10,
 			"page"      => 1,
@@ -251,18 +250,21 @@ class ApiController extends AppController {
 		
 	}
 	
-	public function category_list() {
-		
-		$relation = array();
-		$list = array();
+	public function category_list($id = "") {
+
+		$list = $this->Category
+			->find("list", array(
+				"conditions" => array(
+					"parent_id" => $id,
+					"status"    => 1
+				)
+			));
 		$output_var = array(
-			"count",
-			"relation",
 			"list"
 		);
 		$this->set(compact($output_var));
 		$this->set('_serialize', $output_var);
-		
+
 	}
 	
 	function article_list () {

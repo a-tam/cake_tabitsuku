@@ -15,12 +15,7 @@
 		<dd>
 			<form method="post">
 				<p class="categoryselect">
-					<select class="category" name="category">
-						<option value="">全てのカテゴリ</option>
-<?php foreach($root_category as $row):?>
-						<option value="/<?php echo $row["id"];?>/"><?php echo $row["name"];?></option>
-<?php endforeach;?>
-					</select>
+				<?php echo $this->Tabitsuku->search_category();?>
 				</p>
 				<ul>
 					<li><input type="radio" name="type" value="tour" id="headersearch_tour" checked="checked"><label for="headersearch_tour">ツアー</label></li>

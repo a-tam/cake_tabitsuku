@@ -14,6 +14,8 @@ class PagesController extends AppController {
 	
 	public $uses = array();
 	
+	public $helper = array("Tabitsuku");
+	
 	public function beforeFilter() {
 		parent::beforeFilter();
 	}

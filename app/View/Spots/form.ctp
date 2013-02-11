@@ -24,11 +24,10 @@ $this->end();
 
 <!-- =============== ↓ページコンテンツ↓ =============== -->
 <div class="contents">
-
 	<ul id="breadcrumbs">
 		<li><a href="<?php echo $this->html->url("/");?>">トップページ</a></li>
 		<li><a href="<?php echo $this->html->url("/user/top");?>">マイページ</a></li>
-		<li><?php if ($this->request["id"]):?>スポット更新<?php else:?>スポット登録<?php endif;?></li>
+		<li><?php if (isset($this->request->data["Spot"]["id"])):?>スポット更新<?php else:?>スポット登録<?php endif;?></li>
 	</ul>
 	
 	<div id="map_area">
@@ -91,53 +90,18 @@ endfor;?>
 			<dl class="category">
 				<dt><img src="<?php echo $this->html->url("/img/user/spot/category.gif"); ?>" alt="カテゴリ" /></dt>
 				<dd>
-					<ul class="categories">
-<?php
-$category = $root_category;
-for($i = 0; $i < 3; $i++):?>
-							<li class="category<?php echo $i+1;?>">
-<?php
-	$category_names = array();
-	if ($this->request["category"][$i]):
-		preg_match_all("/\d+/", $this->request["category"][$i], $cateogry);
-		foreach ($cateogry[0] as $key) {
-			$category_names[] = $this->request["category_names"][$key];
-		}
-?>
-								<a href="#add" class="mouse_over category_add" style="display:none;"><img src="<?php echo $this->html->url("/img/user/spot/addbtn.gif"); ?>" alt="カテゴリを追加" /></a>
-								<input type="hidden" name="category[]" value="<?php echo $this->request["category"][$i];?>" class="maincategory" />
-								<p class="selectedCategory">
-									<a href="#close" class="close mouse_over"><img src="<?php echo $this->html->url("/img/common/search/close.gif"); ?>" alt="CLOSE" /></a><?php echo implode(" : ", $category_names);?></p>
-	<?php else:?>
-								<a href="#add" class="mouse_over category_add"><img src="<?php echo $this->html->url("/img/user/spot/addbtn.gif"); ?>" alt="カテゴリを追加" /></a>
-	<?php endif;?>
-							</li>
-<?php endfor;?>
-					</ul>
-					<div class="categoryselect">
-						<ul>
-<?php foreach($category as $row):?>
-							<li data-category-id="<?php echo $row["id"];?>"><a href=""><?php echo $row["name"];?></a></li>
-<?php endforeach;?>
-						</ul>
-						<select name="subcategory_input" class="text"></select>
-						<p class="close"><a href="#close" class="mouse_over"><img src="<?php echo $this->html->url("/img/common/search/close.png"); ?>" alt="CLSOE" /></a></p>
-						<p class="add"><a href="#add" class="mouse_over"><img src="<?php echo $this->html->url("/img/common/icon/add.gif"); ?>" alt="追加" /></a></p>
-						<p class="tri">&nbsp;</p>
-					</div>
-					<!-- //categoryselect -->
-
+				<?php echo $this->Tabitsuku->input_category($this->request->data["Spot"]["category"]);?>
 				</dd>
 			</dl>
 			<dl class="pic">
 				<dt><img src="<?php echo $this->html->url("/img/user/spot/pic.gif"); ?>" alt="画像" /></dt>
 			<?php echo $this->Form->file("Spot.image", array("class" => "upload"));?>
-<?php if ($this->request["image"]): ?>
+<?php if (isset($this->request->data["Spot"]["image"])): ?>
 <br />
-	<?php if (isset($this->request["image"]["tmp"])):?>
-		<a href="<?php echo $this->html->url("uploads/tmp/".$this->request["image"]["tmp"]["file_name"]);?>" target="_blank">ファイル</a>
+	<?php if (isset($this->request->data["Spot"]["image"]["tmp"])):?>
+		<a href="<?php echo $this->html->url("/uploads/tmp/".$this->request->data["Spot"]["image"]["tmp"]["file_name"]);?>" target="_blank">ファイル</a>
 	<?php else:?>
-		<a href="<?php echo $this->html->url("uploads/spot/middle/".$this->request["image"]["file_name"]);?>" target="_blank">ファイル</a>
+		<a href="<?php echo $this->html->url("/uploads/spot/middle/".$this->request->data["Spot"]["image"]["file_name"]);?>" target="_blank">ファイル</a>
 	<?php endif;?>
 		<label><input type="checkbox" name="image_delete" value="1" />&nbsp;削除</label>
 <?php endif;?>

@@ -1,6 +1,7 @@
 <?php
 App::uses('AppModel', 'Model');
-App::import('Model','Spot');
+App::import('Model', 'Spot');
+App::import('Model', 'Category');
 /**
  * Tour Model
  *
@@ -248,6 +249,10 @@ class Tour extends AppModel {
 		if (isset($this->data["Tag"]["Tag"])) {
 			$this->data["Tag"] = array_keys($this->Tag->set_list($this->data["Tag"]["Tag"]));
 		}
+		// 検索用に前後に区切り文字を付与
+		if (isset($this->data[$this->name]["category"]) && is_array($this->data[$this->name]["category"])) {
+			$this->data[$this->name]["category"] = ",".implode(",", $this->data[$this->name]["category"]).",";
+		}
 		return true;
 	}
 	
@@ -256,9 +261,15 @@ class Tour extends AppModel {
 	 * @see Model::afterFind()
 	 */
 	public function afterFind($results) {
+		$categoryModel = new Category();
 		foreach ($results as $key => $val) {
 			if (isset ($results[$key][$this->name]["image"]) && is_array ($results[$key][$this->name])) {
 				$results[$key][$this->name]["image"] = unserialize($results[$key][$this->name]["image"]);
+			}
+				// カテゴリ
+			if (isset($results[$key][$this->name]["category"])) {
+				$results[$key][$this->name]["category"] = $categoryModel->get_category_info(
+						$results[$key][$this->name]["category"]);
 			}
 		}
 		return $results;

@@ -221,10 +221,13 @@ spotentryCtl.init=function(){
 				$.each(params, function (i, val) {
 					formData.append(val.name, val.value);
 				});
+				$("#spot-form input[name='category[]']").each(function() {
+					formData.append("Spot[category][]", $(this).val());
+				});
+				
 				var data = formData;
 
 				//var data = new FormData($("#spot-form")[0]);
-				console.log(data);
 				$.ajax({
 					url: gBaseUrl + 'api/spot_save',
 					type: "post",

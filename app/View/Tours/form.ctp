@@ -188,42 +188,7 @@ $this->end();
 				<dl class="category">
 					<dt><img src="<?php echo $this->html->url("/img/user/spot/category.gif"); ?>" alt="カテゴリ" /></dt>
 					<dd>
-						<ul class="categories">
-<?php
-$category = $root_category;
-for($i = 0; $i < 3; $i++):?>
-							<li class="category<?php echo $i+1;?>">
-<?php
-	$category_names = array();
-	if ($this->request["category"][$i]):
-		preg_match_all("/\d+/", $this->request["category"][$i], $cateogry);
-		foreach ($cateogry[0] as $key) {
-			$category_names[] = $this->request["category_names"][$key];
-		}
-?>
-							<a href="#add" class="mouse_over category_add" style="display:none;"><img src="<?php echo $this->html->url("/img/user/spot/addbtn.gif"); ?>" alt="カテゴリを追加" /></a>
-							<input type="hidden" name="category[]" value="<?php echo $this->request["category"][$i];?>" class="maincategory" />
-							<p class="selectedCategory">
-								<a href="#close" class="close mouse_over"><img src="<?php echo $this->html->url("/img/common/search/close.gif"); ?>" alt="CLOSE" /></a><?php echo implode(" : ", $category_names);?></p>
-	<?php else:?>
-								<a href="#add" class="mouse_over category_add"><img src="<?php echo $this->html->url("/img/user/spot/addbtn.gif"); ?>" alt="カテゴリを追加" /></a>
-	<?php endif;?>
-							</li>
-<?php endfor;?>
-						</ul>
-						<div class="categoryselect">
-							<ul>
-<?php foreach($category as $row):?>
-								<li data-category-id="<?php echo $row["id"];?>"><a href=""><?php echo $row["name"];?></a></li>
-<?php endforeach;?>
-							</ul>
-							<select name="subcategory_input" class="text"></select>
-							<p class="close"><a href="#close" class="mouse_over"><img src="<?php echo $this->html->url("/img/common/search/close.png"); ?>" alt="CLSOE" /></a></p>
-							<p class="add"><a href="#add" class="mouse_over"><img src="<?php echo $this->html->url("/img/common/icon/add.gif"); ?>" alt="追加" /></a></p>
-							<p class="tri">&nbsp;</p>
-						</div>
-						<!-- //categoryselect -->
-
+						<?php echo $this->Tabitsuku->input_category($this->request->data["Tour"]["category"]);?>
 					</dd>
 				</dl>
 				<p class="submit mouse_over"><input type="submit" id="save_button" value="ツアーを保存する" /></p>

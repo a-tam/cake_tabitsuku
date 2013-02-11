@@ -228,8 +228,8 @@ commonCtl.registCategoryAddSet=function(){
 			dataType	: "json",
 			success		: function(json) {
 				$("#input_area .categoryselect select option").remove();
-				for (var key in json) {
-					$("#input_area .categoryselect select").append('<option value="' + key +'">' + json[key] + '</option>');
+				for (var key in json.list) {
+					$("#input_area .categoryselect select").append('<option value="' + key +'">' + json.list[key] + '</option>');
 				}
 			}
 		});
