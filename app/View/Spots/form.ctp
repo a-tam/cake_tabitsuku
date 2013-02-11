@@ -90,7 +90,9 @@ endfor;?>
 			<dl class="category">
 				<dt><img src="<?php echo $this->html->url("/img/user/spot/category.gif"); ?>" alt="カテゴリ" /></dt>
 				<dd>
-				<?php echo $this->Tabitsuku->input_category($this->request->data["Spot"]["category"]);?>
+					<?php echo $this->Tabitsuku->input_category(
+						isset($this->request->data["Spot"]["category"]) ?
+							$this->request->data["Spot"]["category"] : array());?>
 				</dd>
 			</dl>
 			<dl class="pic">

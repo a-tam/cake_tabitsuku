@@ -177,7 +177,7 @@ $this->end();
 					<dt><img src="<?php echo $this->html->url("/img/user/spot/tag.gif"); ?>" alt="タグ" /></dt>
 					<dd>
 					<ul id="tags" class="inputRounnd">
-<?php if ($this->request->data["Tag"]):?>
+<?php if (isset($this->request->data["Tag"])):?>
 <?php foreach($this->request->data["Tag"] as $tag):?>
 						<li><?php echo $tag["name"];?></li>
 <?php endforeach;?>
@@ -188,7 +188,9 @@ $this->end();
 				<dl class="category">
 					<dt><img src="<?php echo $this->html->url("/img/user/spot/category.gif"); ?>" alt="カテゴリ" /></dt>
 					<dd>
-						<?php echo $this->Tabitsuku->input_category($this->request->data["Tour"]["category"]);?>
+						<?php echo $this->Tabitsuku->input_category(
+							isset($this->request->data["Tour"]["category"]) ?
+								$this->request->data["Tour"]["category"] : array());?>
 					</dd>
 				</dl>
 				<p class="submit mouse_over"><input type="submit" id="save_button" value="ツアーを保存する" /></p>
