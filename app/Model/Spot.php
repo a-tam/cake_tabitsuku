@@ -214,7 +214,7 @@ class Spot extends AppModel {
 	 */
 	public function beforeSave() {
 		// 画像のサムネイル作成
-		if ($this->data[$this->name]["image"]) {
+		if (isset($this->data[$this->name]["image"])) {
 			$file = $this->data[$this->name]["image"];
 			if ($file["error"] == 0 && $file["size"] > 0) {
 				$imageResizer = new ImageResizerComponent();

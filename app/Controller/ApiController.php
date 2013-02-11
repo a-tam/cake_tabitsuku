@@ -173,7 +173,7 @@ class ApiController extends AppController {
 				$this->request->data["Tour"]["status"] = "1";
 			} else {
 				// 更新
-				$this->Tour->id = $data["Tour"]["id"];
+				$this->Tour->id = $this->request->data["Tour"]["id"];
 			}
 			if ($result = $this->Tour->save($this->request->data)) {
 				$status = true;

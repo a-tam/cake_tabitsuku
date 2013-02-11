@@ -255,21 +255,12 @@ tourentryCtl.init=function(){
 				processData: false,
 				contentType: false,
 				data: formData,
-//				{
-//					id:				$("#tour-id").val(),
-//					name:			$("#tour-name").val(),
-//					description:	$("#tour-description").val(),
-//					category:		categories,
-//					start_time:		$("#start_time").val(),
-//					tags:			$("#tags").tagit("assignedTags"),
-//					image:			$(".list_area input:[name='select_image']:checked").val(),
-//					route: 			routes
-//				},
 				dataType: "json",
 				success: function(json) {
+					console.log(json);
 					if (json["status"] == true) {
-						if (json["result"]["tour_id"]) {
-							//location.href = gBaseUrl + 'tour/search?owner=mydata'; // &_lat='+map.getCenter().lat()+'&_lng='+map.getCenter().lng();
+						if (json["result"]["Tour"]["id"]) {
+							location.href = gBaseUrl + 'tours/?owner=mydata'; // &_lat='+map.getCenter().lat()+'&_lng='+map.getCenter().lng();
 						}
 						
 					} else {

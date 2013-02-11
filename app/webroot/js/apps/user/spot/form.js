@@ -233,13 +233,12 @@ spotentryCtl.init=function(){
 					type: "post",
 					processData: false,
 					contentType: false,
-//					contentType: "multipart/form-data",
 					data: data,
 					dataType: "json",
 					success: function(json) {
 						if (json["status"] == true) {
-							if (json["result"]["tour_id"]) {
-//								location.href = gBaseUrl + 'tour/search?owner=mydata'; // &_lat='+map.getCenter().lat()+'&_lng='+map.getCenter().lng();
+							if (json["result"]["Spot"]["id"]) {
+								location.href = gBaseUrl + 'spots/?owner=mydata'; // &_lat='+map.getCenter().lat()+'&_lng='+map.getCenter().lng();
 							}
 							
 						} else {
