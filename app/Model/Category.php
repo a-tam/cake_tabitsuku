@@ -81,7 +81,10 @@ class Category extends AppModel {
 				preg_match_all("/\d+/", $path, $category_ids);
 				$data = array();
 				foreach ($category_ids[0] as $category_id) {
-					$data[$category_id] = $list[$category_id];
+					$data[] = array(
+						"id" => $category_id,
+						"name" => $list[$category_id]
+						);
 				}
 				$result[] = array(
 					"path" => $path,

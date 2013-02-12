@@ -189,8 +189,8 @@ class Tour extends AppModel {
 					$image = $spot_model
 						->find('first',
 							array(
-								"condition" => array(
-									"id" => $spot["spot_id"]
+								"conditions" => array(
+									"Spot.id" => $spot["spot_id"]
 								),
 								"recursive" => 0,
 								"fields"    => array(

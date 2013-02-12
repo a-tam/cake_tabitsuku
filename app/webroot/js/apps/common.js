@@ -375,34 +375,31 @@ spotCtl.render = function(info, class_name) {
 	
 	// Category
 	elm.find(".pg_category dd .category_icon").empty();
-	var category_ids = [];
-	if (info.category) {
+	if (info.Spot.category) {
 		// Get root category
-		$(info.category.split(",")).each(function(i, category_path) {
-			category_ids.push(category_path.match(/\d+/g)[0]);
-		});
-		$.each($.unique(category_ids), function(i, category_id) {
-			var icon = "";
-			var category_name = relation["categories"][category_id];
-			if (category_name) {
-				if (category_name.indexOf("見る", 0) >= 0) {
+		if (info.Spot.category) {
+			// ルートカテゴリのみ取得
+			$.each(info.Spot.category, function(i, category) {
+				var icon = "";
+				var category_name = category["info"][0]["name"];
+				if (category_name == "見る") {
 					icon = "site.gif";
-				} else if (category_name.indexOf("食べる", 0) >= 0) {
+				} else if (category_name == "食べる") {
 					icon = "food.gif";
-				} else if (category_name.indexOf("遊ぶ", 0) >= 0) {
+				} else if (category_name == "遊ぶ") {
 					icon = "enjoy.gif";
-				} else if (category_name.indexOf("買う", 0) >= 0) {
+				} else if (category_name == "買う") {
 					icon = "shopping.gif";
-				} else if (category_name.indexOf("宿泊", 0) >= 0) {
+				} else if (category_name == "宿泊") {
 					icon = "stay.gif";
-				} else if (category_name.indexOf("乗り物", 0) >= 0) {
+				} else if (category_name == "乗り物") {
 					icon = "transport.gif";
 				}
 				if (icon) {
 					elm.find(".pg_category dd .category_icon").append('<li><a href="" title="'+category_name+'"><img src="' + gAssetUrl + '/img/common/icon/'+icon+'" alt="'+category_name+'" /></a></li>');
 				}
-			}
-		});
+			});
+		}
 	}
 
 	// Tag
@@ -457,38 +454,29 @@ tourCtl.render = function(info, class_name) {
 	
 	// image
 	if (info.Tour.image) {
-		$(info.Route).each(function(i, route) {
-			if (route.spot_id == info.image) {
-				elm.find(".pg_img .pg_detail img")
-					//.attr("src", gBaseUrl + "uploads/spot/thumb/" + route.image.file_name)
-					.attr("alt", route.name);
-				return;
-			}
-		});
+		elm.find(".pg_img .pg_detail img")
+			.attr("src", gBaseUrl + "uploads/spot/thumb/" + info.Tour.image.file_name);
 	}
 	
 	// category
 	elm.find(".pg_category dd .category_icon").empty();
 	var category_ids = [];
-	if (info.category) {
+	if (info.Tour.category) {
 		// ルートカテゴリのみ取得
-		$(info.category.split(",")).each(function(i, category_path) {
-			category_ids.push(category_path.match(/\d+/g)[0]);
-		});
-		$.each($.unique(category_ids), function(i, category_id) {
+		$.each(info.Tour.category, function(i, category) {
 			var icon = "";
-			var category_name = relation["categories"][category_id];
-			if (category_name.indexOf("見る", 0) >= 0) {
+			var category_name = category["info"][0]["name"];
+			if (category_name == "見る") {
 				icon = "site.gif";
-			} else if (category_name.indexOf("食べる", 0) >= 0) {
+			} else if (category_name == "食べる") {
 				icon = "food.gif";
-			} else if (category_name.indexOf("遊ぶ", 0) >= 0) {
+			} else if (category_name == "遊ぶ") {
 				icon = "enjoy.gif";
-			} else if (category_name.indexOf("買う", 0) >= 0) {
+			} else if (category_name == "買う") {
 				icon = "shopping.gif";
-			} else if (category_name.indexOf("宿泊", 0) >= 0) {
+			} else if (category_name == "宿泊") {
 				icon = "stay.gif";
-			} else if (category_name.indexOf("乗り物", 0) >= 0) {
+			} else if (category_name == "乗り物") {
 				icon = "transport.gif";
 			}
 			if (icon) {

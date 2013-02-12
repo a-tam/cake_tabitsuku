@@ -21,10 +21,14 @@ class TabitsukuHelper extends AppHelper {
 		for($i = 0; $i < 3; $i++) {
 			$html .= '<li class="category'.($i+1).'">';
 			if (isset($category[$i])) {
+				$path = array();
+				foreach($category[$i]["info"] as $node):
+					$path[] = $node["name"];
+				endforeach;
 				$html .= '<a href="#add" class="mouse_over category_add" style="display:none;"><img src="'.$this->Html->url("/img/user/spot/addbtn.gif").'" alt="カテゴリを追加" /></a>';
 				$html .= '<input type="hidden" name="category[]" value="'.$category[$i]["path"].'" class="maincategory" />';
 				$html .= '<p class="selectedCategory">';
-				$html .= '<a href="#close" class="close mouse_over"><img src="'.$this->Html->url("/img/common/search/close.gif").'" alt="CLOSE" /></a>'.implode(" : ", $category[$i]["info"]).'</p>';
+				$html .= '<a href="#close" class="close mouse_over"><img src="'.$this->Html->url("/img/common/search/close.gif").'" alt="CLOSE" /></a>'.implode(" : ", $path).'</p>';
 			} else {
 				$html .= '<a href="#add" class="mouse_over category_add"><img src="'.$this->Html->url("/img/user/spot/addbtn.gif").'" alt="カテゴリを追加" /></a>';
 			}

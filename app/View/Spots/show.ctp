@@ -66,9 +66,15 @@ $this->end();
 <?php
 if ($spot["Spot"]["category"]):
 	foreach($spot["Spot"]["category"] as $tree):
-	?>
-					<li><a href=""><?php echo implode(" > ", $tree["info"]);?></a></li>
-	<?php endforeach;
+		$links = array();
+		foreach($tree["info"] as $node):
+			$links[] = '<a href="">'.$node["name"].'</a>';
+		endforeach; ?>
+					<li>
+					<?php echo implode(" > ", $links); ?>
+					</li>
+<?php
+	endforeach;
 endif;?>
 						</ul>
 					</dd>

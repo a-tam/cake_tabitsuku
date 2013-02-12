@@ -98,13 +98,18 @@ $this->end();
 					<dd>
 						<ul>
 <?php
-if ($tour["Tour"]["category"]) :
-	foreach($tour["Tour"]["category"] as $tree) :
-?>
-							<li><a href=""><?php echo implode(" > ", $tree["info"]);?></a></li>
-<?php endforeach;
-endif;
-?>
+if ($tour["Tour"]["category"]):
+	foreach($tour["Tour"]["category"] as $tree):
+		$links = array();
+		foreach($tree["info"] as $node):
+			$links[] = '<a href="">'.$node["name"].'</a>';
+		endforeach; ?>
+					<li>
+					<?php echo implode(" > ", $links); ?>
+					</li>
+<?php
+	endforeach;
+endif;?>
 						</ul>
 					</dd>
 				</dl>
