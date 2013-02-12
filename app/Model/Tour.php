@@ -146,7 +146,7 @@ class Tour extends AppModel {
 	 * @param unknown $fieldList
 	 * @return Ambigous <mixed, boolean, multitype:>
 	 */
-	public function save($data, $validate = true, $fieldList = array()) {
+	public function save($data = null, $validate = true, $fieldList = array()) {
 		$stay_time = 0;
 		$lat_min = null;
 		$lat_max = null;
@@ -231,7 +231,7 @@ class Tour extends AppModel {
 		return parent::save($data, $validate = true, $fieldList = array());
 	}
 	
-	public function afterSave() {
+	public function afterSave($created) {
 		foreach ($this->data["Route"] as $key => $data) {
 			$this->data["Route"][$key]["tour_id"] = $this->data["Tour"]["id"];
 		}
@@ -243,7 +243,7 @@ class Tour extends AppModel {
 	 * 保存前処理
 	 * @see Model::beforeSave()
 	 */
-	public function beforeSave() {
+	public function beforeSave($options = array()) {
 		// タグ情報
 		if (isset($this->data["Tag"]["Tag"])) {
 			$this->data["Tag"] = array_keys($this->Tag->set_list($this->data["Tag"]["Tag"]));
@@ -259,7 +259,7 @@ class Tour extends AppModel {
 	 * シリアライズした情報を展開
 	 * @see Model::afterFind()
 	 */
-	public function afterFind($results) {
+	public function afterFind($results, $primary = false) {
 		$categoryModel = new Category();
 		foreach ($results as $key => $val) {
 			if (isset ($results[$key][$this->name]["image"]) && is_array ($results[$key][$this->name])) {
