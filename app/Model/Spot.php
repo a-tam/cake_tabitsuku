@@ -196,7 +196,7 @@ class Spot extends AppModel {
 	 * @param unknown $fieldList
 	 * @return Ambigous <mixed, boolean, multitype:>
 	 */
-	public function save($data, $validate = true, $fieldList = array()) {
+	public function save($data = null, $validate = true, $fieldList = array()) {
 		if (!$data[$this->name]["id"]) {
 			// 追加
 			$this->create();
@@ -205,14 +205,14 @@ class Spot extends AppModel {
 			// 更新
 			$this->id = $data[$this->name]["id"];
 		}
-		return parent::save($data, $validate = true, $fieldList = array());
+		return parent::save($data, $validate, $fieldList);
 	}
 	
 	/**
 	 * 保存前処理
 	 * @see Model::beforeSave()
 	 */
-	public function beforeSave() {
+	public function beforeSave($options = array()) {
 		// 画像のサムネイル作成
 		if (isset($this->data[$this->name]["image"])) {
 			$file = $this->data[$this->name]["image"];
@@ -267,7 +267,7 @@ class Spot extends AppModel {
 	 * シリアライズした情報を展開
 	 * @see Model::afterFind()
 	 */
-	public function afterFind($results) {
+	public function afterFind($results, $primary = false) {
 		$categoryModel = new Category();
 		foreach ($results as $key => $val) {
 			if (isset ($results[$key][$this->name]["image"]) && is_array($results[$key][$this->name])) {
