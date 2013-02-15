@@ -7,18 +7,22 @@ App::uses('AuthComponent', 'Controller/Component');
  */
 class User extends AppModel {
 
-/**
- * Display field
- *
- * @var string
- */
+	public $name = "User";
+	
+	public $useTable = "users";
+	
+	/**
+	 * Display field
+	 *
+	 * @var string
+	 */
 	public $displayField = 'name';
 
-/**
- * Validation rules
- *
- * @var array
- */
+	/**
+	 * Validation rules
+	 *
+	 * @var array
+	 */
 	public $validate = array(
 		'login' => array(
 			'notEmpty' => array(

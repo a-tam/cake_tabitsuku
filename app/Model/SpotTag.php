@@ -4,8 +4,11 @@ App::uses("AppModel", "Model");
 
 class SpotTag extends AppModel {
 	
+	public $name = "SpotTag";
 	
-	  public $belongsTo = array(
+	public $useTable = "spots_tags";
+	
+	public $belongsTo = array(
 		'Spot',
 		'Tag' => array(
 			'className'  => 'Tag',

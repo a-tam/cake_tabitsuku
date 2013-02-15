@@ -6,18 +6,22 @@ App::uses('AppModel', 'Model');
  */
 class Tag extends AppModel {
 
-/**
- * Display field
- *
- * @var string
- */
+	public $name = "Tag";
+	
+	public $useTable = "tags";
+	
+	/**
+	 * Display field
+	 *
+	 * @var string
+	 */
 	public $displayField = 'name';
 
-/**
- * Validation rules
- *
- * @var array
- */
+	/**
+	 * Validation rules
+	 *
+	 * @var array
+	 */
 	public $validate = array(
 		'name' => array(
 			'notEmpty',

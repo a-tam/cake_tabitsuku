@@ -10,12 +10,17 @@ App::import('Model','Category');
  */
 class Spot extends AppModel {
 
-/**
- * Display field
- *
- * @var string
- */
+	public $name = "Spot";
+	
+	public $useTable = "spots";
+		
+	/**
+	 * Display field
+	 *
+	 * @var string
+	 */
 	public $displayField = 'name';
+
 	/**
 	 * Validation rules
 	 *
