@@ -68,7 +68,7 @@ class PagesController extends AppController {
 					$email->subject('たびつく - ユーザー登録');
 					$email->send($message);
 					// 登録完了ページに遷移
-					$this->redirect("/pages/signin_complete");
+					return $this->render("/pages/signin_complete");
 				}
 			} catch (Exception $e) {
 				$this->log($e->getMessage());
