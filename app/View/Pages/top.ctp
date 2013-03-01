@@ -40,7 +40,7 @@ $this->end();
 <!-- =============== ↓ページコンテンツ↓ =============== -->
 <div class="contents">
 
-
+	<?php $this->Session->flash(); ?>
 	<section class="tour">
 		<h3><img src="<?php echo $this->Html->url("/img/top/newtour.gif") ?>" alt="ツアー新着" /></h3>
 		
