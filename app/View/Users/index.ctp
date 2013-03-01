@@ -46,8 +46,6 @@ $this->end();
 		</div>
 		<!-- //main -->
 		
-		<iframe src="https://www.google.com/calendar/embed?src=o3ctgfmlehj514dncufqurou9o%40group.calendar.google.com&ctz=Asia/Tokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
-		
 		<div class="side">
 		
 			<?php echo $this->element("guest_side"); ?>
