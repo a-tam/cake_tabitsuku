@@ -13,10 +13,39 @@ class ApiController extends AppController {
 	
 	public $name = 'Api';
 	
-	public $uses = array('Spot', 'Tour', 'Tag', 'Category');
+	public $uses = array('Spot', 'Tour', 'Tag', 'Category', 'User');
 	
 	public $components = array('RequestHandler', 'Search.Prg', 'ImageResizer.ImageResizer');
 	public $presetVars = array();
+	
+	public function beforeFilter() {
+		parent::beforeFilter();
+	}
+	
+	public function login() {
+		$login_id = $this->request->query["userid"];
+		$password = $this->request->query["password"];
+		if ($user_info = $this->User->login($login_id, $password)) {
+			$this->Session->write("user_info", $user_info);
+		}
+		$session = $this->Session->id();
+		$output_var = array(
+			"session",
+			"user_info",
+		);
+		$this->set(compact($output_var));
+		$this->set('_serialize', $output_var);
+	}
+	
+	public function logout() {
+		$this->Session->destroy();
+		$status = 1;
+		$output_var = array(
+			"status",
+		);
+		$this->set(compact($output_var));
+		$this->set('_serialize', $output_var);
+	}
 	
 	public function spot_list() {
 
@@ -84,6 +113,7 @@ class ApiController extends AppController {
 		$this->request->data["Spot"]["user_id"] = $user_info["User"]["id"];
 		$this->log($this->request->data);
 		if ($this->request->is("ajax")) {
+			$this->Spot->setResizeComponent($this);
 			if ($result = $this->Spot->save($this->request->data)) {
 				$status = true;
 			}
@@ -118,8 +148,19 @@ class ApiController extends AppController {
 		$this->presetVars = $this->Tour->presetVars;
 		$this->Prg->commonProcess();
 		$cond = $this->Tour->parseCriteria($this->request->query);
-		
 		$cond = Set::merge($cond, $this->Tour->base_condition);
+		$this->log($cond);
+
+		$defaults = array(
+			"limit"     => 10,
+			"page"      => 1,
+			"sort_key"  => "Tour.name",
+			"sort_type" => "asc"
+		);
+		foreach($defaults as $_key => $_val) {
+			$$_key = $this->request->$_key ?: $_val;
+		}
+		
 		if ($count = $this->Tour->find('count', array('conditions' => $cond))) {
 			$unbind = array(
 				"hasMany"   => array("Route"),
@@ -128,12 +169,23 @@ class ApiController extends AppController {
 			if (isset($this->request->query["route"]) && $this->request->query["route"] == 1) {
 				$this->Tour->recursive = 2;
 				unset($unbind["hasMany"]);
-				$this->Tour->Route->unbindModel(array(
-					"belongsTo" => array("Tour")
+				$this->Tour->Route->unbindModel(array("belongsTo" => array("Tour")
 				));
 			}
 			$this->Tour->unbindModel($unbind);
-			$list = $this->paginate('Tour', $cond);
+			$this->paginate = array(
+				'conditions' => $cond
+				);
+			$list = $this->paginate('Tour');
+			/*array(
+					"conditions" => $cond,
+					"order"      => array(
+						$sort_key => $sort_type
+					),
+					"limit"      => $limit,
+					"page"       => $page,
+				));
+			//*/
 		}
 		$output_var = array(
 			"count",
