@@ -13,7 +13,7 @@ class SpotsController extends AppController {
 	public $name = 'Spots';
 
 	public $uses = array();
-	
+
 	public function index() {
 		
 	}
@@ -27,6 +27,9 @@ class SpotsController extends AppController {
 	}
 	
 	public function form($id = "") {
+		// 認証チェック
+		$this->user_auth();
+		
 		if ($id) {
 			$this->Spot->id = $id;
 			if (!$this->request->data = $this->Spot->read()) {
