@@ -9,13 +9,42 @@ class UsersController extends AppController {
 	 */
 	public function index() {
 		
+		// 認証チェック
+		$this->user_auth();
+		$user_info = $this->Session->read("user_info");
+		$this->User->id = $user_info["User"]["id"];
+		if ($this->request->is("put")) {
+			if ($this->User->save($this->request->data)) {
+				$this->Session->setFlash("登録情報を変更しました。");
+			}
+		} else {
+			$user_info = $this->User->read();
+			$this->request->data = $user_info;
+		}
+		unset($this->request->data["User"]["password"]);
+		unset($this->request->data["User"]["confirm_password"]);
 	}
 	
+	public function facebook() {
+		if ($this->request->is('post')) {
+			if ($this->request->data["action"] == "connect") {
+				$this->Session->setFlash("Facebookアカウントと連携しました。Facebookのアカウントでログインできます。");
+			} elseif ($this->request->data["action"] == "disconnect") {
+				array("social_facebook" => "");
+				$this->User->save();
+				$this->Session->setFlash("Facebookアカウントと連携を解除しました。");
+			}
+		}
+		$this->redirect("/users/index");
+	}
+		
 	/**
 	 * アカウント情報変更
 	 *
 	 */
 	public function edit() {
+		// 認証チェック
+		$this->user_auth();
 		
 	}
 
@@ -39,20 +68,11 @@ class UsersController extends AppController {
 				}
 			} else {
 				unset($data["User"]["password"]);
-				$this->log($data);
 				$this->request->data = $data;
 			}
 		} else {
 			throw new NotFoundException();
 		}
-	}
-	
-	/**
-	 * reminder
-	 *
-	 */
-	public function reminder() {
-		
 	}
 	
 	/**
@@ -66,6 +86,7 @@ class UsersController extends AppController {
 				$user_profile = $this->facebook->api('/me');
 				if (isset($user_profile["id"])) {
 					$user_info = $this->User->oauth_login("facebook", $user_profile);
+					unset($user_info["User"]["password"]);
 					$this->Session->write("user_info", $user_info);
 					switch ($redirect) {
 						case "tour":
