@@ -34,6 +34,9 @@ class ToursController extends AppController {
 	}
 	
 	public function form($id = "") {
+		// 認証チェック
+		$this->user_auth();
+		
 		if ($id) {
 			$this->Tour->id = $id;
 			$this->Tour->recursive = 2;
