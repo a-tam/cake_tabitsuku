@@ -98,11 +98,11 @@ class Tour extends AppModel {
  */
 	public $belongsTo = array(
 		'User' => array(
-			'className' => 'User',
+			'className'  => 'User',
 			'foreignKey' => 'user_id',
 			'conditions' => '',
-			'fields' => array('id','name'),
-			'order' => ''
+			'fields'     => array('id', 'name'),
+			'order'      => ''
 		),
 	);
 
@@ -122,27 +122,81 @@ class Tour extends AppModel {
 	 * @var unknown
 	 */
 	public $hasAndBelongsToMany = array(
-			'Tag' => array(
-					'className'             => 'Tag',
-					'joinTable'             => 'tours_tags',
-					'foreignKey'            => 'tour_id',
-					'associationForeignKey' => 'tag_id',
-					'unique'                => true,
-					'fields'                => array('Tag.id', 'Tag.name'),
-			)
+		'Tag' => array(
+				'className'             => 'Tag',
+				'joinTable'             => 'tours_tags',
+				'foreignKey'            => 'tour_id',
+				'associationForeignKey' => 'tag_id',
+				'unique'                => true,
+				'fields'                => array('Tag.id', 'Tag.name'),
+		)
 	);
 	// 検索対象のフィルタ
 	public $actsAs = array('Search.Searchable');
 	public $filterArgs = array(
-			'name' => array('type' => 'like'),
-			'keyword' => array('type' => 'like'),
+		'name'     => array('type' => 'like'),
+		'keyword'  => array('type' => 'query', 'method' => '__findByKeyword'),
+//		'tag'      => array('type' => 'subquery', 'method' => '__findByTag'),
+		'ne_lat'   => array('type' => 'query', 'method' => '__findByLatLng'),
+		'category' => array('type' => 'like'),
+		'tags'     => array('type' => 'like'),
+		'user'     => array('type' => 'like'),
 	);
 	public $base_condition = array('Tour.status' => 1);
 	// 検索対象のフィールド設定
 	public $presetVars = array(
-			array('field' => 'id', 'type' => 'value'),
-			array('field' => 'name', 'type' => 'like'),
+		array('field' => 'id'  , 'type' => 'value'),
+		array('field' => 'name', 'type' => 'like'),
 	);
+	
+	/**
+	 * キーワード検索
+	 * @param unknown $data
+	 * @return Ambigous <multitype:, multitype:multitype:string  >
+	 */
+	public function __findByKeyword($data = array()) {
+		$cond = array();
+		$keyword = $data["keyword"];
+		if ($keyword) {
+			$cond = array(
+				'OR' => array(
+					$this->alias . '.name LIKE' => '%' . $keyword . '%',
+					$this->alias . '.keyword LIKE' => '%' . $keyword . '%',
+				)
+			);
+		}
+		return $cond;
+	}
+	
+	private function __findByTag($data = array()) {
+		$this->TagsSpot->Behaviors->attach('Containable', array('autoFields' => false));
+		$this->Tagged->Behaviors->attach('Search.Searchable');
+		$query = $this->Tagged->getQuery('all', array(
+			'conditions' => array('Tag.name' => $data['tags']),
+			'fields' => array('foreign_key'),
+			'contain' => array('Tag')
+		));
+		return $query;
+	}
+	
+	/**
+	 * 座標検索
+	 * @param unknown $data
+	 * @return Ambigous <multitype:, multitype:multitype:string  >
+	 */
+	public function __findByLatLng($data = array()) {
+		$cond = array();
+		if ($data["ne_lat"] && $data["sw_lat"] && $data["ne_lng"] && $data["sw_lng"]) {
+			$cond = array(
+				'AND' => array(
+					$this->alias . '.lat_max < '.$data["ne_lat"],
+					$this->alias . '.lng_min < '.$data["ne_lng"],
+ 					$this->alias . '.lat_max > '.$data["sw_lat"],
+ 					$this->alias . '.lng_min > '.$data["sw_lng"],
+				));
+		}
+		return $cond;
+	}
 	
 	/**
 	 * 存在すれば更新、無ければ追加
