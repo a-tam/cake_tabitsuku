@@ -149,11 +149,15 @@ class Spot extends AppModel {
 	public $base_condition = array('Spot.status' => '1');
 	// 検索対象のフィールド設定
 	public $presetVars = array(
-			array('field' => 'id', 'type' => 'value'),
-			array('field' => 'name', 'type' => 'like'),
+			array('field' => 'id'         , 'type' => 'value'),
+			array('field' => 'name'       , 'type' => 'like'),
 			array('field' => 'description', 'type' => 'like'),
-			array('field' => 'keyword', 'type' => 'like'),
+			array('field' => 'keyword'    , 'type' => 'like'),
 	);
+	
+	public function setResizeComponent(Controller $controller) {
+		$this->ImageResizer = $controller->ImageResizer;
+	}
 	
 	public function findByKeyword($data = array()) {
 		$cond = array();
@@ -162,7 +166,7 @@ class Spot extends AppModel {
 			$cond = array(
 				'OR' => array(
 					$this->alias . '.name LIKE' => '%' . $keyword . '%',
-// 					$this->alias . '.description LIKE' => '%' . $keyword . '%',
+					$this->alias . '.keyword LIKE' => '%' . $keyword . '%',
 				)
 			);
 		}
@@ -175,8 +179,8 @@ class Spot extends AppModel {
 			$cond = array(
 				'AND' => array(
 					$this->alias . '.lat < '.$data["ne_lat"],
-					$this->alias . '.lat > '.$data["sw_lat"],
 					$this->alias . '.lng < '.$data["ne_lng"],
+					$this->alias . '.lat > '.$data["sw_lat"],
 					$this->alias . '.lng > '.$data["sw_lng"],
 				));
 		}
@@ -222,7 +226,7 @@ class Spot extends AppModel {
 		if (isset($this->data[$this->name]["image"])) {
 			$file = $this->data[$this->name]["image"];
 			if ($file["error"] == 0 && $file["size"] > 0) {
-				$imageResizer = new ImageResizerComponent();
+//				$imageResizer = new ImageResizerComponent();
 				$resize_type = array(
 					"thumb" => array("width" => 320, "height" => 240),
 					"middle" => array("width" => 800, "height" => 600),
@@ -238,13 +242,13 @@ class Spot extends AppModel {
 							'maxWidth' => $param["width"]
 						);
 						$this->log($resize);
-						$succeed = $imageResizer->resizeImage($file["tmp_name"], $resize);
+						$succeed = $this->ImageResizer->resizeImage($file["tmp_name"], $resize);
 					} catch (CakeException $error) {
 						$this->log($error->getMessage());
 					}
 				}
 				copy($file["tmp_name"], ROOT."/".APP_DIR."/".WEBROOT_DIR."/uploads/spot/origin/" .$file_name);
-				$file_info = $imageResizer->file_info();
+				$file_info = $this->ImageResizer->file_info();
 				$image_info = array(
 					"file_name"    => $file_name,
 					"file_type"    => $file_info['mime'],
