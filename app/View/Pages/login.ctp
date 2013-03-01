@@ -25,8 +25,7 @@ $this->end();
 			<dd><?php echo $this->Form->input("login", array("class" => "text", "label" => false));?></dd>
 			<dt><img src="<?php echo $this->Html->url("/img/login/password.gif"); ?>" alt="パスワード" /></dt>
 			<dd><?php echo $this->Form->input("password", array("type" => "password", "class" => "text", "label" => false));?><br />
-				<a href="" class="textlink">パスワードを忘れた方はこちら</a
-			></dd>
+				<a href="<?php echo $this->Html->url("/pages/reminder");?>" class="textlink" target="_top">パスワードを忘れた方はこちら</a></dd>
 		</dl>
 		<p class="submit mouse_over"><input type="image" src="<?php echo $this->Html->url("/img/login/submit.gif"); ?>" alt="送信" /></p>
 		<?php echo $this->Form->end();?>
