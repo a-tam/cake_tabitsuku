@@ -81,5 +81,6 @@ if ($this->fetch("body_class")) echo ' class="'.$this->fetch("body_class").'"'; 
 <?php echo $this->fetch("header"); ?>
 <?php echo $this->fetch('content'); ?>
 <?php echo $this->fetch("footer"); ?>
+<?php echo $this->fetch("sql_dump");?>
 </body>
 </html>
