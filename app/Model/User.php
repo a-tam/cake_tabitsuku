@@ -71,21 +71,11 @@ class User extends AppModel {
 				'allowEmpty' => true,
 			),
 		),
-		'email' => array(
-			'email' => array(
-				'rule' => array('email'),
-				'message' => 'メールアドレス形式で入力してください',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
 		'social_facebook' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
+				'allowEmpty' => true,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
@@ -118,55 +108,56 @@ class User extends AppModel {
 	);
 	
 	/**
-	 * Enter description here ...
-	 * @param string $type
-	 * @param array $user_profile
-	 * @return multitype:
+	 * OAuthプロバイダごとのログイン
+	 *
+	 * @param unknown $type
+	 * @param unknown $user_profile
+	 * @return mixed false: FBのメールアドレスが既に使用されている、 null: 未対応のログインタイプ、 array: ユーザー情報
 	 */
 	public function oauth_login($type, $user_profile) {
-		$user_info = array();
+		// 初期化
+		$user_info = null;
+
+		// Facebook認証
 		if ($type == "facebook") {
-			$cond["social_facebook"] = $user_profile["id"];
-			if (!$user_info = $this->find('first', array("conditions" => $cond))) {
-				// 初回の認証
-				$data["User"] = array(
-					"login"           => $user_profile["email"],
-					"name"            => $user_profile["name"],
-					"email"           => $user_profile["email"],
-					"password"        => md5(uniqid()),
-					"social_facebook" => $user_profile["id"],
-				);
-				$user_info = $this->save($data);
+			
+			// たびつくユーザー情報取得
+			$user_info = $this->find('first',
+					array(
+						"conditions" => array(
+							"social_facebook" => $user_profile["id"]
+						)
+					));
+
+			// たびつく未登録
+			if (!$user_info) {
+				// FBのメールアドレスのユーザー件数
+				$user_exists = $this->find('count',
+						array(
+							"conditions" => array(
+								"login" => $user_profile["email"]
+							)
+						));
+				// 未登録
+				if ($user_exists == 0) {
+					// FBの情報でアカウントの登録して、改めてアカウント情報取得
+					$data["User"] = array(
+						"login"           => $user_profile["email"],
+						"name"            => $user_profile["name"],
+						"password"        => md5(uniqid()),
+						"social_facebook" => $user_profile["id"],
+					);
+					$user_info = $this->save($data);
+
+				// 既に登録済み
+				} else {
+					$user_info = false;
+				}
 			}
 		}
 		return $user_info;
 	}
 	
-	/**
-	 * アカウント発行
-	 * @param unknown $data
-	 */
-	/*
-	public function singup($data) {
-		$result = false;
-		$data = array(
-				"login_id"		=> $input["login_id"],
-				"name"			=> $input["name"],
-				"email"			=> $input["email"],
-				"password"	=> $this->hash_password($input["password"]),
-				"status"	=> USER_STATUS_APPROVAL,
-		);
-		if ($id = parent::insert($data)) {
-			$result = array(
-					"id"			=> $id,
-					"login_id"		=> $input["login_id"],
-					"facebook_id"	=> $input["facebook_id"],
-					"name"			=> $input["name"],
-					"email"			=> $input["email"]
-			);
-		}
-	}
-	*/
 	
 	public function save($data = null, $validate = true, $fieldList = array()) {
 		// 新規

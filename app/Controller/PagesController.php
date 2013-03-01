@@ -58,14 +58,13 @@ class PagesController extends AppController {
 		if ($this->request->is("post")) {
 			try {
 				// メールアドレスをログインIDに指定
-				$this->request->data["User"]["email"] = $this->request->data["User"]["login"];
 				if ($data = $this->User->save($this->request->data)) {
 					$message = Router::url("/users/verify/".$data["User"]["verify"], true);
 					$this->log($message);
 					// 確認メールメール送信
 					$email = new CakeEmail('default');
 					$email->from(array('hiroyuki.kiyomizu@gmail.com' => 'たびつく'));
-					$email->to($this->request->data["User"]["email"]);
+					$email->to($this->request->data["User"]["login"]);
 					$email->subject('たびつく - ユーザー登録');
 					$email->send($message);
 					// 登録完了ページに遷移
@@ -119,7 +118,7 @@ class PagesController extends AppController {
 		if ($this->request->is("post")) {
 			// 有効な登録済みユーザーが存在するか確認
 			if ($user = $this->User->find('first', array(
-				'conditions' => array('login' => $this->request->data["User"]["email"])
+				'conditions' => array('login' => $this->request->data["User"]["login"])
 				))) {
 				// パスワード再設定用のキーを保存
 				$this->User->id = $user["User"]["id"];
@@ -129,7 +128,7 @@ class PagesController extends AppController {
 				$message = Router::url("/pages/reset_password/".$verify, true);
 				$email = new CakeEmail('default');
 				$email->from(array('hiroyuki.kiyomizu@gmail.com' => 'たびつく'));
-				$email->to($user["User"]["email"]);
+				$email->to($user["User"]["login"]);
 				$email->subject('たびつく - ユーザー登録');
 				$email->send($message);
 				// 登録完了ページに遷移
@@ -162,23 +161,4 @@ class PagesController extends AppController {
 		}
 	}
 
-	/**
-	 * Facebookログイン用のURLを生成
-	 *
-	 */
-	private function __setSosialLoginUrl () {
-		
-		if ($this->request->is("get")) {
-			$redirect = (isset($this->request->query["redirect"])) ? $this->request->query["redirect"] : "";
-		} else {
-			$redirect = (isset($this->request->data["redirect"])) ? $this->request->data["redirect"] : "";
-		}
-		
-		$params = array(
-			"scope" => "create_event,email",
-			"redirect_uri" => Router::url("/users/fb_auth/".$redirect, true)
-		);
-		$url = $this->facebook->getLoginUrl($params);
-		$this->set("fb_login", $url);
-	}
 }

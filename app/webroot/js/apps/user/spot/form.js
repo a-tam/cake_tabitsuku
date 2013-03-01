@@ -478,12 +478,6 @@ spotentryCtl.init=function(){
 		});		
 	}
 	
-	if ($(".pg_notification")) {
-		setTimeout(function(){
-			$(".pg_notification").slideUp("slow");
-		}, parseInt(4 * 1000));
-	}
-
 	mapInit();
 	commonCtl.registCategoryAddSet();
 };

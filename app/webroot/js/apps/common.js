@@ -8,7 +8,12 @@ $(document).ready(function(){
 
 commonCtl.init=function(){
 	
-	
+	if ($(".pg_notification")) {
+		setTimeout(function(){
+			$(".pg_notification").slideUp("slow");
+		}, parseInt(10 * 1000));
+	}
+
 	// searchBox
 	if($(".search_box").length>0){
 		commonCtl.searchBoxSet();

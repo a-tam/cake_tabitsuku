@@ -20,11 +20,11 @@ $this->end();
 		<li><a href="../">トップページ</a></li>
 		<li>マイページ</li>
 	</ul>
-	<?php echo $this->Session->flash();?>
 	
 	<div class="container">
 		<div class="main">
-			<div
+			<section>
+			<h3>ユーザー情報変更</h3>
 			<?php echo $this->Form->create("User"); ?>
 			<?php echo $this->Form->input("name");?>
 			<?php echo $this->Form->input("password", array(""));?>
@@ -32,17 +32,18 @@ $this->end();
 			<?php echo $this->Form->input("email");?>
 			<?php echo $this->Form->input("privacy", array("type" => "radio", "options" => array(0 => "無効", 1 => "有効")));?>
 			<?php echo $this->Form->end("送信");?>
-		</div>
-		<!-- //main -->
-
-		<div class="main">
+			</section>
+			<section>
+			<h3>外部連携</h3>
 			<?php echo $this->Form->create("User", array("action" => "facebook", "type" => "post", "id" => "facebook")); ?>
+			<?php echo $this->request->data["User"]["social_facebook"];?>
 			<?php if ($this->request->data["User"]["social_facebook"]):
-				echo $this->Form->button("Facebook 解除", array('name' => 'action', 'value' => 'connect', "id" => "connect"));
+				echo $this->Form->button("Facebook 解除", array('name' => 'action', 'value' => 'disconnect', "id" => "disconnect"));
 			else:
-				echo $this->Form->button("Facebook 登録", array('name' => 'action', 'value' => 'disconnect', "id" => "disconnect"));
+				echo $this->Form->button("Facebook 登録", array('name' => 'action', 'value' => 'connect', "id" => "connect"));
 			endif;?>
 			<?php echo $this->Form->end();?>
+			</section>
 		</div>
 		<!-- //main -->
 		
@@ -55,7 +56,6 @@ $this->end();
 
 	</div>
 	<!-- //container -->
-
 
 </div>
 <!-- //contents -->

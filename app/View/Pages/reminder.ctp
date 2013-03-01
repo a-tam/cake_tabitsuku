@@ -21,8 +21,6 @@ $this->end();
 		<li>パスワードリマインダー</li>
 	</ul>
 	
-<?php echo $this->Session->flash(); ?>
-
 	<div class="container">
 		<div class="main">
 		

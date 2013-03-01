@@ -97,4 +97,24 @@ class AppController extends Controller {
 			return $this->redirect("/");
 		}
 	}
+	
+	/**
+	 * Facebookログイン用のURLを生成
+	 *
+	 */
+	public function __setSosialLoginUrl($auth_url = "/users/fb_auth/") {
+	
+		if ($this->request->is("get")) {
+			$redirect = (isset($this->request->query["redirect"])) ? $this->request->query["redirect"] : "";
+		} else {
+			$redirect = (isset($this->request->data["redirect"])) ? $this->request->data["redirect"] : "";
+		}
+	
+		$params = array(
+			"scope" => "create_event,email",
+			"redirect_uri" => Router::url($auth_url.$redirect, true)
+		);
+		$url = $this->facebook->getLoginUrl($params);
+		$this->set("fb_login", $url);
+	}
 }
