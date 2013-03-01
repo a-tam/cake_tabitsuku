@@ -41,12 +41,42 @@ class PagesController extends AppController {
 			if ($data = $this->User->login($login_id, $password)) {
 				unset($data["User"]["password"]);
 				$this->Session->write("user_info", $data);
+				
+				// リダイレクト
+				switch ($this->request->data["Login"]["redirect"]) {
+					// ツアー登録
+					case "tour":
+						$redirect_url = "/tours/form";
+						break;
+						// スポット登録
+					case "spot":
+						$redirect_url = "/spots/form";
+						break;
+						// マイページ
+					case "mypage":
+						$redirect_url = "/users/";
+						break;
+						// トップページ
+					default:
+						$redirect_url = "/";
+				}
+				
+				$this->set("redirect_url", $redirect_url);
+				// フレームから親フレームのページをリダイレクト
 				$this->render("/pages/login_complete");
 			} else {
 				$this->Session->setFlash("パスワードが正しく有りません");
 			}
 		}
-		$this->__setSosialLoginUrl();
+		// 認証後のページ遷移
+		if ($this->request->is("get")) {
+			$redirect = (isset($this->request->query["redirect"])) ? $this->request->query["redirect"] : "";
+		} else {
+			$redirect = $this->request->data["Login"]["redirect"];
+		}
+		$this->request->data["Login"]["redirect"] = $redirect;
+		$url = $this->__setSosialLoginUrl("/users/fb_auth/", $redirect);
+		$this->set("fb_login", $url);
 	}
 	
 	/**
@@ -142,18 +172,26 @@ class PagesController extends AppController {
 	/**
 	 * パスワード再設定
 	 *
+	 * @param unknown $key
+	 * @todo 有効期限を設ける
 	 */
 	public function reset_password($key) {
+		// パスワード再発行用のキーを確認
 		if ($data = $this->User->findByVerify($key)) {
+			// 保存処理
 			if ($this->request->is("post")) {
-				$this->User->id = $data["User"]["id"];
-				$this->request->data["User"]["verify"]   = "";
-				$this->request->data["User"]["status"]   = "1";
-				if ($this->User->save($this->request->data)) {
-					$this->redirect("/");
+				try {
+					// パスワードの変更を確定する
+					$this->User->id = $data["User"]["id"];
+					$this->request->data["User"]["verify"]   = "";
+					$this->request->data["User"]["status"]   = "1";
+					if ($this->User->save($this->request->data)) {
+						$this->redirect("/");
+					}
+				} catch (Exception $e) {
+					$this->log($e->getMessage());
+					$this->Session->setFlash("パスワードの変更に失敗しました。");
 				}
-			} else {
-				$this->Session->setFlash("パスワード変更用");
 			}
 		} else {
 			$this->Session->setFlash("パスワード再発行用のURLが無効です。");

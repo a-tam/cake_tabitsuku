@@ -16,11 +16,6 @@
 			<?php echo h($user['User']['password']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Email'); ?></dt>
-		<dd>
-			<?php echo h($user['User']['email']); ?>
-			&nbsp;
-		</dd>
 		<dt><?php echo __('Social Facebook'); ?></dt>
 		<dd>
 			<?php echo h($user['User']['social_facebook']); ?>

@@ -17,6 +17,6 @@ $this->end();
 
 <script type="text/javascript">
 <!--
-window.parent.location = gBaseUrl;
+    window.parent.location = '<?php echo $redirect_url; ?>';
 //-->
 </script>

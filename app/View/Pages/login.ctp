@@ -19,6 +19,7 @@ $this->end();
 		
 		<p class="facebook"><a href="<?php echo $fb_login; ?>" target="_top" class="mouse_over"><img src="<?php echo $this->Html->url("/img/common/facebook.gif"); ?>" alt="Facebookアカウントでログイン" /></a></p>
 		<?php echo $this->Form->create("Login", array("url" => array("controller" => "pages", "action" => "login")));?>
+		<?php echo $this->Form->hidden("redirect");?>
 		<p><?php echo $this->Session->flash(); ?></p>
 		<dl>
 			<dt><img src="<?php echo $this->Html->url("/img/login/userid.gif"); ?>" alt="ユーザーID" /></dt>

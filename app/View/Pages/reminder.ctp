@@ -28,7 +28,7 @@ $this->end();
 		
 			<?php
 			echo $this->Form->create(null);
-			echo $this->Form->input("email");
+			echo $this->Form->input("login", array("label" => "メールアドレス"));
 			echo $this->Form->end("送信");
 			?>
 		</div>

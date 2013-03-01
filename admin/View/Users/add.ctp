@@ -5,7 +5,6 @@
 	<?php
 		echo $this->Form->input('login');
 		echo $this->Form->input('password');
-		echo $this->Form->input('email');
 		echo $this->Form->input('social_facebook');
 		echo $this->Form->input('name');
 		echo $this->Form->input('privacy');

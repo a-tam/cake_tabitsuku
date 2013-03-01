@@ -29,7 +29,7 @@ $this->end();
 			<?php echo $this->Form->input("name");?>
 			<?php echo $this->Form->input("password", array(""));?>
 			<?php echo $this->Form->input("confirm_password", array("type" => "password"));?>
-			<?php echo $this->Form->input("email");?>
+			<?php echo $this->Form->input("login");?>
 			<?php echo $this->Form->input("privacy", array("type" => "radio", "options" => array(0 => "無効", 1 => "有効")));?>
 			<?php echo $this->Form->end("送信");?>
 			</section>
