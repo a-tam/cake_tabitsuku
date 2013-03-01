@@ -92,5 +92,9 @@ class AppController extends Controller {
 		return $_ispermit;
 	}
 	
-	
+	public function user_auth() {
+		if (!$user_info = $this->Session->read("user_info")) {
+			return $this->redirect("/");
+		}
+	}
 }
