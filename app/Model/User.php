@@ -64,6 +64,13 @@ class User extends AppModel {
 				'message' => '半角英数記号のみ入力可能です。',
 			),
 		),
+		'confirm_password' => array(
+			'correspond' => array(
+				'rule' => array('correspond'),
+				'message' => '確認用パスワードと一致ししません。',
+				'allowEmpty' => true,
+			),
+		),
 		'email' => array(
 			'email' => array(
 				'rule' => array('email'),
@@ -196,6 +203,7 @@ class User extends AppModel {
 	}
 	
 	public function login($id, $password) {
+		$this->log(AuthComponent::password($password));
 		if ($data = $this->find('first', array('conditions' => array(
 			'login'    => $id,
 			'password' => AuthComponent::password($password),
@@ -229,5 +237,14 @@ class User extends AppModel {
 		} else {
 			return false;
 		}
+	}
+	
+	/**
+	 * 確認用パスワードと一致するか確認する
+	 * @param unknown $check
+	 * @return boolean
+	 */
+	function correspond($check){
+		return ($this->data[$this->alias]['password'] == $this->data[$this->alias]['confirm_password']);
 	}
 }
