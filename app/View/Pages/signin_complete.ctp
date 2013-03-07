@@ -14,6 +14,11 @@ $this->end();
 // echo implode("\n", $__script);
 // $this->end();
 ?>
+<script type="">
+top.location.href = "/";
+</script>
+
+<!--
 	<div class="box">
 		<p class="title">ユーザー登録完了</p>
 		<div style="margin-left: 9px; margin-right: 35px; padding-top: 15px; padding-left: 30px; font-size: 12px;">
@@ -22,4 +27,4 @@ $this->end();
 			<a href="javascript:window.parent.commonCtl.loginClose();" class="selectbtn mouse_over">閉じる</a>
 		</div>
 	</div>
-	<!-- //login_box -->
+-->

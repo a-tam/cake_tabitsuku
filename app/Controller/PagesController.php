@@ -98,6 +98,7 @@ class PagesController extends AppController {
 					$email->subject('たびつく - ユーザー登録');
 					$email->send($message);
 					// 登録完了ページに遷移
+					$this->Session->setFlash("本人確認用のメールを送信しました。メール本文のURLをクリックしてください。");
 					return $this->render("signin_complete");
 				}
 			} catch (Exception $e) {
@@ -163,7 +164,9 @@ class PagesController extends AppController {
 				$email->subject('たびつく - ユーザー登録');
 				$email->send($message);
 				// 登録完了ページに遷移
-				return $this->render("reminder_complete");
+				$this->Session->setFlash("パスワード再設定用のメールを送信しました。URLをクリックして、パスワードを再設定してください。");
+				$this->redirect("/");
+				
 			} else {
 				$this->Session->setFlash("登録されていません");
 			}
@@ -187,6 +190,7 @@ class PagesController extends AppController {
 					$this->request->data["User"]["verify"]   = "";
 					$this->request->data["User"]["status"]   = "1";
 					if ($this->User->save($this->request->data)) {
+						$this->Session->setFlash("パスワードを変更しました。");
 						$this->redirect("/");
 					}
 				} catch (Exception $e) {
