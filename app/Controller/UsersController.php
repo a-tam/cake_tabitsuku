@@ -153,7 +153,6 @@ class UsersController extends AppController {
 		$user_info = $this->Session->read("user_info");
 		$fb_user = $this->facebook->getUser();
 		$user_profile = $this->facebook->api('/me');
-		$this->log(array($fb_user, $user_profile));
 		// 認証成功
 		if ($user_info && $user_profile) {
 			// 既に他のアカウントに紐付いていないか確認
@@ -230,22 +229,18 @@ class UsersController extends AppController {
 				} else {
 					// 既に連携済み
 					if ($user_info === false) {
-						$this->log(__LINE__);
 						$this->Session->setFlash("すでにFacebookアカウントと同じメールアドレスでのアカウントをお持ちの場合、こちらから通常ログインをおこないFacebook連携設定に進んでください。");
 					// たびつくにログイン失敗
 					} elseif ($user_info === null) {
-						$this->log(__LINE__);
 						$this->Session->setFlash("旅つくのログインに失敗しました。");
 					}
 				}
 			// FB情報取得エラー
 			} elseif ($user_info === null) {
-				$this->log(__LINE__);
 				$this->Session->setFlash("Facebookのユーザー情報の取得に失敗しました。");
 			}
 		// 認証エラー
 		} elseif ($user_info === null) {
-			$this->log(__LINE__);
 			$this->Session->setFlash("Facebookのログインに失敗しました。");
 		}
 		// ログイン失敗

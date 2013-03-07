@@ -104,7 +104,8 @@ class PagesController extends AppController {
 				$this->log($e->getMessage());
 			}
 		}
-		$this->__setSosialLoginUrl();
+		$url = $this->__setSosialLoginUrl("/users/fb_auth/", $redirect);
+		$this->set("fb_login", $url);
 		$this->render("login");
 	}
 	
