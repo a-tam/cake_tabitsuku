@@ -63,7 +63,7 @@ class PagesController extends AppController {
 				
 				$this->set("redirect_url", $redirect_url);
 				// フレームから親フレームのページをリダイレクト
-				$this->render("/pages/login_complete");
+				$this->render("login_complete");
 			} else {
 				$this->Session->setFlash("パスワードが正しく有りません");
 			}
@@ -98,7 +98,7 @@ class PagesController extends AppController {
 					$email->subject('たびつく - ユーザー登録');
 					$email->send($message);
 					// 登録完了ページに遷移
-					return $this->render("/pages/signin_complete");
+					return $this->render("signin_complete");
 				}
 			} catch (Exception $e) {
 				$this->log($e->getMessage());
@@ -163,7 +163,7 @@ class PagesController extends AppController {
 				$email->subject('たびつく - ユーザー登録');
 				$email->send($message);
 				// 登録完了ページに遷移
-				return $this->render("/pages/reminder_complete");
+				return $this->render("reminder_complete");
 			} else {
 				$this->Session->setFlash("登録されていません");
 			}
