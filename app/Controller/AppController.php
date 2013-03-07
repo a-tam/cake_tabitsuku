@@ -110,4 +110,18 @@ class AppController extends Controller {
 		$url = $this->facebook->getLoginUrl($params);
 		return $url;
 	}
+	
+	/**
+	 * ユーザー情報再取得
+	 *
+	 */
+	public function __resetUserInfo() {
+		$user_info = $this->Session->read("user_info");
+		$this->User->id = $user_info["User"]["id"];
+		$user_info = $this->User->read();
+		unset($user_info["User"]["password"]);
+		$this->Session->write("user_info", $user_info);
+		return $user_info;
+	}
+	
 }

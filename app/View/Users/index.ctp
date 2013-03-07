@@ -36,11 +36,10 @@ $this->end();
 			<section>
 			<h3>外部連携</h3>
 			<?php echo $this->Form->create("User", array("action" => "facebook", "type" => "post", "id" => "facebook")); ?>
-			<?php echo $this->request->data["User"]["social_facebook"];?>
-			<?php if ($this->request->data["User"]["social_facebook"]):
-				echo $this->Form->button("Facebook 解除", array('name' => 'action', 'value' => 'disconnect', "id" => "disconnect"));
+			<?php if (isset($facebook_login_url)):
+				echo $this->Html->link("Facebook 連携", $facebook_login_url);
 			else:
-				echo $this->Form->button("Facebook 登録", array('name' => 'action', 'value' => 'connect', "id" => "connect"));
+				echo $this->Html->link("Facebook 連携解除", "/users/fb_disconnect");
 			endif;?>
 			<?php echo $this->Form->end();?>
 			</section>
