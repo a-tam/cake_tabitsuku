@@ -122,7 +122,7 @@ class MailVerify extends AppModel {
 	 * @param number $expire_time 有効期限（秒）
 	 * @throws Exception
 	 */
-	public function create($user_id, $type, $params = array(), $expire_time = 3600) {
+	public function getUrl($user_id, $type, $params = array(), $expire_time = 3600) {
 		$verify = hash('sha256', uniqid());
 		$url = Router::url("/users/mail_verify/".$verify, true);
 		$data = array(

@@ -25,17 +25,17 @@ class UsersController extends AppController {
 			}
 			$this->User->id = $user_info["User"]["id"];
 			// 保存前にバリデーション確認
-			if ($this->User->validates($this->request->data)) {
-
+			$this->User->set($this->request->data);
+			if ($this->User->validates()) {
 				// ログインIDは、本人確認後確定する
 				$change_email = $this->request->data["User"]["login"];
 				unset($this->request->data["User"]["login"]);
 
 				// バリデーションなしで保存
-				if ($this->User->save($this->request->data)) {
+				if ($this->User->save($this->request->data, false)) {
 					// ログインID（メールアドレス）が変更
 					if ($user_info["User"]["login"] != $change_email) {
-						$url = $this->MailVerify->create(
+						$url = $this->MailVerify->getUrl(
 							$user_info["User"]["id"],
 							"change_login",
 							array(
@@ -59,6 +59,10 @@ class UsersController extends AppController {
 					$this->__resetUserInfo();
 					$this->redirect("/users/index");
 				}
+			} else {
+
+				unset($this->request->data["User"]["password"]);
+				unset($this->request->data["User"]["confirm_password"]);
 			}
 
 		} else {
