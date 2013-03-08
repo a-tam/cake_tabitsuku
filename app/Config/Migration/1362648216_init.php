@@ -877,7 +877,24 @@ class Init extends CakeMigration {
 	 */
 	
 	public function after($direction) {
-		
+		$Categories = ClassRegistry::init('Category');
+		if ($direction == 'up') { //add 2 records to statues table
+			$sql = <<<EOM
+INSERT INTO `categories` (`id`, `parent_id`, `path`, `sort`, `name`, `created`, `modified`, `status`) VALUES
+(1, '', '/1/', 1, '見る', '2012-06-12 23:16:40', '2012-12-14 21:25:53', '1'),
+(2, '', '/2/', 2, '宿泊', '2012-06-12 23:16:42', '2012-12-14 21:38:25', '1'),
+(3, '', '/3/', 3, '遊ぶ', '2012-06-12 23:16:43', '2012-12-14 21:25:53', '1'),
+(4, '', '/4/', 4, '食べる', '2012-06-18 11:08:59', '2012-12-14 21:25:53', '1'),
+(5, '', '/5/', 5, '買う', '2012-06-18 11:08:59', '2012-12-14 21:25:53', '1'),
+(6, '', '/6/', 6, '乗り物', '2012-06-18 11:08:59', '2012-12-14 21:25:53', '1');
+EOM;
+			if ($Categories->query($sql)) {
+				
+			}
+			echo 'Insert Category data';
+		} else if ($direction == 'down') {
+			//do more work here
+		}
 		return true;
 	}
 }
