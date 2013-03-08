@@ -13,7 +13,7 @@ class PagesController extends AppController {
 	
 	public $name = 'Pages';
 	
-	public $uses = array("User");
+	public $uses = array('User', 'Tag', 'Category', 'Tour', 'Spot', 'SpotTag', 'TourTag');
 	
 	public $helper = array("Tabitsuku");
 	
@@ -203,5 +203,67 @@ class PagesController extends AppController {
 			$this->redirect("/");
 		}
 	}
+	
+	public function like() {
+		$data = 0;
+		if ($this->request->is("post")) {
+			$mode = $this->request->data["mode"];
+			$type = $this->request->data["type"];
+			$user = $this->request->data["fb_user"];
+			$id   = $this->request->data["id"];
+			$this->log(array($mode, $type, $user, $id));
+			if ($mode == "plus") {
+				$add = '+ 1';
+			} elseif ($mode == "minus") {
+				$add = '- 1';
+			}
+			if (!$mode || !$type || !$user || !$id) {
+				throw new BadRequestException("パラメタが足りません");
+			}
+			switch ($type) {
+				// ツアー
+				case "tour":
+					$this->Tour->updateAll(
+						array('Tour.like_count' => 'Tour.like_count '.$add),
+						array('Tour.id' => $id));
+					
+					break;
+					
+				// スポット
+				case "spot":
+					$this->Spot->updateAll(
+						array('Tour.like_count' => 'Spot.like_count '.$add),
+						array('Spot.id' => $id));
+					break;
+				
+				default:
+					throw new BadRequestException("リクエストが正しく有りません");
+					break;
+			}
+			$data = 1;
+		}
+		$this->set('data', $data);
+		$this->layout = null;
+		$this->render('/General/Serialize/json');
+	}
 
+	/**
+	 * Enter description here ...
+	 *
+	 */
+	public function ranking() {
+
+		
+		// タグ
+		$data = $this->Tag->find('list');
+		print_r($data);
+		
+		// カテゴリ
+		
+		// ツアー
+		
+		// スポット
+	}
+	
+	
 }
