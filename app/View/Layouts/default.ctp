@@ -28,6 +28,7 @@ $_scripts[] = $this->Html->script('jquery/jquery-1.7.2.min');
 $_scripts[] = $this->Html->script('jquery/jquery-ui-1.8.20.custom.min');
 $_scripts[] = $this->Html->script('jquery/jquery.powertip.min');
 $_scripts[] = $this->Html->script('jquery/jquery.easing.js');
+$_scripts[] = $this->Html->script('jquery/util/jquery.url.js');
 $_scripts[] = $this->Html->script('apps/browser.js');
 $_scripts[] = $this->Html->script('apps/common.js');
 echo implode("\n", $_scripts);
