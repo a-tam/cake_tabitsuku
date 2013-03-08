@@ -1,12 +1,80 @@
-
 <div id="fb-root"></div>
-<script>(function(d, s, id) {
-	var js, fjs = d.getElementsByTagName(s)[0];
-	if (d.getElementById(id)) return;
-	js = d.createElement(s); js.id = id;
-	js.src = "//connect.facebook.net/ja_JP/all.js#xfbml=1&appId="+gFacebookAppId
-	fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script><!-- facebook -->
+<script>
+window.fbAsyncInit = function() {
+// init the FB JS SDK
+	FB.init({
+		appId      : gFacebookAppId, // App ID from the App Dashboard
+		channelUrl : '//<?php echo $_SERVER["SERVER_NAME"]; ?>/channel.php', // Channel File for x-domain communication
+		status     : true, // check the login status upon init?
+		cookie     : true, // set sessions cookies to allow your server to access the session?
+		xfbml      : true  // parse XFBML tags on this page?
+	});
+
+	// like
+	FB.Event.subscribe('edge.create', function(response) {
+		var url = $.url(response);
+		var path_info = url.attr("path").split("/");
+		var fb_auth = FB.getAuthResponse();
+		var data = {
+				mode    : "plus",
+				type    : path_info[1],
+				fb_user : fb_auth.userID,
+				id      : path_info[3]
+			};
+		$.ajax({
+			url      : gBaseUrl + "pages/like",
+			async    : false,
+			data     : data,
+			dataType : "json",
+			type     : "post",
+			success  : function(json) {
+				console.log(json);
+			},
+			error    : function() {
+				console.log(arguments);
+			}
+		});
+	});
+
+	// not like
+	FB.Event.subscribe('edge.remove', function(response) {
+		var url = $.url(response);
+		var path_info = url.attr("path").split("/");
+		var fb_auth = FB.getAuthResponse();
+		var data = {
+				mode    : "minus",
+				type    : path_info[1],
+				fb_user : fb_auth.userID,
+				id      : path_info[3]
+			};
+		$.ajax({
+			url      : gBaseUrl + "pages/like",
+			async    : false,
+			data     : data,
+			dataType : "json",
+			type     : "post",
+			success  : function(json) {
+				console.log(json);
+			},
+			error    : function() {
+				console.log(arguments);
+			}
+		});
+	});
+};
+
+// Load the SDK's source Asynchronously
+// Note that the debug version is being actively developed and might
+// contain some type checks that are overly strict.
+// Please report such bugs using the bugs tool.
+(function(d, debug){
+var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+if (d.getElementById(id)) {return;}
+js = d.createElement('script'); js.id = id; js.async = true;
+js.src = "//connect.facebook.net/ja_JP/all" + (debug ? "/debug" : "") + ".js";
+ref.parentNode.insertBefore(js, ref);
+}(document, /*debug*/ false));
+</script><!-- facebook -->
 
 <header>
 	<h1><a href="<?php echo $this->Html->url("/");?>"><img src="<?php echo $this->Html->url("/img/logo.gif"); ?>" alt="たびつく　自分だけの旅行プランを作ろう" /></a></h1>
