@@ -5,6 +5,9 @@ App::uses('CakeEmail', 'Network/Email');
 class UsersController extends AppController {
 	
 	public $uses = array("MailVerify", "User");
+	
+	public $components = array('Tabitsuku');
+	
 	/**
 	 * ユーザトップページ
 	 *
@@ -75,6 +78,10 @@ class UsersController extends AppController {
 			$facebook_login_url = $this->__setSosialLoginUrl("/users/fb_connect");
 			$this->set("facebook_login_url", $facebook_login_url);
 		}
+		// ランキング情報取得
+		$ranking = $this->Tabitsuku->get_ranking();
+		$this->set("ranking", $ranking);
+		
 	}
 	
 	/**

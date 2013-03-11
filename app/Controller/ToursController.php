@@ -1,6 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
-
+App::uses('TabitsukuComponent', 'Controller/Component');
 /**
  *
  * ツアー関連のコントローラー
@@ -12,10 +12,13 @@ class ToursController extends AppController {
 	
 	public $name = 'Tours';
 	
-	public $uses = array();
+	public $uses = array('User', 'Tag', 'Category', 'Tour', 'Spot', 'SpotTag', 'TourTag');
+	
+	public $components = array('Tabitsuku');
 	
 	public function index() {
-		
+		$ranking = $this->Tabitsuku->get_ranking();
+		$this->set("ranking", $ranking);
 	}
 	
 	public function show($id) {

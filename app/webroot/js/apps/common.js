@@ -455,7 +455,7 @@ tourCtl.render = function(info, class_name) {
 	// facebook like button
 	elm.find(".pg_like_count")
 		.addClass("fb-like")
-		.attr("data-href", gBaseUrl + 'user/tour/show/' + info.Tour.id);
+		.attr("data-href", gBaseUrl + 'tours/show/' + info.Tour.id);
 	
 	// image
 	if (info.Tour.image) {

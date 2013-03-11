@@ -2,10 +2,9 @@
 				<dt><img src="<?php echo $this->Html->url("/img/common/side/taglist.gif"); ?>" alt="タグリスト" /></dt>
 				<dd>
 					<ul>
-						<li><a href=""><em>デート</em></a><p><span>7200</span></p></li>
-						<li><a href=""><em>ランチ</em></a><p><span>54</span></p></li>
-						<li><a href=""><em>夜景</em></a><p><span>45</span></p></li>
-						<li><a href=""><em>長いタグ長いタグ長いタグ長いタグ長いタグ</em></a><p><span>45</span></p></li>
+					<?php foreach($ranking["tag"] as $tag) :?>
+						<li><a href=""><em><?php echo h($tag["name"]);?></em></a><p><span><?php echo h($tag["count"]);?></span></p></li>
+					<?php endforeach; ?>
 					</ul>
 				</dd>
 			</dl>
@@ -15,12 +14,9 @@
 				<dt><img src="<?php echo $this->Html->url("/img/common/side/category.gif"); ?>" alt="カテゴリ" /></dt>
 				<dd>
 					<ul>
-						<li><a href=""><em>見る</em></a><p><span>72</span></p></li>
-						<li><a href=""><em>遊ぶ</em></a><p><span>54</span></p></li>
-						<li><a href=""><em>食べる</em></a><p><span>45</span></p></li>
-						<li><a href=""><em>宿泊・温泉</em></a><p><span>45</span></p></li>
-						<li><a href=""><em>乗り物/乗り場</em></a><p><span>45</span></p></li>
-						<li><a href=""><em>買う</em></a><p><span>45</span></p></li>
+					<?php foreach($ranking["category"] as $category) :?>
+						<li><a href=""><em><?php echo h($category["name"]);?></em></a><p><span><?php echo h($category["count"]);?></span></p></li>
+					<?php endforeach; ?>
 					</ul>
 				</dd>
 			</dl>
@@ -30,11 +26,9 @@
 				<dt><img src="<?php echo $this->Html->url("/img/common/side/tourranking.gif"); ?>" alt="ツアーランキング" /></dt>
 				<dd>
 					<ul>
-						<li class="rank1"><a href="">東京グルメ食べ歩きツアー</a></li>
-						<li class="rank2"><a href="">屋久島周辺観光</a></li>
-						<li class="rank3"><a href="">北海道の大自然</a></li>
-						<li class="rank4"><a href="">長いツアー長いツアー長いツアー長いツアー長いツアー</a></li>
-						<li class="rank5"><a href="">九州新幹線の旅</a></li>
+					<?php foreach($ranking["tour"] as $key => $tour) :?>
+						<li class="rank<?php echo $key+1;?>"><a href="/tours/show/<?php echo $tour["tour_id"];?>"><?php echo h($tour["name"]);?></a></li>
+					<?php endforeach;?>
 					</ul>
 				</dd>
 			</dl>
@@ -44,11 +38,9 @@
 				<dt><img src="<?php echo $this->Html->url("/img/common/side/spotranking.gif"); ?>" alt="スポットランキング" /></dt>
 				<dd>
 					<ul>
-						<li class="rank1"><a href="">スカイツリー</a></li>
-						<li class="rank2"><a href="">東大寺</a></li>
-						<li class="rank3"><a href="">厳島神社</a></li>
-						<li class="rank4"><a href="">海遊館</a></li>
-						<li class="rank5"><a href="">クッチーナ　イタリアーナ</a></li>
+						<?php foreach($ranking["spot"] as $key => $tour) :?>
+							<li class="rank<?php echo $key+1;?>"><a href="/spots/show/<?php echo $tour["spot_id"];?>"><?php echo h($tour["name"]);?></a></li>
+						<?php endforeach;?>
 					</ul>
 				</dd>
 			</dl>

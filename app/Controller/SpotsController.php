@@ -12,10 +12,13 @@ class SpotsController extends AppController {
 
 	public $name = 'Spots';
 
-	public $uses = array();
-
-	public function index() {
+	public $uses = array('User', 'Tag', 'Category', 'Tour', 'Spot', 'SpotTag', 'TourTag');
 		
+	public $components = array('Tabitsuku');
+	
+	public function index() {
+		$ranking = $this->Tabitsuku->get_ranking();
+		$this->set("ranking", $ranking);
 	}
 	
 	public function show($id) {

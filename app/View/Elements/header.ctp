@@ -28,10 +28,9 @@ window.fbAsyncInit = function() {
 			dataType : "json",
 			type     : "post",
 			success  : function(json) {
-				console.log(json);
 			},
 			error    : function() {
-				console.log(arguments);
+				alert("いいね！の処理が正しく行われませんでした。");
 			}
 		});
 	});
@@ -41,6 +40,7 @@ window.fbAsyncInit = function() {
 		var url = $.url(response);
 		var path_info = url.attr("path").split("/");
 		var fb_auth = FB.getAuthResponse();
+		console.log(path_info);
 		var data = {
 				mode    : "minus",
 				type    : path_info[1],
@@ -54,10 +54,9 @@ window.fbAsyncInit = function() {
 			dataType : "json",
 			type     : "post",
 			success  : function(json) {
-				console.log(json);
 			},
 			error    : function() {
-				console.log(arguments);
+				alert("いいね！の処理が正しく行われませんでした。");
 			}
 		});
 	});
