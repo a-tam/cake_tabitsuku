@@ -2,7 +2,7 @@
 
 class TabitsukuComponent extends Component {
 	
-	public function initialize() {
+	public function initialize(Controller $controller) {
 		$this->loadModel("SpotTag");
 		$this->loadModel("Category");
 		$this->loadModel("Spot");
