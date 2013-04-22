@@ -94,7 +94,7 @@ class MailVerify extends AppModel {
 	 * パラメタのシリアライズ
 	 * @see Model::beforeSave()
 	 */
-	public function beforeSave(array $options = array()) {
+	public function beforeSave($options = array()) {
 		$this->log($this->data);
 		$this->data[$this->name]["params"] = serialize($this->data[$this->name]["params"]);
 		return true;
@@ -104,7 +104,7 @@ class MailVerify extends AppModel {
 	 * パラメタのデシリアライズ
 	 * @see Model::afterFind()
 	 */
-	public function afterFind(array $results, $primary = false) {
+	public function afterFind($results, $primary = false) {
 		
 		foreach ($results as $key => $val) {
 			if (isset($val[$this->name]['params'])) {
