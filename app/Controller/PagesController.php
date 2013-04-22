@@ -262,4 +262,13 @@ class PagesController extends AppController {
 		$this->layout = null;
 		$this->render('/General/Serialize/json');
 	}
+	
+	/**
+	 * Enter description here ...
+	 *
+	 */
+	public function pdf() {
+		$this->response->type('pdf'); // Content-Type を指定
+		$this->render(null, 'pdf');  // レイアウトを指定
+	}
 }
