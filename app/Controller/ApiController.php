@@ -13,7 +13,7 @@ class ApiController extends AppController {
 	
 	public $name = 'Api';
 	
-	public $uses = array('Spot', 'Tour', 'Tag', 'Category', 'User');
+	public $uses = array('Spot', 'Tour', 'Tag', 'Category', 'User', 'Route');
 	
 	public $components = array('RequestHandler', 'Search.Prg', 'ImageResizer.ImageResizer');
 	public $presetVars = array();
@@ -22,12 +22,21 @@ class ApiController extends AppController {
 		parent::beforeFilter();
 	}
 	
+	/**
+	 * ログイン処理
+	 */
 	public function login() {
-		$login_id = $this->request->query["userid"];
+		$login_id = $this->request->query["user_id"];
 		$password = $this->request->query["password"];
-		if ($user_info = $this->User->login($login_id, $password)) {
-			$this->Session->write("user_info", $user_info);
+		if ($_user_info = $this->User->login($login_id, $password)) {
+			$this->Session->write("user_info", $_user_info);
 		}
+		$user_info = array(
+			"id"      => $_user_info["User"]["id"],
+			"name"    => $_user_info["User"]["name"],
+			"privacy" => $_user_info["User"]["privacy"]
+		);
+		unset($user_info["User"]["name"]);
 		$session = $this->Session->id();
 		$output_var = array(
 			"session",
@@ -37,6 +46,10 @@ class ApiController extends AppController {
 		$this->set('_serialize', $output_var);
 	}
 	
+	/**
+	 * ログアウト
+	 *
+	 */
 	public function logout() {
 		$this->Session->destroy();
 		$status = 1;
@@ -47,8 +60,10 @@ class ApiController extends AppController {
 		$this->set('_serialize', $output_var);
 	}
 	
+	/**
+	 * スポット一覧
+	 */
 	public function spot_list() {
-
 		// 初期化
 		$list = array();
 		$count = 0;
@@ -85,14 +100,28 @@ class ApiController extends AppController {
 		$this->set('_serialize', $output_var);
 	}
 	
-	public function spot_get() {
-		
-		$relation = array();
-		$list = array();
+	public function spot_get($id) {
+		$this->Spot->id = $id;
+		// 使用しているツアー一覧を取得
+		if (isset($this->request->query["has_tour"]) && $this->request->query["has_tour"] == 1) {
+			$data = $this->Spot->read();
+			$use_tour_list = array();
+			foreach ($data["Route"] as $route) {
+				$use_tour_list[] = $route["tour_id"];
+			}
+			$tour_list = $this->Tour->find("all", array(
+				"conditions" => array("Tour.id" => $use_tour_list),
+				"recursive"  => 0,
+				"limit"      => 20,
+			));
+			$data["UseTour"] = $tour_list;
+			unset($data["Route"]);
+		} else {
+			$this->Spot->unbindModel(array("hasMany" => array("Route")));
+			$data = $this->Spot->read();
+		}
 		$output_var = array(
-			"count",
-			"relation",
-			"list"
+			"data"
 		);
 		$this->set(compact($output_var));
 		$this->set('_serialize', $output_var);
@@ -169,8 +198,7 @@ class ApiController extends AppController {
 			if (isset($this->request->query["route"]) && $this->request->query["route"] == 1) {
 				$this->Tour->recursive = 2;
 				unset($unbind["hasMany"]);
-				$this->Tour->Route->unbindModel(array("belongsTo" => array("Tour")
-				));
+				$this->Tour->Route->unbindModel(array("belongsTo" => array("Tour")));
 			}
 			$this->Tour->unbindModel($unbind);
 			$this->paginate = array(
@@ -196,18 +224,25 @@ class ApiController extends AppController {
 		
 	}
 	
-	public function tour_get() {
-		
-		$relation = array();
-		$list = array();
+	public function tour_get($id) {
+
+		$this->Tour->id = $id;
+		$this->Tour->recursive = 0;
+		$data = $this->Tour->read();
+		$this->Route->unbindModel(array("belongsTo" => array("Tour")));
+		$route = $this->Route->find("all", array(
+			"conditions" => array(
+				"Route.tour_id" => $id
+			),
+			"recursive" => 0,
+			"order" => array("Route.sort")
+		));
+		$data["Route"] = $route;
 		$output_var = array(
-			"count",
-			"relation",
-			"list"
+			"data"
 		);
 		$this->set(compact($output_var));
 		$this->set('_serialize', $output_var);
-		
 	}
 	
 	public function tour_save() {
@@ -306,8 +341,7 @@ class ApiController extends AppController {
 	
 	public function category_list($id = "") {
 
-		$list = $this->Category
-			->find("list", array(
+		$list = $this->Category->find("list", array(
 				"conditions" => array(
 					"parent_id" => $id,
 					"status"    => 1
@@ -318,7 +352,6 @@ class ApiController extends AppController {
 		);
 		$this->set(compact($output_var));
 		$this->set('_serialize', $output_var);
-
 	}
 	
 	function article_list () {
