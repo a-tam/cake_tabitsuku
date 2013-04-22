@@ -3,7 +3,7 @@
 class TabitsukuComponent extends Component {
 	
 	public function initialize(Controller $controller) {
-		$this->loadModel("SpotTag");
+		$this->loadModel("SpotsTag");
 		$this->loadModel("Category");
 		$this->loadModel("Spot");
 		$this->loadModel("Tour");
@@ -43,7 +43,7 @@ class TabitsukuComponent extends Component {
 			" GROUP BY tag_id".
 			" ORDER BY cnt DESC".
 			" LIMIT 5";
-		$data = $this->SpotTag->query($sql);
+		$data = $this->SpotsTag->query($sql);
 		// 整形
 		foreach($data as $row) {
 			$tag_ranking[] = array(
