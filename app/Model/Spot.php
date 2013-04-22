@@ -1,6 +1,7 @@
 <?php
 App::uses('AppModel', 'Model');
 App::import('Model','Category');
+App::import('Model','Tag');
 
 /**
  * Spot Model
@@ -138,14 +139,16 @@ class Spot extends AppModel {
 	);
 	
 	// 検索対象のフィルタ
-	public $actsAs = array('Search.Searchable');
+	public $actsAs = array('Search.Searchable', 'Tabitsuku');
+	
 	public $filterArgs = array(
 		'name'     => array('type' => 'like'),
 		'keyword'  => array('type' => 'query', 'method' => 'findByKeyword'),
 		'ne_lat'   => array('type' => 'query', 'method' => 'findByLatLng'),
 		'category' => array('type' => 'like'),
-		'tags'     => array('type' => 'like'),
+		'tag'      => array('type' => 'query', 'method' => 'findByTags'),
 	);
+	// 検索条件として必ず指定される項目
 	public $base_condition = array('Spot.status' => '1');
 	// 検索対象のフィールド設定
 	public $presetVars = array(
@@ -154,11 +157,12 @@ class Spot extends AppModel {
 			array('field' => 'description', 'type' => 'like'),
 			array('field' => 'keyword'    , 'type' => 'like'),
 	);
-	
+	// ファイルサイズの変更
 	public function setResizeComponent(Controller $controller) {
 		$this->ImageResizer = $controller->ImageResizer;
 	}
-	
+
+	// キーワード検索
 	public function findByKeyword($data = array()) {
 		$cond = array();
 		$keyword = $data["keyword"];
@@ -173,6 +177,12 @@ class Spot extends AppModel {
 		return $cond;
 	}
 	
+	/**
+	 * 位置情報で検索
+	 *
+	 * @param unknown $data
+	 * @return Ambigous <multitype:, multitype:multitype:string  >
+	 */
 	public function findByLatLng($data = array()) {
 		$cond = array();
 		if ($data["ne_lat"] && $data["sw_lat"] && $data["ne_lng"] && $data["sw_lng"]) {
@@ -187,19 +197,24 @@ class Spot extends AppModel {
 		return $cond;
 	}
 	
+	/**
+	 * タグ名で検索（空白区切りの検索は余りにも重いので行わない）
+	 *
+	 * @param unknown $data
+	 * @return multitype:multitype:
+	 */
 	public function findByTags($data = array()) {
-		$this->Tagged->Behaviors->attach('Containable', array('autoFields' => false));
-		$this->Tagged->Behaviors->attach('Search.Searchable');
-		$query = $this->Tagged->getQuery('all', array(
-				'conditions' => array('Tag.name'  => $data['tags']),
-				'fields' => array('foreign_key'),
-				'contain' => array('Tag')
-		));
-		return $query;
+		$tag = $data["tag"];
+		$spot_list = $this->filterByTagSpot($tag);
+		$cond = array(
+				$this->alias . '.id' => array_values($spot_list)
+		);
+		return $cond;
 	}
 	
 	/**
 	 * 存在すれば更新、無ければ追加
+	 *
 	 * @param unknown $data
 	 * @param string $validate
 	 * @param unknown $fieldList
@@ -219,6 +234,7 @@ class Spot extends AppModel {
 	
 	/**
 	 * 保存前処理
+	 *
 	 * @see Model::beforeSave()
 	 */
 	public function beforeSave($options = array()) {
@@ -226,7 +242,7 @@ class Spot extends AppModel {
 		if (isset($this->data[$this->name]["image"])) {
 			$file = $this->data[$this->name]["image"];
 			if ($file["error"] == 0 && $file["size"] > 0) {
-//				$imageResizer = new ImageResizerComponent();
+				// リサイズ
 				$resize_type = array(
 					"thumb" => array("width" => 320, "height" => 240),
 					"middle" => array("width" => 800, "height" => 600),
