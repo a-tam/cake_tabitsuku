@@ -3,7 +3,6 @@ tmp/*
 [Cc]onfig/database.php
 [Cc]onfig/facebook.php
 app/tmp/*
-app/[Cc]onfig/core.php
 app/[Cc]onfig/database.php
 app/[Cc]onfig/email.php
 app/[Cc]onfig/facebook.php

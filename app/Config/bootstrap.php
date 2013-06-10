@@ -181,5 +181,3 @@ CakeLog::config('error', array(
 ));
 
 CakePlugin::load(array('Migrations', 'Search', 'ImageResizer'));
-
-Configure::load('facebook');

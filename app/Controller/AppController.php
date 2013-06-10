@@ -36,6 +36,7 @@ App::import("Model", "Category");;
 class AppController extends Controller {
 	
 	function beforeFilter() {
+		Configure::load('facebook');
 //		$category = $this->Category_model->get_list("");
 		$this->set("title_for_layout", __("旅つく"));
 		$this->facebook = new Facebook( array(

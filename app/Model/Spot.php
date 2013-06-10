@@ -147,6 +147,7 @@ class Spot extends AppModel {
 		'ne_lat'   => array('type' => 'query', 'method' => 'findByLatLng'),
 		'category' => array('type' => 'like'),
 		'tag'      => array('type' => 'query', 'method' => 'findByTags'),
+		'user_id'  => array('type' => 'value'),  
 	);
 	// 検索条件として必ず指定される項目
 	public $base_condition = array('Spot.status' => '1');

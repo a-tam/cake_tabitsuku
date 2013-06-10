@@ -202,6 +202,7 @@ spotentryCtl.init=function(){
 			e.stopPropagation();
 		});
 
+		// 保存処理
 		$(".input_form").submit(function() {
 			if (form_validate() == false) {
 				return false;
@@ -253,6 +254,7 @@ spotentryCtl.init=function(){
 			return false;
 		});
 
+		// 入力チェック
 		function form_validate() {
 			var messages = [];
 			var input_item = [];

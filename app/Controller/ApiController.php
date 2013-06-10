@@ -30,14 +30,14 @@ class ApiController extends AppController {
 		$password = $this->request->query["password"];
 		if ($_user_info = $this->User->login($login_id, $password)) {
 			$this->Session->write("user_info", $_user_info);
+			$user_info = array(
+				"id"      => $_user_info["User"]["id"],
+				"name"    => $_user_info["User"]["name"],
+				"privacy" => $_user_info["User"]["privacy"]
+			);
+			unset($user_info["User"]["name"]);
+			$session = $this->Session->id();
 		}
-		$user_info = array(
-			"id"      => $_user_info["User"]["id"],
-			"name"    => $_user_info["User"]["name"],
-			"privacy" => $_user_info["User"]["privacy"]
-		);
-		unset($user_info["User"]["name"]);
-		$session = $this->Session->id();
 		$output_var = array(
 			"session",
 			"user_info",
@@ -69,6 +69,13 @@ class ApiController extends AppController {
 		$count = 0;
 		$this->presetVars = $this->Spot->presetVars;
 		$this->Prg->commonProcess();
+		if (isset($this->request->query["owner"]) && $this->request->query["owner"] == "mydata") {
+			// ログインユーザ情報
+			$user_info = $this->Session->read("user_info");
+			$this->request->query["user_id"] = $user_info["User"]["id"];
+		} else {
+			unset($this->request->query["user_id"]);
+		}
 		$cond = $this->Spot->parseCriteria($this->request->query);
 		$cond = Set::merge($cond, $this->Spot->base_condition);
 		$defaults = array(
@@ -78,7 +85,7 @@ class ApiController extends AppController {
 			"sort_type" => "asc"
 		);
 		foreach($defaults as $_key => $_val) {
-			$$_key = $this->request->$_key ?: $_val;
+			$$_key = $this->request->query[$_key] ?: $_val;
 		}
 		if ($count = $this->Spot->find('count', array('conditions' => $cond))) {
 			$list = $this->Spot->find('all',
@@ -172,13 +179,18 @@ class ApiController extends AppController {
 	}
 	
 	public function tour_list() {
-		
 		$list = array();
 		$this->presetVars = $this->Tour->presetVars;
 		$this->Prg->commonProcess();
+		if (isset($this->request->query["owner"]) && $this->request->query["owner"] == "mydata") {
+			// ログインユーザ情報
+			$user_info = $this->Session->read("user_info");
+			$this->request->query["user_id"] = $user_info["User"]["id"];
+		} else {
+			unset($this->request->query["user_id"]);
+		}
 		$cond = $this->Tour->parseCriteria($this->request->query);
 		$cond = Set::merge($cond, $this->Tour->base_condition);
-		$this->log($cond);
 
 		$defaults = array(
 			"limit"     => 10,
@@ -187,9 +199,8 @@ class ApiController extends AppController {
 			"sort_type" => "asc"
 		);
 		foreach($defaults as $_key => $_val) {
-			$$_key = $this->request->$_key ?: $_val;
+			$$_key = isset($this->request->query[$_key]) ? $this->request->query[$_key] : $_val;
 		}
-		
 		if ($count = $this->Tour->find('count', array('conditions' => $cond))) {
 			$unbind = array(
 				"hasMany"   => array("Route"),
@@ -219,25 +230,39 @@ class ApiController extends AppController {
 			"count",
 			"list"
 		);
-		$this->set(compact($output_var));
-		$this->set('_serialize', $output_var);
+ 		$this->set(compact($output_var));
+ 		$this->set('_serialize', $output_var);
 		
 	}
 	
 	public function tour_get($id) {
 
 		$this->Tour->id = $id;
-		$this->Tour->recursive = 0;
+		$this->Tour->recursive = 1;
 		$data = $this->Tour->read();
 		$this->Route->unbindModel(array("belongsTo" => array("Tour")));
-		$route = $this->Route->find("all", array(
+		$routes = $this->Route->find("all", array(
 			"conditions" => array(
 				"Route.tour_id" => $id
 			),
 			"recursive" => 0,
 			"order" => array("Route.sort")
 		));
-		$data["Route"] = $route;
+		$time = strtotime($data["Tour"]["start_time"]);
+		$route_start = null;
+		$route_end = null;
+		foreach($routes as $key => $route) {
+			if ($route["spot_id"]) {
+				if (is_null($route_start)) {
+					$route_start = $route["Spot"]["name"];
+				}
+				$route_end = $route["Spot"]["name"];
+			}
+			$routes[$key]["Route"]["start_time"] = date("H:i", $time);
+			$time += $route["Route"]["stay_time"] * 60;
+			$routes[$key]["Route"]["end_time"] = date("H:i", $time); 
+		}
+		$data["Route"] = $routes;
 		$output_var = array(
 			"data"
 		);

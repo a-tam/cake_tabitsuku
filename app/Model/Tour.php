@@ -140,7 +140,7 @@ class Tour extends AppModel {
 		'ne_lat'   => array('type' => 'query', 'method' => '__findByLatLng'),
 		'category' => array('type' => 'like'),
 		'tags'     => array('type' => 'like'),
-		'user'     => array('type' => 'like'),
+		'user_id'  => array('type' => 'value'),
 	);
 	public $base_condition = array('Tour.status' => 1);
 	// 検索対象のフィールド設定
@@ -274,7 +274,7 @@ class Tour extends AppModel {
 		$data["Tour"]["lat_max"] = $lat_max;
 		$data["Tour"]["lng_min"] = $lng_min;
 		$data["Tour"]["lng_max"] = $lng_max;
-		$data["Tour"]["staty_time"] = $stay_time;
+		$data["Tour"]["stay_time"] = $stay_time;
 		$time = explode(":", $data["Tour"]["start_time"]);
 		$end_time = ($time[0] * 60) + $time[1] + $stay_time;
 		$data["Tour"]["end_time"] = sprintf("%02d", floor($end_time / 60)).":".sprintf("%02d", $end_time % 60);
