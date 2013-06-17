@@ -154,9 +154,9 @@
 							spot_marker_list[spot_info.Spot.id] = marker;
 						});
 					}
-					$("#pg_spots .pg_description").trunk8({
-						lines: 4
-					});
+//					$("#pg_spots .pg_description").trunk8({
+//						lines: 4
+//					});
 				}
 			});
 		}

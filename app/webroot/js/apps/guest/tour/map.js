@@ -216,9 +216,9 @@
 								tour_path_list[tour_id] = linePath;
 							}
 						});
-						$("#pg_tours .pg_description").trunk8({
-							lines: 4
-						});
+//						$("#pg_tours .pg_description").trunk8({
+//							lines: 4
+//						});
 
 					}
 					/*
