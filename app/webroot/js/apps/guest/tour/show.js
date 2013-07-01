@@ -83,7 +83,7 @@ $(function() {
 			directionsDisplay.setDirections(response);
 			calcRoute(response);
 		}else{
-			alert("ルート検索に失敗しました");
+			$("#route_alert").text("10件以上のスポットがあるルートは表示できません");
 		}
 	});
 	

@@ -30,6 +30,7 @@ $this->end();
 		<div id="map"></div>
 		<div id="route_distance"></div>
 		<div>
+		<div id="route_alert" style="color: #f00;"></div>
 		<?php if ($this->Session->read("user_info")): ?>
 			<?php if (!isset($fb_permission_url)): ?>
 			<form id="pg_fb_event_add">

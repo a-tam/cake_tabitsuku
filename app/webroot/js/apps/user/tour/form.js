@@ -650,8 +650,8 @@ tourentryCtl.init=function(){
 			return false;
 		}
 
-		if ($("#tour_make .list_area .tour_point").length > 10) {
-			alert("1日のツアーは10拠点以上登録できません");
+		if ($("#tour_make .list_area .tour_point").length > 100) {
+			alert("1日のツアーは100拠点以上登録できません");
 			$("#start_time").forcus();
 			return false;
 		}
