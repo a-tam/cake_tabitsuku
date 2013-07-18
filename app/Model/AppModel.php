@@ -61,11 +61,11 @@ class AppModel extends Model {
 		$tag_list = $this->Tag->find("list", array(
 			"conditions" => $conditions
 		));
-		$spot_list = $this->ToursTag->find("list", array(
+		$tour_list = $this->ToursTag->find("list", array(
 			"conditions" => array(
 				"ToursTag.tag_id" => array_keys($tag_list)
 			),
-			"group" => "ToursTag.spot_id"
+			"group" => "ToursTag.tour_id"
 		));
 		return $tour_list;
 	}

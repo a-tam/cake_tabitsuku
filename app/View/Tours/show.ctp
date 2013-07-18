@@ -70,7 +70,7 @@ $this->end();
 	</div>
 	<!-- //maparea -->
 	
-	<div id="detail_area">
+	<div id="detail_area" data-id="<?php echo $tour["Tour"]["id"];?>">
 		<p class="photo">
 			<?php if ($tour["Tour"]["image"]) : ?>
 			<img src="<?php echo $this->html->url("/uploads/spot/middle/".$tour["Tour"]["image"]["file_name"]);?>" alt="" width="265" height="199" />
@@ -143,7 +143,9 @@ endif;
 		
 		<p class="edit">
 			<?php if ($this->Session->read("user_info")):?>
+			<?php if ($this->Session->read("user_info.User.id") == $tour["Tour"]["user_id"]):?>
 			<a href="<?php echo $this->html->url("/tours/form/".$tour["Tour"]["id"]);?>" class="selectbtn mouse_over">編集する</a>
+			<?php endif;?>
 			<?php endif;?>
 		</p>
 		
@@ -208,13 +210,16 @@ endif;
 			<?php endif;?>
 		<?php endforeach;?>
 	<?php endif;?>
-			
 		</div>
 		<!-- //routes -->
 		
 			<p class="copy">
-				<a href="<?php echo $this->html->url("/tours/copy/".$this->request["id"]); ?>" class="selectbtn mouse_over pg_copy">コピーしてツアーを作る</a>
-				<a href="<?php echo $this->html->url("/tours/delete/".$this->request["id"]);?>" class="selectbtn mouse_over pg_delete">削除する</a>
+				<?php if ($this->Session->read("user_info")):?>
+				<a href="<?php echo $this->html->url("/tours/copy/".$tour["Tour"]["id"]); ?>" class="selectbtn mouse_over pg_copy">コピーしてツアーを作る</a>
+				<?php if ($this->Session->read("user_info.User.id") == $tour["Tour"]["user_id"]):?>
+				<a href="<?php echo $this->html->url("/tours/delete/".$tour["Tour"]["id"]);?>" class="selectbtn mouse_over pg_delete">削除する</a>
+				<?php endif;?>
+				<?php endif;?>
 			</p>
 		
 	</div>

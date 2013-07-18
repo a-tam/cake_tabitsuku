@@ -108,9 +108,27 @@ $(function() {
 		spotCtl.popup($(this).attr("href"));
 		return false;
 	});
-	
 	$(".pg_delete").live("click", function() {
-		return confirm("本当に削除しますか？");
+		if (!confirm("本当に削除しますか？")) {
+			return false;
+		}
+		var id = $("#detail_area").attr("data-id");
+		$.ajax({
+			"url": gBaseUrl + "api/tour_delete/" + id + ".json",
+			"type": "GET",
+			"dataType": "json",
+			"success": function(json) {
+				console.log(json);
+				if (json.error != 0) {
+					alert(json.message);
+				}
+				location.href = gBaseUrl + "tours/";
+			},
+			"error": function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(errorThrown.message + "\n" + "ツアーの削除に処理に失敗しました。");
+			}
+		});
+		return false;
 	});
 
 	$("#pg_fb_event_add").submit(function() {

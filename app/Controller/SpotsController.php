@@ -41,17 +41,4 @@ class SpotsController extends AppController {
 		}
 		$this->log($this->request->data);
 	}
-	
-	public function add() {
-	
-	}
-	
-	public function edit() {
-	
-	}
-	
-	public function delete() {
-	
-	}
-	
 }

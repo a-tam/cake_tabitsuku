@@ -460,7 +460,6 @@ tourentryCtl.init=function(){
 				});
 				$("#spot_select .list_area .tour_point:not(.pg_spot_temp)").remove();
 				$.each(json.list, function(id, spot_info) {
-					console.log(spot_info);
 					// テンプレートのクローン作成
 					var spot_elm = $("#spot_select .pg_spot_temp")
 						.clone(true)

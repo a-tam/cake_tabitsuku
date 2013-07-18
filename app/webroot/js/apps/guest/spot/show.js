@@ -45,10 +45,33 @@ $(function() {
 
 	$(".pg_delete").live("click", function() {
 		if ($(".list_item:not(.pg_temp)").length > 0) {
-			return confirm("このスポットが含まれるツアーが存在します。\n本当に削除しますか？");
+			if (!confirm("このスポットが含まれるツアーが存在します。\n本当に削除しますか？")) {
+				return false;
+			}
 		} else {
-			return confirm("本当に削除しますか？");
+			if (!confirm("本当に削除しますか？")) {
+				return false;
+			}
 		}
+		var id = $("#detail_area").attr("data-id");
+		$.ajax({
+			"url": gBaseUrl + "api/spot_delete/" + id + ".json",
+			"type": "GET",
+			"dataType": "json",
+			"success": function(json) {
+				console.log(json);
+				if (json.error == 0) {
+					location.href = gBaseUrl + "spots/";
+				} else {
+					alert(json.message);
+					location.href = gBaseUrl + "spots/";
+				}
+			},
+			"error": function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(errorThrown.message + "\n" + "スポットの削除に失敗しました。");
+			}
+		});
+		return false;
 	});
 
 });

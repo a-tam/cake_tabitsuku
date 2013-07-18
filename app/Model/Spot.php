@@ -212,27 +212,7 @@ class Spot extends AppModel {
 		);
 		return $cond;
 	}
-	
-	/**
-	 * 存在すれば更新、無ければ追加
-	 *
-	 * @param unknown $data
-	 * @param string $validate
-	 * @param unknown $fieldList
-	 * @return Ambigous <mixed, boolean, multitype:>
-	 */
-	public function save($data = null, $validate = true, $fieldList = array()) {
-		if (!$data[$this->name]["id"]) {
-			// 追加
-			$this->create();
-			$data[$this->name]["status"] = "1";
-		} else {
-			// 更新
-			$this->id = $data[$this->name]["id"];
-		}
-		return parent::save($data, $validate, $fieldList);
-	}
-	
+
 	/**
 	 * 保存前処理
 	 *

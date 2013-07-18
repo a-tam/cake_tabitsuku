@@ -136,7 +136,7 @@ class Tour extends AppModel {
 	public $filterArgs = array(
 		'name'     => array('type' => 'like'),
 		'keyword'  => array('type' => 'query', 'method' => '__findByKeyword'),
-//		'tag'      => array('type' => 'subquery', 'method' => '__findByTag'),
+		'tag'      => array('type' => 'query', 'method' => '__findByTags'),
 		'ne_lat'   => array('type' => 'query', 'method' => '__findByLatLng'),
 		'category' => array('type' => 'like'),
 		'tags'     => array('type' => 'like'),
@@ -168,15 +168,13 @@ class Tour extends AppModel {
 		return $cond;
 	}
 	
-	private function __findByTag($data = array()) {
-		$this->TagsSpot->Behaviors->attach('Containable', array('autoFields' => false));
-		$this->Tagged->Behaviors->attach('Search.Searchable');
-		$query = $this->Tagged->getQuery('all', array(
-			'conditions' => array('Tag.name' => $data['tags']),
-			'fields' => array('foreign_key'),
-			'contain' => array('Tag')
-		));
-		return $query;
+	public function __findByTags($data = array()) {
+		$tag = $data["tag"];
+		$tour_list = $this->filterByTagTour($tag);
+		$cond = array(
+				$this->alias . '.id' => array_values($tour_list)
+		);
+		return $cond;
 	}
 	
 	/**
@@ -213,80 +211,73 @@ class Tour extends AppModel {
 		$lng_max = null;
 		$prefecture = "";
 		$image = null;
-		$spot_model = new Spot;
-		foreach($data["Route"] as $key => $spot) {
-			$stay_time += $data["Route"][$key]["stay_time"];
-			if ($spot["spot_id"] > 0) {
-				// 県名
-				if (!isset($data["Tour"]["prefecture"])) {
-					$prefecture = $spot_model
-						->find('first',
-							array(
-								"condition" => array(
-									"id" => $spot["spot_id"]
-								),
-								"recursive"  => 0,
-								"fields" => array("Spot.prefecture")
-							));
-					$data["Tour"]["prefecture"] = $prefecture["Spot"]["prefecture"];
-				}
-				// ツアーの範囲を取得
-				if (is_null($lat_min)) {
-					$lat_min = $spot["lat"];
-					$lat_max = $spot["lat"];
-					$lng_min = $spot["lng"];
-					$lng_max = $spot["lng"];
-					$start_lat = $spot["lat"];
-					$start_lng = $spot["lng"];
-				}
-				if ($lat_min > $spot["lat"]) $lat_min = $spot["lat"];
-				if ($lat_max < $spot["lat"]) $lat_max = $spot["lat"];
-				if ($lng_min > $spot["lng"]) $lng_min = $spot["lng"];
-				if ($lng_max < $spot["lng"]) $lng_max = $spot["lng"];
-				// 選択した画像のシリアライズデータを埋め込む
-				if ($data["Tour"]["image"] == $spot["spot_id"]) {
-					$image = $spot_model
-						->find('first',
-							array(
-								"conditions" => array(
-									"Spot.id" => $spot["spot_id"]
-								),
-								"recursive" => 0,
-								"fields"    => array(
-									"Spot.image"
-								)
-							));
-					$image["Spot"]["image"]["spot_id"] = $spot["spot_id"];
+		if (isset($data["Route"])) {
+			$spot_model = new Spot;
+			foreach($data["Route"] as $key => $spot) {
+				$stay_time += $data["Route"][$key]["stay_time"];
+				if ($spot["spot_id"] > 0) {
+					// 県名
+					if (!isset($data["Tour"]["prefecture"])) {
+						$prefecture = $spot_model
+							->find('first',
+								array(
+									"condition" => array(
+										"id" => $spot["spot_id"]
+									),
+									"recursive"  => 0,
+									"fields" => array("Spot.prefecture")
+								));
+						$data["Tour"]["prefecture"] = $prefecture["Spot"]["prefecture"];
+					}
+					// ツアーの範囲を取得
+					if (is_null($lat_min)) {
+						$lat_min = $spot["lat"];
+						$lat_max = $spot["lat"];
+						$lng_min = $spot["lng"];
+						$lng_max = $spot["lng"];
+						$start_lat = $spot["lat"];
+						$start_lng = $spot["lng"];
+					}
+					if ($lat_min > $spot["lat"]) $lat_min = $spot["lat"];
+					if ($lat_max < $spot["lat"]) $lat_max = $spot["lat"];
+					if ($lng_min > $spot["lng"]) $lng_min = $spot["lng"];
+					if ($lng_max < $spot["lng"]) $lng_max = $spot["lng"];
+					// 選択した画像のシリアライズデータを埋め込む
+					if ($data["Tour"]["image"] == $spot["spot_id"]) {
+						$image = $spot_model
+							->find('first',
+								array(
+									"conditions" => array(
+										"Spot.id" => $spot["spot_id"]
+									),
+									"recursive" => 0,
+									"fields"    => array(
+										"Spot.image"
+									)
+								));
+						$image["Spot"]["image"]["spot_id"] = $spot["spot_id"];
+					}
 				}
 			}
-		}
-		// 画像
-		if (isset($data["Tour"]["image"])) {
-			if ($image) {
-				$data["Tour"]["image"] = serialize($image["Spot"]["image"]);
-			} else {
-				$data["Tour"]["image"] = serialize(null);
+			// 画像
+			if (isset($data["Tour"]["image"])) {
+				if ($image) {
+					$data["Tour"]["image"] = serialize($image["Spot"]["image"]);
+				} else {
+					$data["Tour"]["image"] = serialize(null);
+				}
 			}
+			$data["Tour"]["start_lat"] = $start_lat;
+			$data["Tour"]["start_lng"] = $start_lng;
+			$data["Tour"]["lat_min"] = $lat_min;
+			$data["Tour"]["lat_max"] = $lat_max;
+			$data["Tour"]["lng_min"] = $lng_min;
+			$data["Tour"]["lng_max"] = $lng_max;
+			$data["Tour"]["stay_time"] = $stay_time;
+			$time = explode(":", $data["Tour"]["start_time"]);
+			$end_time = ($time[0] * 60) + $time[1] + $stay_time;
+			$data["Tour"]["end_time"] = sprintf("%02d", floor($end_time / 60)).":".sprintf("%02d", $end_time % 60);
 		}
-		$data["Tour"]["start_lat"] = $start_lat;
-		$data["Tour"]["start_lng"] = $start_lng;
-		$data["Tour"]["lat_min"] = $lat_min;
-		$data["Tour"]["lat_max"] = $lat_max;
-		$data["Tour"]["lng_min"] = $lng_min;
-		$data["Tour"]["lng_max"] = $lng_max;
-		$data["Tour"]["stay_time"] = $stay_time;
-		$time = explode(":", $data["Tour"]["start_time"]);
-		$end_time = ($time[0] * 60) + $time[1] + $stay_time;
-		$data["Tour"]["end_time"] = sprintf("%02d", floor($end_time / 60)).":".sprintf("%02d", $end_time % 60);
-		if (!$data[$this->name]["id"]) {
-			// 追加
-			$this->create();
-			$data[$this->name]["status"] = "1";
-		} else {
-			// 更新
-			$this->id = $data[$this->name]["id"];
-		}
-		$this->log($data);
 		return parent::save($data, $validate = true, $fieldList = array());
 	}
 	

@@ -28,7 +28,6 @@ class ToursController extends AppController {
 		if (!$tour = $this->Tour->read()) {
 			throw new NotFoundException();
 		}
-		$this->log($tour);
 		if (!$data["fb_event_permission"] = $this->isScope("create_event")) {
 			$fb_permission_url = $this->facebook->getLoginUrl(array('scope' => 'create_event'));
 			$this->set("fb_permission_url", $fb_permission_url);
@@ -36,10 +35,14 @@ class ToursController extends AppController {
 		$this->set("tour", $tour);
 	}
 	
+	/**
+	 * 
+	 * @param string $id
+	 * @throws NotFoundException
+	 */
 	public function form($id = "") {
 		// 認証チェック
 		$this->user_auth();
-		
 		if ($id) {
 			$this->Tour->id = $id;
 			$this->Tour->recursive = 2;
@@ -51,15 +54,22 @@ class ToursController extends AppController {
 		}
 	}
 	
-	public function add() {
-		
-	}
-	
-	public function edit() {
-		
-	}
-	
-	public function delete() {
-		
+	/**
+	 * コピー
+	 * @param unknown $id
+	 */
+	public function copy($id) {
+		// 認証チェック
+		$this->user_auth();
+		if ($id) {
+			$this->Tour->id = $id;
+			$this->Tour->recursive = 2;
+			$this->Tour->Route->unbindModel(array("belongsTo" => array("Tour")));
+			if (!$this->request->data = $this->Tour->read()) {
+				throw new NotFoundException();
+			}
+			unset($this->request->data["Tour"]["id"]);
+		}
+		$this->render("form");
 	}
 }
