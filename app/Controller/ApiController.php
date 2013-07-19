@@ -136,6 +136,8 @@ class ApiController extends AppController {
 			}
 			$cond = $this->Spot->parseCriteria($this->request->query);
 			$cond = Set::merge($cond, $this->Spot->base_condition);
+			$this->log($cond);
+
 			$defaults = array(
 				"limit"     => 10,
 				"page"      => 1,
@@ -340,6 +342,7 @@ class ApiController extends AppController {
 			}
 			$cond = $this->Tour->parseCriteria($this->request->query);
 			$cond = Set::merge($cond, $this->Tour->base_condition);
+			$this->log($cond);
 	
 			$defaults = array(
 				"limit"     => 10,

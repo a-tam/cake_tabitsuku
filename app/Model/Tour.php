@@ -141,6 +141,7 @@ class Tour extends AppModel {
 		'category' => array('type' => 'like'),
 		'tags'     => array('type' => 'like'),
 		'user_id'  => array('type' => 'value'),
+		'fulltext' => array('type' => 'query', 'method' => '__findByFulltext'),		// 全文検索（重いです）
 	);
 	public $base_condition = array('Tour.status' => 1);
 	// 検索対象のフィールド設定
@@ -148,6 +149,25 @@ class Tour extends AppModel {
 		array('field' => 'id'  , 'type' => 'value'),
 		array('field' => 'name', 'type' => 'like'),
 	);
+	
+	/**
+	 * 全文検索
+	 * @param unknown $data
+	 * @return Ambigous <multitype:, multitype:multitype:string  >
+	 */
+	public function __findByFulltext($data = array()) {
+		$cond = array();
+		$keyword = $data["fulltext"];
+		if ($keyword) {
+			$cond = array(
+				'OR' => array(
+					$this->alias . '.name LIKE '       => '%'.$data["fulltext"].'%',
+					$this->alias . '.description LIKE' => '%'.$data["fulltext"].'%',
+ 					$this->alias . '.keyword LIKE'     => '%'.$data["fulltext"].'%'
+				));
+		}
+		return $cond;
+	}
 	
 	/**
 	 * キーワード検索
@@ -159,10 +179,7 @@ class Tour extends AppModel {
 		$keyword = $data["keyword"];
 		if ($keyword) {
 			$cond = array(
-				'OR' => array(
-					$this->alias . '.name LIKE' => '%' . $keyword . '%',
-					$this->alias . '.keyword LIKE' => '%' . $keyword . '%',
-				)
+				$this->alias . '.keyword LIKE' => '%' . $keyword . '%'
 			);
 		}
 		return $cond;

@@ -147,7 +147,8 @@ class Spot extends AppModel {
 		'ne_lat'   => array('type' => 'query', 'method' => 'findByLatLng'),
 		'category' => array('type' => 'like'),
 		'tag'      => array('type' => 'query', 'method' => 'findByTags'),
-		'user_id'  => array('type' => 'value'),  
+		'user_id'  => array('type' => 'value'),
+		'fulltext' => array('type' => 'query', 'method' => '__findByFulltext'),		// 全文検索（重いです）
 	);
 	// 検索条件として必ず指定される項目
 	public $base_condition = array('Spot.status' => '1');
@@ -163,16 +164,32 @@ class Spot extends AppModel {
 		$this->ImageResizer = $controller->ImageResizer;
 	}
 
+	/**
+	 * 全文検索
+	 * @param unknown $data
+	 * @return Ambigous <multitype:, multitype:multitype:string  >
+	 */
+	public function __findByFulltext($data = array()) {
+		$cond = array();
+		$keyword = $data["fulltext"];
+		if ($keyword) {
+			$cond = array(
+					'OR' => array(
+							$this->alias . '.name LIKE '       => '%'.$data["fulltext"].'%',
+							$this->alias . '.description LIKE' => '%'.$data["fulltext"].'%',
+							$this->alias . '.keyword LIKE'     => '%'.$data["fulltext"].'%'
+					));
+		}
+		return $cond;
+	}
+	
 	// キーワード検索
 	public function findByKeyword($data = array()) {
 		$cond = array();
 		$keyword = $data["keyword"];
 		if ($keyword) {
 			$cond = array(
-				'OR' => array(
-					$this->alias . '.name LIKE' => '%' . $keyword . '%',
-					$this->alias . '.keyword LIKE' => '%' . $keyword . '%',
-				)
+				$this->alias . '.keyword LIKE' => '%' . $keyword . '%',
 			);
 		}
 		return $cond;
